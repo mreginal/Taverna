@@ -1,6 +1,6 @@
 from flask import jsonify, request
-from src.models.user_model import User
-from ..app import client
+from models.user_model import User
+from app import client
 
 def cadastrar_usuario():
     data = request.json
@@ -14,7 +14,7 @@ def cadastrar_usuario():
         gender=data['gender']
     )
     
-    client.db.usuarios.insert_one({
+    client.taverna.usuarios.insert_one({
         'name': novo_usuario.name,
         'birthdate': novo_usuario.birthdate,
         'gender': novo_usuario.gender

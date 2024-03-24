@@ -1,4 +1,4 @@
-from flask import Flask, Response
+from flask import Flask
 from dotenv import load_dotenv
 import pymongo
 import os
