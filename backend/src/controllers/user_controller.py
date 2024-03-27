@@ -6,11 +6,8 @@ import bcrypt
 def cadastrar_usuario():
     data = request.json
     
-    if not all(key in data for key in ('name', 'birthdate', 'email', 'password', 'confirmpassword', 'gender')):
+    if not all(key in data for key in ('name', 'birthdate', 'email', 'password')):
         return jsonify({'message': 'Campos obrigatórios ausentes'}), 400
-    
-    if data['confirmpassword'] != data['password']:
-        return jsonify({'message': 'A confirmação da senha está incorreta'}), 400
     
     password = data['password']
     hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
