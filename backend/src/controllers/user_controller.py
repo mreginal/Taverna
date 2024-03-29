@@ -1,6 +1,6 @@
 from flask import jsonify, request
-from src.models.user_model import User
-from src.app import client
+from models.user_model import User
+from app import client
 import bcrypt
 
 def cadastrar_usuario():

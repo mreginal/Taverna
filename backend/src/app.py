@@ -1,15 +1,19 @@
 from flask import Flask
 from dotenv import load_dotenv
+from waitress import serve
+from flask_cors import CORS
 import pymongo
 import os
 
-from src.routes.user_routes import user_bp
+from routes.user_routes import user_bp
 
 load_dotenv()
+
 
 MONGODB_URI = os.getenv("MONGODB_URI")
 
 app = Flask(__name__)
+cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
 try:
     # Conecte-se ao MongoDB
@@ -28,4 +32,5 @@ except Exception as e:
 app.register_blueprint(user_bp, url_prefix='/user')
 
 if __name__ == "__main__":
-    app.run()
+    print("Servidor rodando")
+    serve(app, host='0.0.0.0', port=5000)
