@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 import pymongo
 import os
 
-from routes.user_routes import user_bp
+from src.routes.user_routes import user_bp
 
 load_dotenv()
 
@@ -28,4 +28,4 @@ except Exception as e:
 app.register_blueprint(user_bp, url_prefix='/user')
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
