@@ -8,10 +8,4 @@ class User:
             birthdate: Union[str, datetime.datetime],
             email:str,
             password,
-            gender:Optional[str]
-        ):
-        self.name = name
-        self.birthdate = birthdate
-        self.email = email
-        self.password = password
-        self.gender = gender
+            gender:Optional[str] = None
