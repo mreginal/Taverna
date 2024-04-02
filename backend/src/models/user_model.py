@@ -8,7 +8,7 @@ class User:
             birthdate: Union[str, datetime.datetime],
             email:str,
             password,
-            gender:Optional[str]
+            gender:Optional[str] = None
         ):
         self.name = name
         self.birthdate = birthdate
