@@ -9,9 +9,3 @@ class User:
             email:str,
             password,
             gender:Optional[str] = None
-        ):
-        self.name = name
-        self.birthdate = birthdate
-        self.email = email
-        self.password = password
-        self.gender = gender

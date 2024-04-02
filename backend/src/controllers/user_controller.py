@@ -11,6 +11,7 @@ def cadastrar_usuario():
     if not all(key in data for key in ('name', 'birthdate', 'email', 'password')):
         return jsonify({'message': 'Campos obrigatórios ausentes'}), 400
     
+
     gendert = data.get('gender')
     password = data['password']
     hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
