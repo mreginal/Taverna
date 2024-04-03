@@ -106,3 +106,7 @@
 #button:hover{
     background-color: var(--dark3);
 }
+
+.error{
+    color: #F74A49;
+}

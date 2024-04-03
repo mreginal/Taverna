@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
 import './Auth.css'
+import axios from 'axios'
 
+//Cria uma interface User
 interface User{
   name: string
-  bithdate: string
+  birthdate: string
   email: string
   password: string
   gender: string
@@ -11,13 +13,16 @@ interface User{
 
 const Register: React.FC = () => {
 
+  //Registra os inputs digitados
   const [name, setName] = useState<string>("")
-  const [bithdate, setBirthdate] = useState<string>("")
+  const [birthdate, setBirthdate] = useState<string>("")
   const [email, setEmail] = useState<string>("")
   const [password, setPassword] = useState<string>("")
   const [confirmPassword, setConfirmPassword] = useState<string>("")
   const [gender, setGender] = useState<string>("")
+  const [error, setError] = useState("")
 
+  //Funções para coletar os dados do Select de genêro e a Data de nascimento
   const handleSelectGender = (e:React.ChangeEvent<HTMLSelectElement>)=>{
     setGender(e.target.value)
   }
@@ -26,31 +31,40 @@ const Register: React.FC = () => {
     setBirthdate(e.target.value)
   }
 
-  const [passwordsMatch, setPasswordsMatch] = useState<boolean>(true)
-
-  const handlePasswordChange = (e:React.ChangeEvent<HTMLInputElement>)=>{
-    setConfirmPassword(e.target.value)
-    setPasswordsMatch(e.target.value === password)
-  }
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) =>{
+  //Enviar as respostas
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) =>{
     e.preventDefault()
+
+    setError("")
 
     const user: User ={
       name, 
-      bithdate,
+      birthdate,
       email,
       password,
       gender,
     }
 
+    //Confirmar a senha
+    if (password !== confirmPassword) {
+      setError("❗As senhas não correspondem❗")
+      return
+    }
+
+    //Tentativa de conexão com a API de cadastro
+    try{
+      await axios.post("https://taverna.onrender.com/user/cadastrar", {name, birthdate, email, password, gender})
+      console.log('Ok')
+      alert('Cadastro realizado com sucesso!')
+    }catch(error){
+      console.log(error)
+      alert('Erro ao cadastrar usuário')
+    }
+
     console.log(user)
 
-    if (password === confirmPassword) {
-      console.log('Senha:', password);
-    } else {
-      console.log('As senhas não correspondem:', password, confirmPassword);
-    }
+    //Limpar os inputs ao submeter (EXTREMAMENTE PROVISÓRIO)
+    setName(''), setEmail(''), setBirthdate(''), setPassword(''), setConfirmPassword(''), setGender('')
   }
 
   return (
@@ -73,7 +87,7 @@ const Register: React.FC = () => {
                 </label>
                 <label>
                   <span>Data de Nascimento:</span>
-                  <input type="date" name='birthdate' onChange={handleBirthdate} value={bithdate}/>
+                  <input type="date" name='birthdate' onChange={handleBirthdate} value={birthdate}/>
                 </label>
                 <label>
                   <span>Email:</span>
@@ -85,8 +99,9 @@ const Register: React.FC = () => {
                 </label>
                 <label>
                   <span>Confirmação de senha:</span>
-                  <input type="password" name='password' placeholder='*********' id='confirmPassword' onChange={handlePasswordChange} value={confirmPassword}/>
-                  {!passwordsMatch && <p style={{ color:'purple'}}>As senhas não correspondem.</p>}
+                  <input type="password" name='password' placeholder='*********' id='confirmPassword' onChange={(e)=>setConfirmPassword(e.target.value)} value={confirmPassword}/>
+                  {error && <p className='error'>{error}</p>}
+
                 </label>
                 <label>
                   <span>Gênero:</span>
