@@ -1,0 +1,19 @@
+.inicial{
+    background-color: var(--dark2);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo-in img{
+    height: 250px;
+    width: 250px;
+}
+
+.app-in h1{
+    color: var(--white);
+    font-family: var(--style-font);
+    font-size: 60px;
+}

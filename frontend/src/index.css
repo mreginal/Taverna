@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Sancreek&display=swap');
+
+/* Global Styles */
+:root {
+  --main-font: 'Montserrat', sans-serif;
+  --style-font: 'Sancreek', serif;
+
+  --dark1: #000;
+  --dark2: #232528;
+  --dark3: #161719;
+  --gray0: #F0F2F5;
+  --gray1: #cccccc;
+  --gray2: #929090;
+  --white: #FFF;
+}
+
+body {
+  font-family: var(--main-font);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
