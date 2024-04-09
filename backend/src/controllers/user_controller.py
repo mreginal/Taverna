@@ -1,8 +1,7 @@
 from flask import jsonify, request
 from models.user_model import User
-from app import client
+from app import db
 import bcrypt
-from pymongo import IndexModel, ASCENDING
 from pymongo.errors import DuplicateKeyError
 
 def cadastrar_usuario():
@@ -11,25 +10,20 @@ def cadastrar_usuario():
     if not all(key in data for key in ('name', 'birthdate', 'email', 'password')):
         return jsonify({'message': 'Campos obrigatórios ausentes'}), 400
     
-
-    gendert = data.get('gender')
+    gender = data.get('gender')
     password = data['password']
-    hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+    hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt(10))
     
     novo_usuario = User(
         name=data['name'],
         birthdate=data['birthdate'],
         email=data['email'],
         password=hashed,
-        gender=gendert
+        gender=gender
     )
     
-    # Definir índice único para o campo de e-mail
-    index_model = IndexModel([('email', ASCENDING)], unique=True)
-    client.taverna.usuarios.create_indexes([index_model])
-    
     try:
-        client.taverna.usuarios.insert_one({
+        db.usuarios.insert_one({
             'name': novo_usuario.name,
             'birthdate': novo_usuario.birthdate,
             'email': novo_usuario.email,
