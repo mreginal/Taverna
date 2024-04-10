@@ -53,7 +53,7 @@ const Register: React.FC = () => {
 
     //Tentativa de conexão com a API de cadastro
     try{
-      await axios.post("https://taverna.onrender.com/user/cadastrar", {name, birthdate, email, password, gender})
+      await axios.post("https://taverna-api-teste.onrender.com/user/cadastrar", {name, birthdate, email, password, gender})
       console.log('Ok')
       alert('Cadastro realizado com sucesso!')
     }catch(error){

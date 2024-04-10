@@ -1,21 +1,40 @@
 .nav{
-    width: 0.3fr;
+    height: 100vh;
+    width: 60px;
     background-color: var(--cor04);
-    border-radius: 0 20px 20px 0px;
+    border-radius: 0 30px 30px 0px;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
-    line-height: 40px;
+    padding: 10px;
 }
 
 .nav ul{
+    margin-top: 15px;
     list-style-type: none;
 }
 
-.nav img{
-    height: 90px;
+.sidebar-nav{
+    line-height: 100px;
 }
 
+.sidebar-nav img{
+    height: 50px;
+}
+
+.profile-nav{
+    margin: 5px;
+    border-radius: 90%;
+    overflow: hidden;
+    position: relative;
+}
+
+.profile-nav img{
+    width: 100%;
+    border-radius: 90%;
+    height: auto;
+    width: 50px;
+}
 
 
