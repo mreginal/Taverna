@@ -1,17 +1,19 @@
-from typing import Optional, Union
-import datetime
+from app import db
+from pymongo.errors import DuplicateKeyError
 
 class User:
-    def __init__(
-            self,
-            name: str,
-            birthdate: Union[str, datetime.datetime],
-            email:str,
-            password,
-            gender:Optional[str] = None
-        ):
-        self.name = name
-        self.birthdate = birthdate
-        self.email = email
-        self.password = password
-        self.gender = gender
+    @staticmethod
+    def cadastro_usuario_service(name, birthdate, email, hashed64, gender):
+        novo_usuario = {
+            "name": name,
+            "birthdate": birthdate,
+            "email": email,
+            "password": hashed64,
+            "gender": gender
+        }
+        try:
+            db.usuarios.insert_one(novo_usuario)
+            return "Usuário cadastrado com sucesso!", 201
+        except DuplicateKeyError:
+            return "E-mail já cadastrado", 400
+     
