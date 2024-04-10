@@ -1,8 +1,13 @@
+//CSS
 import './Auth.css'
+
+//Imports
+import { useNavigate } from 'react-router-dom'
 import { FormEvent, useState } from 'react'
 
 const Login: React.FC= () => {
 
+  const navigate = useNavigate()
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
 
@@ -12,6 +17,14 @@ const Login: React.FC= () => {
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>)=>{
     setPassword(e.target.value)
+  }
+
+  const handleRegister = () =>{
+    navigate('/register')
+  }
+
+  const handleClick = () =>{
+    navigate('/feed')
   }
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -51,8 +64,8 @@ const Login: React.FC= () => {
                 </label>
 
                 <div className="btn">
-                  <input type="submit" id='button' value="Não tenho conta"/>
-                  <input type="submit" id='button' value="entrar"/>
+                  <input type="submit" id='button' value="Não tenho conta" onClick={handleRegister}/>
+                  <input type="submit" id='button' value="entrar" onClick={handleClick}/>
                   </div>
 
               </form>

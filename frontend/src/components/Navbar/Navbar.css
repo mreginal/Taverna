@@ -1,0 +1,21 @@
+.nav{
+    width: 0.3fr;
+    background-color: var(--cor04);
+    border-radius: 0 20px 20px 0px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    line-height: 40px;
+}
+
+.nav ul{
+    list-style-type: none;
+}
+
+.nav img{
+    height: 90px;
+}
+
+
+

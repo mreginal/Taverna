@@ -1,5 +1,5 @@
 .inicial{
-    background-color: var(--dark2);
+    background-color: var(--cor04);
     height: 100vh;
     display: flex;
     flex-direction: column;
@@ -13,7 +13,7 @@
 }
 
 .app-in h1{
-    color: var(--white);
+    color: var(--cor00);
     font-family: var(--style-font);
     font-size: 60px;
 }

@@ -5,13 +5,16 @@
   --main-font: 'Montserrat', sans-serif;
   --style-font: 'Sancreek', serif;
 
-  --dark1: #000;
-  --dark2: #232528;
-  --dark3: #161719;
-  --gray0: #F0F2F5;
-  --gray1: #cccccc;
-  --gray2: #929090;
-  --white: #FFF;
+  --cor00: #FFF;
+  --cor01: #EBEAEA;
+  --cor02: #cccccc;
+  --cor03: #929090;
+  --cor04: #cb692b;
+  --cor05: #EB752B;
+  --cor06: #313338;
+  --cor07: #000;
+
+
 }
 
 body {
