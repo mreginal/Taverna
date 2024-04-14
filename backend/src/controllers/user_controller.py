@@ -1,4 +1,5 @@
 from models.user_model import User
+from flask_jwt_extended import create_access_token
 import bcrypt
 import base64
 
@@ -7,3 +8,5 @@ def cadastrar_usuario(name, birthdate, email, password, gender):
     hashed64 = base64.b64encode(hashed).decode()
     response, status_code = User.cadastro_usuario_service(name,birthdate,email,hashed64,gender)
     return response, status_code
+
+
