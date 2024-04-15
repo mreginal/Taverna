@@ -1,12 +1,17 @@
-
 import './Feed.css'
+
+//imports
 import Post from '../../components/NewPost/Post'
-import Navbar from '../../components/Navbar/Navbar'
+import Sidebar from '../../components/Sidebar/Sidebar'
+import { RiImage2Fill, RiUserAddFill } from 'react-icons/ri'
 
 const Feed = () => {
+
   return (
     <div className="feed">
-        <Navbar/>
+        <div className="right-feed">
+            <Sidebar/>
+        </div>
         <div className="center-feed">
             <div className="new-post">
                 <div className="post-container">
@@ -14,11 +19,11 @@ const Feed = () => {
                 </div>
                 <div className="itens-post">
                     <div className="item-post">
-                        <img src="./icon-img.svg" alt="img" />
+                        <p><RiImage2Fill/></p>
                         <p>Imagem</p>
                     </div>
                     <div className="item-post">
-                        <img src="./icon-cheers.svg" alt="friends" />
+                        <p><RiUserAddFill/></p>
                         <p>Marcar amigos</p>
                     </div>
                     <div className="btn-post"><input type="button" value="Postar"/></div>

@@ -1,6 +1,6 @@
 .feed{
     display: grid;
-    grid-template-columns: 0.5fr 3fr 1.5fr;
+    grid-template-columns: 1fr 3fr 1fr;
     grid-template-rows: auto;
     height: 100vh;
     background-color: var(--cor00);
@@ -54,6 +54,7 @@
 
 .item-post{
     display: flex;
+    margin: 15px;
     color: var(--cor04);
 }
 
@@ -81,6 +82,11 @@
     font-family: var(--main-font);
     font-weight: bold;
     border-radius: 10px;
+    cursor: pointer;
+}
+
+.btn-post:hover input{
+    background-color: var(--cor04);
 }
 
 .left-feed{
