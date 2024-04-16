@@ -92,7 +92,7 @@
     justify-content: end;
 }
 
-#button{
+#button, #login{
     padding: 10px;
     width: 150px;
     border: none;

@@ -1,16 +1,11 @@
-import React, { useState } from 'react'
+//CSS
 import './Auth.css'
-import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
 
-//Cria uma interface User
-interface User{
-  name: string
-  birthdate: string
-  email: string
-  password: string
-  gender: string
-}
+//imports
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { api } from '../../services/api'
+import { User } from '../../types/user'
 
 const Register: React.FC = () => {
   const navigate = useNavigate()
@@ -55,7 +50,7 @@ const Register: React.FC = () => {
 
     //Tentativa de conexão com a API de cadastro
     try{
-      await axios.post("https://taverna-api-teste.onrender.com/user/cadastrar", {name, birthdate, email, password, gender})
+      await api.post("/user/cadastrar", {name, birthdate, email, password, gender})
       console.log('Ok')
       alert('Cadastro realizado com sucesso!')
       navigate('/login')

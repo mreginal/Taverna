@@ -4,12 +4,14 @@ import './Auth.css'
 //Imports
 import { useNavigate } from 'react-router-dom'
 import { FormEvent, useState } from 'react'
+import { api } from '../../services/api'
 
-const Login: React.FC= () => {
+export default function Login(){ 
 
   const navigate = useNavigate()
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
+
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>)=>{
     setEmail(e.target.value)
@@ -19,23 +21,27 @@ const Login: React.FC= () => {
     setPassword(e.target.value)
   }
 
-  const handleRegister = () =>{
-    navigate('/register')
-  }
-
-  const handleClick = () =>{
-    navigate('/feed')
-  }
+  const handleNavigate = (path: string) => {
+    navigate(path);
+  };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    console.log('enviando forms')
-    console.log(email, password)
 
-    //Limpar forms
+    try {
+      const response = await api.post('/auth/user', {
+        email,
+        password,
+      });
 
-    setEmail('')
-    setPassword('')
+      const token = response.data.token;
+
+      localStorage.setItem('token', token);
+  
+      console.log("Token recebido:", token);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -64,8 +70,8 @@ const Login: React.FC= () => {
                 </label>
 
                 <div className="btn">
-                  <input type="submit" id='button' value="Não tenho conta" onClick={handleRegister}/>
-                  <input type="submit" id='button' value="entrar" onClick={handleClick}/>
+                  <input type="button" id='button' value="Não tenho conta" onClick={() => handleNavigate('/register')}/>
+                  <input type="submit" id='login' value="entrar"/>
                   </div>
 
               </form>
@@ -75,5 +81,3 @@ const Login: React.FC= () => {
     </div>
   )
 }
-
-export default Login
