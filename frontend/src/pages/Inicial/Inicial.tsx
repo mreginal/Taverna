@@ -3,7 +3,7 @@ import "./Inicial.css"
 
 //Imports
 import { useNavigate } from "react-router-dom"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 
 const Inicial = () => {
 

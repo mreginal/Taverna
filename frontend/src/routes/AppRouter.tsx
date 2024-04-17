@@ -7,7 +7,7 @@ import Login from '../pages/Auth/Login';
 import Register from '../pages/Auth/Register';
 import Feed from '../pages/Feed/Feed';
 import Sidebar from '../components/Sidebar/Sidebar';
-import Profile from '../components/Profile/Profile';
+import Profile from '../components/Profile/Profile'
 
 const AppRouter: React.FC = () => {
   return (
@@ -18,7 +18,8 @@ const AppRouter: React.FC = () => {
               <Route path="/login" element={<Login/>}/>
               <Route path="/register" element={<Register/>}/>
               <Route path="/feed" element={<Feed/>}/>
-              <Route path="/profile" element={<Profile/>}/>
+              <Route path='/profile' element={<Profile/>}/>
+              
         </Routes>
       </div>
   );

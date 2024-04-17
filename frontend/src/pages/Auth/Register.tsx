@@ -5,7 +5,7 @@ import './Auth.css'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { api } from '../../services/api'
-import { User } from '../../types/user'
+import { User } from '../../types/types'
 
 const Register: React.FC = () => {
   const navigate = useNavigate()

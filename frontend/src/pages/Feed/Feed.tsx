@@ -3,6 +3,7 @@ import './Feed.css'
 //imports
 import Post from '../../components/NewPost/Post'
 import Sidebar from '../../components/Sidebar/Sidebar'
+import Profile from '../../components/Profile/Profile'
 import { RiImage2Fill, RiUserAddFill } from 'react-icons/ri'
 
 const Feed = () => {
@@ -30,14 +31,12 @@ const Feed = () => {
                 </div>
                 <div className="post">
                     <Post/>
-                    <Post/>
-                    <Post/>
                 </div>
             </div>
         </div>
 
         <div className="left-feed">
-
+            
         </div>
     </div>
   )

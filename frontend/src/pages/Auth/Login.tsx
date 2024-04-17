@@ -38,11 +38,11 @@ export default function Login(){
         password,
       });
 
-      const token = response.data.token;
+      const token = response.data
 
-      localStorage.setItem('token', token);
-  
-      console.log("Token recebido:", token);
+      localStorage.setItem('token',token)
+
+      console.log('Token:', token)
 
       handleLogin()
 
