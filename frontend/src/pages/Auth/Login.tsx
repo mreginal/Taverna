@@ -25,6 +25,10 @@ export default function Login(){
     navigate(path);
   };
 
+  const handleLogin = () =>{
+    navigate('/feed')
+  }
+
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
@@ -39,6 +43,9 @@ export default function Login(){
       localStorage.setItem('token', token);
   
       console.log("Token recebido:", token);
+
+      handleLogin()
+
     } catch (error) {
       console.error(error);
     }
