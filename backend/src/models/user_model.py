@@ -1,5 +1,6 @@
 from app import db
 from pymongo.errors import DuplicateKeyError
+from bson import ObjectId
 
 class User:
     @staticmethod
@@ -18,6 +19,20 @@ class User:
             return {"message": "E-mail já cadastrado"}, 400
 
     @staticmethod
+    def find_all_users_service():
+        users = db.usuarios.find()
+        users_list = [user for user in users]
+        for user in users_list:
+            user['_id'] = str(user['_id'])
+        return users_list
+    
+    @staticmethod
+    def find_by_id_service(id):
+        user = db.usuarios.find_one({"_id": ObjectId(id)})
+        return user
+    
+    @staticmethod
     def find_by_email_service(email):
         user = db.usuarios.find_one({"email":email})
         return user
+
