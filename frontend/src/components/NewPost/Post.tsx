@@ -5,7 +5,7 @@ const Post: React.FC = () => {
   return (
     <div className="post">
         <div className="user-post">
-            <img src="./logo-black.png" alt="post"/>
+            <img src="./pessoa-teste.png" alt="post"/>
             <p>Fulano de Tal</p>
         </div>
         <div className="img-post">
@@ -15,6 +15,7 @@ const Post: React.FC = () => {
             
         </div>
     </div>
+    
   );
 };
 

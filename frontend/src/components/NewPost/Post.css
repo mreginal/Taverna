@@ -18,6 +18,8 @@
 
 .user-post img{
     height: 40px;
+    border-radius: 50%;
+    margin: 10px;
 }
 
 .img-post{

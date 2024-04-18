@@ -30,19 +30,6 @@
     margin-bottom: 50px;
 }
 
-.btn-profile{
-    background-color: var(--cor02);
-    border: none;
-    padding: 10px;
-    border-radius: 8px;   
-    cursor: pointer;
-    margin-inline: 10px;
-}
-
-.btn-profile:hover{
-    background-color: var(--cor03);
-}
-
 .left-feed{
     background-color: var(--cor02);
     height: 100vh;

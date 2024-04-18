@@ -2,6 +2,7 @@ import './Profile.css'
 
 import useProfile from '../../hooks/useProfile'
 import Sidebar from '../Sidebar/Sidebar';
+import { ModalProfile } from '../ModalProfile/ModalProfile';
 
 const UserProfile: React.FC = () => {
   const userProfile = useProfile();
@@ -9,7 +10,6 @@ const UserProfile: React.FC = () => {
   if (!userProfile) {
     return null;
   }
-
   return (
     <div className='profile'>
         <div className="right-feed">
@@ -26,10 +26,11 @@ const UserProfile: React.FC = () => {
               </div>
               <div className='click-profile'>
                 <button className='btn-profile'>
-                    <div className="info-profile"><span>Informações</span></div>
+                    <div className="info-profile">
+                      <ModalProfile/>
+                    </div>
                 </button>
                 <button className='btn-profile'>
-                  <div className="edit-profile"><span>Editar</span></div>
                 </button>
               </div>
             </div>
