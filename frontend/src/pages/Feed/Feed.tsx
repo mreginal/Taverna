@@ -3,7 +3,6 @@ import './Feed.css'
 //imports
 import Post from '../../components/NewPost/Post'
 import Sidebar from '../../components/Sidebar/Sidebar'
-import Profile from '../../components/Profile/Profile'
 import { RiImage2Fill, RiUserAddFill } from 'react-icons/ri'
 
 const Feed = () => {
@@ -30,6 +29,7 @@ const Feed = () => {
                     <div className="btn-post"><input type="button" value="Postar"/></div>
                 </div>
                 <div className="post">
+                    <Post/>
                     <Post/>
                     <Post/>
                     <Post/>

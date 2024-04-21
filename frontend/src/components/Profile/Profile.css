@@ -1,36 +1,62 @@
 .profile{
     display: grid;
-    grid-template-columns: 1fr 3fr 1fr;
-    grid-template-rows: auto;
-    align-items: center;
-    height: 100vh;
+    grid-template-columns: 1fr 2fr 1fr;
 }
 
-.profile-ext{
+.info-user{
+    display: flex;
+    justify-content: space-around;
+    background-color: var(--cor01);
+    border-radius: 8px;
+    width: 80%;
+    height: 35%;
+    margin: 15px;
+    padding: 20px;
+}
+
+.itens-profile{
     display: flex;
     flex-direction: column;
-    align-items: center;
-    background-color: var(--cor01);
-    width: 500px;
-    height: 70vh;
-    border-radius: 15px;
-    padding: 15px
-}
-
-.photo-profile img{
-    border-radius: 50%;
-    height: 150px;
+    justify-content: space-around;
+    font-weight: 500;
 }
 
 .user-profile{
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap:10px;
-    margin-bottom: 50px;
+    justify-content: center;
 }
 
-.left-feed{
+.user-profile img{
+    height: 130px;
+    border-radius: 50%;
+}
+
+.user-profile h1{
+    display: flex;
+    align-items: center;
+}
+
+.edit-profile{
+    background-color: var(--cor05);
+    border: none;
+    border-radius: 8px;
+    color: var(--cor00);
+    font-family: var(--main-font);
+    font-weight: 600;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.posts-user{
+    display: flex;
+    box-sizing: border-box;
+    margin: 15px 0px 20px 15px;
+    justify-content: start;
+}
+
+.left-profile{
     background-color: var(--cor02);
     height: 100vh;
 }

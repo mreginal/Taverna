@@ -6,7 +6,6 @@ const App = () => {
     <Router>
       <AppRouter/>
     </Router>
-  
   )
 }
 

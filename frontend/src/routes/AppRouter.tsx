@@ -19,7 +19,6 @@ const AppRouter: React.FC = () => {
               <Route path="/register" element={<Register/>}/>
               <Route path="/feed" element={<Feed/>}/>
               <Route path='/profile' element={<Profile/>}/>
-              
         </Routes>
       </div>
   );

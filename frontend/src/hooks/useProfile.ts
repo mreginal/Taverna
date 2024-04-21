@@ -3,19 +3,18 @@ import { User } from '../types/types';
 import { api } from '../services/api';
 import { useNavigate } from 'react-router-dom';
 
-const useUserProfile = () => {
+export const useProfile = () => {
   const [userProfile, setUserProfile] = useState<User | null>(null);
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem('token')
 
         if (!token) {
-          console.error('Token não encontrado');
-          navigate('/login');
-          return;
+          console.error('Token não encontrado')
+          return
         }
 
         const response = await api.get('/user/perfil', {
@@ -23,11 +22,11 @@ const useUserProfile = () => {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
           },
-        });
+        })
 
         setUserProfile(response.data);
       } catch (error) {
-        console.error('Erro ao buscar perfil do usuário:', error);
+        console.error('Erro ao buscar perfil do usuário:', error)
       }
     };
 
@@ -37,4 +36,3 @@ const useUserProfile = () => {
   return userProfile;
 };
 
-export default useUserProfile;

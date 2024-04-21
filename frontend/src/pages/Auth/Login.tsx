@@ -3,15 +3,24 @@ import './Auth.css'
 
 //Imports
 import { useNavigate } from 'react-router-dom'
-import { FormEvent, useState } from 'react'
+import { FormEvent, useEffect, useState } from 'react'
 import { api } from '../../services/api'
+import { Alert, Snackbar } from '@mui/material'
 
 export default function Login(){ 
 
   const navigate = useNavigate()
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
+  const [error, setError] = useState<string | null>(null)
 
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+
+  useEffect(() => {
+    if (error) {
+      setSnackbarOpen(true);
+    }
+  }, [error]);
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>)=>{
     setEmail(e.target.value)
@@ -32,6 +41,11 @@ export default function Login(){
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
+    if (!email || !password) {
+      setError('Por favor, preencha todos os campos.');
+      return;
+    }
+
     try {
       const response = await api.post('/auth/user', {
         email,
@@ -47,10 +61,14 @@ export default function Login(){
       handleLogin()
 
     } catch (error) {
-      console.error(error);
+      setError('Ocorreu um erro ao fazer login, por favor, tente novamente.');
     }
   };
 
+    const handleCloseSnackbar = () => {
+      setSnackbarOpen(false);
+    };
+  
   return (
     <div className="login">
       <div className="left-side">
@@ -78,12 +96,18 @@ export default function Login(){
 
                 <div className="btn">
                   <input type="button" id='button' value="Não tenho conta" onClick={() => handleNavigate('/register')}/>
-                  <input type="submit" id='login' value="entrar"/>
-                  </div>
-
+                  <input type="submit" id='login' value="entrar" onClick={()=>handleSubmit}/>
+                </div>
               </form>
             </div>
           </div>
+          <div>{error && 
+            <Snackbar open={snackbarOpen} autoHideDuration={3000} onClose={handleCloseSnackbar} anchorOrigin={{vertical:'top', horizontal:'right'}} >
+                <Alert onClose={handleCloseSnackbar} variant='filled' severity="error">
+                  {error}
+                </Alert>
+            </Snackbar>}
+        </div>
       </div>
     </div>
   )

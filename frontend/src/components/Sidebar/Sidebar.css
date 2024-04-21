@@ -62,9 +62,22 @@
     margin: 0;
 }
 
+.user-login button{
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    cursor: pointer;
+    border: none;
+    background: none;
+    color: var(--cor00);
+    font-size: 17px;
+    font-family: var(--main-font);
+}
+
 ul{
     list-style: none;
     padding: 0 15px;
+    font-size: 18px;
 }
 
 .sidebar-item{
@@ -83,7 +96,7 @@ ul{
 }
 
 .sidebar:hover{
-    width: 250px;
+    width: 300px;
 }
 
 .sidebar:hover .user div{
@@ -120,10 +133,13 @@ ul{
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
 }
 
 .logout button{
     background: none;
     border: none;
-    color:var(--cor00)
+    font-family: var(--main-font);
+    color:var(--cor00);
+    cursor: pointer;
 }
