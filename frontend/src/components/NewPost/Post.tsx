@@ -11,9 +11,6 @@ const Post: React.FC = () => {
         <div className="img-post">
             <img src="./teste.jpg" alt="post"/>
         </div>
-        <div className="coment-post">
-            
-        </div>
     </div>
     
   );
