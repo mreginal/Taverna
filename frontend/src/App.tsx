@@ -1,11 +1,13 @@
-import AppRouter from "./routes/AppRouter"
-import { BrowserRouter as Router } from "react-router-dom"
+//Pages
+//import Login from "./pages/Auth/Login"
+import Register from "./pages/Auth/Register"
+//import Inicial from "./pages/Inicial/Inicial"
 
 const App = () => {
   return (
-    <Router>
-      <AppRouter/>
-    </Router>
+    <div className="app">
+      <Register/>
+    </div>
   )
 }
 
