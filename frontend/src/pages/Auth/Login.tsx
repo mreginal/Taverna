@@ -1,10 +1,26 @@
+//CSS
 import './Auth.css'
-import { FormEvent, useState } from 'react'
 
-const Login: React.FC= () => {
+//Imports
+import { useNavigate } from 'react-router-dom'
+import { FormEvent, useEffect, useState } from 'react'
+import { api } from '../../services/api'
+import { Alert, Snackbar } from '@mui/material'
 
+export default function Login(){ 
+
+  const navigate = useNavigate()
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
+  const [error, setError] = useState<string | null>(null)
+
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+
+  useEffect(() => {
+    if (error) {
+      setSnackbarOpen(true);
+    }
+  }, [error]);
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>)=>{
     setEmail(e.target.value)
@@ -14,17 +30,45 @@ const Login: React.FC= () => {
     setPassword(e.target.value)
   }
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    console.log('enviando forms')
-    console.log(email, password)
-
-    //Limpar forms
-
-    setEmail('')
-    setPassword('')
+  const handleNavigate = (path: string) => {
+    navigate(path);
   };
 
+  const handleLogin = () =>{
+    navigate('/feed')
+  }
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+
+    if (!email || !password) {
+      setError('Por favor, preencha todos os campos.');
+      return;
+    }
+
+    try {
+      const response = await api.post('/auth/user', {
+        email,
+        password,
+      });
+
+      const token = response.data
+
+      localStorage.setItem('token',token)
+
+      console.log('Token:', token)
+
+      handleLogin()
+
+    } catch (error) {
+      setError('Ocorreu um erro ao fazer login, por favor, tente novamente.');
+    }
+  };
+
+    const handleCloseSnackbar = () => {
+      setSnackbarOpen(false);
+    };
+  
   return (
     <div className="login">
       <div className="left-side">
@@ -51,16 +95,20 @@ const Login: React.FC= () => {
                 </label>
 
                 <div className="btn">
-                  <input type="submit" id='button' value="Não tenho conta"/>
-                  <input type="submit" id='button' value="entrar"/>
-                  </div>
-
+                  <input type="button" id='button' value="Não tenho conta" onClick={() => handleNavigate('/register')}/>
+                  <input type="submit" id='login' value="entrar" onClick={()=>handleSubmit}/>
+                </div>
               </form>
             </div>
           </div>
+          <div>{error && 
+            <Snackbar open={snackbarOpen} autoHideDuration={3000} onClose={handleCloseSnackbar} anchorOrigin={{vertical:'top', horizontal:'right'}} >
+                <Alert onClose={handleCloseSnackbar} variant='filled' severity="error">
+                  {error}
+                </Alert>
+            </Snackbar>}
+        </div>
       </div>
     </div>
   )
 }
-
-export default Login

@@ -1,37 +1,45 @@
-import React, { useState } from 'react'
+//CSS
 import './Auth.css'
-import axios from 'axios'
 
-//Cria uma interface User
-interface User{
-  name: string
-  birthdate: string
-  email: string
-  password: string
-  gender: string
-}
+//imports
+import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { api } from '../../services/api'
+import { User } from '../../types/types'
+import { Alert, Snackbar } from '@mui/material'
 
 const Register: React.FC = () => {
+  const navigate = useNavigate()
 
-  //Registra os inputs digitados
   const [name, setName] = useState<string>("")
   const [birthdate, setBirthdate] = useState<string>("")
   const [email, setEmail] = useState<string>("")
   const [password, setPassword] = useState<string>("")
   const [confirmPassword, setConfirmPassword] = useState<string>("")
   const [gender, setGender] = useState<string>("")
+  const [minError, setMinError] = useState<string>("")
   const [error, setError] = useState("")
+  const [successSnackbar, setSuccessSnackbar] = useState(false);
 
-  //Funções para coletar os dados do Select de genêro e a Data de nascimento
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+
+  useEffect(() => {
+    if (error) {
+      setSnackbarOpen(true)
+    }
+  }, [error])
+
   const handleSelectGender = (e:React.ChangeEvent<HTMLSelectElement>)=>{
     setGender(e.target.value)
   }
-
   const handleBirthdate = (e:React.ChangeEvent<HTMLInputElement>)=>{
     setBirthdate(e.target.value)
   }
 
-  //Enviar as respostas
+  const handleNavigate = (path: string) => {
+    navigate(path);
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) =>{
     e.preventDefault()
 
@@ -45,27 +53,32 @@ const Register: React.FC = () => {
       gender,
     }
 
-    //Confirmar a senha
     if (password !== confirmPassword) {
-      setError("❗As senhas não correspondem❗")
+      setMinError("❗As senhas não correspondem❗")
       return
     }
 
-    //Tentativa de conexão com a API de cadastro
     try{
-      await axios.post("https://taverna.onrender.com/user/cadastrar", {name, birthdate, email, password, gender})
+      await api.post("/user/cadastrar", {name, birthdate, email, password, gender})
       console.log('Ok')
-      alert('Cadastro realizado com sucesso!')
+      setSuccessSnackbar(true);
+      setTimeout(()=> navigate('/login'), 2000)
     }catch(error){
       console.log(error)
-      alert('Erro ao cadastrar usuário')
+      setError('Erro ao cadastrar usuário, preencha todos os campos corretamente.')
     }
 
     console.log(user)
-
-    //Limpar os inputs ao submeter (EXTREMAMENTE PROVISÓRIO)
     setName(''), setEmail(''), setBirthdate(''), setPassword(''), setConfirmPassword(''), setGender('')
   }
+
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false);
+  };
+
+  const handleCloseSuccessSnackbar = () => {
+    setSuccessSnackbar(false);
+  };
 
   return (
     <div className="register">
@@ -100,7 +113,7 @@ const Register: React.FC = () => {
                 <label>
                   <span>Confirmação de senha:</span>
                   <input type="password" name='password' placeholder='*********' id='confirmPassword' onChange={(e)=>setConfirmPassword(e.target.value)} value={confirmPassword}/>
-                  {error && <p className='error'>{error}</p>}
+                  {minError && <p className='error'>{minError}</p>}
 
                 </label>
                 <label>
@@ -113,9 +126,32 @@ const Register: React.FC = () => {
                 </select>
                 </label>
 
-                <div className='btn' id='btn-register'><input type="submit" id='button' value="Cadastrar-se"/></div>
-
+                <div className='btn' id='btn-register'>
+                  <input type="button" id='button' value="Acesso sem login" onClick={() => handleNavigate('/feed')}/>
+                  <input type="submit" id='button' value="Cadastrar-se"/>
+                </div>
               </form>
+
+              <div>
+                <Snackbar
+                    open={successSnackbar}
+                    autoHideDuration={3000}
+                    onClose={handleCloseSuccessSnackbar}
+                    anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                  >
+                    <Alert onClose={handleCloseSuccessSnackbar} variant="filled" severity="success">
+                      Cadastro realizado com sucesso!
+                    </Alert>
+                </Snackbar>
+              </div>
+
+              <div>{error && 
+                  <Snackbar open={snackbarOpen} autoHideDuration={3000} onClose={handleCloseSnackbar} anchorOrigin={{vertical:'top', horizontal:'right'}} >
+                      <Alert onClose={handleCloseSnackbar} variant='filled' severity="error">
+                        {error}
+                      </Alert>
+                  </Snackbar>}
+              </div>
             </div>
           </div>
       </div>
