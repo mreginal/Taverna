@@ -1,0 +1,43 @@
+.edit-btn{
+    width: 10vw;
+    background-color: var(--cor05);
+    border: none;
+    border-radius: 8px;
+    color: var(--cor00);
+    font-family: var(--main-font);
+    font-weight: 600;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.edit-btn:hover{
+    background-color: var(--cor04);
+}
+
+.edit-container{
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-rows: auto;
+    margin: 30px;
+}
+
+.edit-user{
+    width: 85%;
+    height: 90vh;
+    background-color: var(--cor02);
+    border-radius: 10px;
+}
+
+.exit-edit{
+    display: flex;
+    justify-content: end;
+    padding: 25px;
+    color: var(--cor06);
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.form-user{
+    display: flex;
+    flex-direction: column;
+}

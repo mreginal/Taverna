@@ -2,6 +2,7 @@ import './Profile.css'
 
 //imports
 import Sidebar from '../../components/Sidebar/Sidebar'
+import EditProfileModal from '../../components/EditProfileModal/EditProfileModal'
 import { useProfile } from '../../hooks/useProfile'
 import { RiMailFill, RiSwordFill, RiVerifiedBadgeFill, RiVipCrownFill,  } from 'react-icons/ri'
 import {  ImageList, ImageListItem } from '@mui/material'
@@ -100,7 +101,9 @@ const Profile = () => {
                 <div className="item-profile">
                   <p><RiSwordFill color='var(--cor05)'/> Mestres do Fogão</p>
                 </div>
-                <button className='edit-profile'>Editar perfil</button>
+                <div className='edit-profile'>
+                  <EditProfileModal/>
+                </div>
               </div>
             </div>
             <div className="posts-user">
