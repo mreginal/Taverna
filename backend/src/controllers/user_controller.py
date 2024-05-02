@@ -1,41 +1,27 @@
-from flask import jsonify, request
 from models.user_model import User
-from app import client
+from flask_jwt_extended import get_jwt_identity
+from bson import ObjectId
 import bcrypt
-from pymongo import IndexModel, ASCENDING
-from pymongo.errors import DuplicateKeyError
+import base64
 
-def cadastrar_usuario():
-    data = request.json
-    
-    if not all(key in data for key in ('name', 'birthdate', 'email', 'password')):
-        return jsonify({'message': 'Campos obrigatórios ausentes'}), 400
-    
+def get_all_users():
+    users = User.find_all_users_service()
+    return users
 
-    gendert = data.get('gender')
-    password = data['password']
-    hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
-    
-    novo_usuario = User(
-        name=data['name'],
-        birthdate=data['birthdate'],
-        email=data['email'],
-        password=hashed,
-        gender=gendert
-    )
-    
-    # Definir índice único para o campo de e-mail
-    index_model = IndexModel([('email', ASCENDING)], unique=True)
-    client.taverna.usuarios.create_indexes([index_model])
-    
-    try:
-        client.taverna.usuarios.insert_one({
-            'name': novo_usuario.name,
-            'birthdate': novo_usuario.birthdate,
-            'email': novo_usuario.email,
-            'password': novo_usuario.password,
-            'gender': novo_usuario.gender
-        })
-        return jsonify({'message': 'Usuário cadastrado com sucesso!'}), 201
-    except DuplicateKeyError:
-        return jsonify({'message': 'E-mail já cadastrado'}), 400
+def create_user(name, birthdate, email, password, gender): 
+    hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt(10))
+    hashed64 = base64.b64encode(hashed).decode()
+    response, status_code = User.cadastro_usuario_service(name,birthdate,email,hashed64,gender)
+    return response, status_code
+
+def get_user_profile():
+    id = get_jwt_identity()
+    user = User.find_by_id_service(ObjectId(id))
+    if user:
+        user.pop('password', None)
+        user['_id'] = str(user['_id'])
+        return user, 200
+    else:
+        return {'message': 'Usuário não encontrado'}, 404
+
+
