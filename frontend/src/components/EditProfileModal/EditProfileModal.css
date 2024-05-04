@@ -21,23 +21,106 @@
     margin: 30px;
 }
 
-.edit-user{
-    width: 85%;
-    height: 90vh;
-    background-color: var(--cor02);
-    border-radius: 10px;
-}
-
-.exit-edit{
+.edit-photo{
     display: flex;
-    justify-content: end;
-    padding: 25px;
-    color: var(--cor06);
-    font-size: 22px;
+    justify-content: center;
+    height: 70px;
+    align-items: end;
+    margin: 0;
+    font-size: 25px;
     cursor: pointer;
 }
 
-.form-user{
+.edit-photo img{
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    cursor: auto;
+}
+
+.edit-user{
+    width: 85%;
+    height: 90vh;
+    background-color: var(--cor01);
+    border-radius: 10px;
+}
+
+.edit-card{
     display: flex;
     flex-direction: column;
+    line-height: 30px;
+}
+
+.edit-form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.edit-header{
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    margin: 20px;
+    font-size: 30px;
+}
+
+.edit-header p{
+    cursor: pointer;
+}
+
+.edit-form h2{
+    margin: 20px 20px 20px 50px;
+    font-size: 25px;
+}
+
+.edit-form label{
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+}
+
+.edit-form label{
+    margin-bottom: 10px;
+}
+
+.edit-form input{
+    border: none;
+    background-color: var(--cor05);
+    color: var(--cor00);
+    padding: 15px;
+    width: 350px;
+    border-radius: 8px;
+}
+
+.edit-form ::placeholder{
+    color: var(--cor00);
+    font-family: var(--main-font);
+}
+
+.edit-form select{
+    padding: 8px;
+    margin: 0 0 10px;
+    border-color: var(--cor08);
+    border-radius: 8px;
+    width: 350px;
+    color: var(--cor03);
+}
+
+.btn-edit{
+    margin: 0 30px;
+    align-self: flex-end;
+}
+
+#button-edit{
+    padding: 10px;
+    width: 150px;
+    border: none;
+    border-radius: 8px;
+    color: var(--cor00);
+    background-color: var(--cor05);
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 12px;
+    cursor: pointer;
 }
