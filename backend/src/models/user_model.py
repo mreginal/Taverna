@@ -1,4 +1,4 @@
-from app import db
+from database.mongodb import db
 from pymongo.errors import DuplicateKeyError
 from bson import ObjectId
 
@@ -35,4 +35,12 @@ class User:
     def find_by_email_service(email):
         user = db.usuarios.find_one({"email":email})
         return user
+    
+    @staticmethod
+    def update_user_service(id, update_data):
+        response = db.usuarios.update_one(
+            {"_id": ObjectId(id)},
+            {"$set": update_data}
+        )
+        return response
 
