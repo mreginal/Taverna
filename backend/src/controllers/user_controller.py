@@ -23,5 +23,26 @@ def get_user_profile():
         return user, 200
     else:
         return {'message': 'Usuário não encontrado'}, 404
+    
+def update_user_profile(name, birthdate, gender):
+    id = get_jwt_identity()
+    current_user = User.find_by_id_service(ObjectId(id))
+    
+    update_data = {}
+    if name and name != current_user.get("name"):
+        update_data["name"] = name
+    if birthdate and birthdate != current_user.get("birthdate"):
+        update_data["birthdate"] = birthdate
+    if gender and gender != current_user.get("gender"):
+        update_data["gender"] = gender
+
+    if not update_data:
+        return {'message': 'Pelo menos um campo deve ser enviado para ser atualizado'}, 400
+    
+    response = User.update_user_service(id, update_data)
+    if response.modified_count > 0:
+        return {'message': 'Usuário atualizado com sucesso'}, 200
+    else:
+        return {'message': 'Nenhum campo foi modificado ou usuário não encontrado'}, 404
 
 
