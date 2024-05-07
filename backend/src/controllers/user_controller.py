@@ -1,4 +1,4 @@
-from models.user_model import User
+from models.User import User
 from flask_jwt_extended import get_jwt_identity
 from bson import ObjectId
 import bcrypt
@@ -11,7 +11,7 @@ def get_all_users():
 def create_user(name, birthdate, email, password, gender): 
     hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt(10))
     hashed64 = base64.b64encode(hashed).decode()
-    response, status_code = User.cadastro_usuario_service(name,birthdate,email,hashed64,gender)
+    response, status_code = User.create_user_service(name,birthdate,email,hashed64,gender)
     return response, status_code
 
 def get_user_profile():
