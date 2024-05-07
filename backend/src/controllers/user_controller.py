@@ -1,4 +1,4 @@
-from models.User import User
+from models.user_model import User
 from flask_jwt_extended import get_jwt_identity
 from bson import ObjectId
 import bcrypt
@@ -11,7 +11,7 @@ def get_all_users():
 def create_user(name, birthdate, email, password, gender): 
     hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt(10))
     hashed64 = base64.b64encode(hashed).decode()
-    response, status_code = User.create_user_service(name,birthdate,email,hashed64,gender)
+    response, status_code = User.cadastro_usuario_service(name,birthdate,email,hashed64,gender)
     return response, status_code
 
 def get_user_profile():
@@ -23,26 +23,5 @@ def get_user_profile():
         return user, 200
     else:
         return {'message': 'Usuário não encontrado'}, 404
-    
-def update_user_profile(name, birthdate, gender):
-    id = get_jwt_identity()
-    current_user = User.find_by_id_service(ObjectId(id))
-    
-    update_data = {}
-    if name and name != current_user.get("name"):
-        update_data["name"] = name
-    if birthdate and birthdate != current_user.get("birthdate"):
-        update_data["birthdate"] = birthdate
-    if gender and gender != current_user.get("gender"):
-        update_data["gender"] = gender
-
-    if not update_data:
-        return {'message': 'Pelo menos um campo deve ser enviado para ser atualizado'}, 400
-    
-    response = User.update_user_service(id, update_data)
-    if response.modified_count > 0:
-        return {'message': 'Usuário atualizado com sucesso'}, 200
-    else:
-        return {'message': 'Nenhum campo foi modificado ou usuário não encontrado'}, 404
 
 
