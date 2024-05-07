@@ -1,4 +1,5 @@
 from database.mongodb import db
+from bson import ObjectId
 
 class Post:
 
@@ -25,3 +26,19 @@ class Post:
         for post in posts_list:
             post['_id'] = str(post['_id'])
         return posts_list
+
+    @staticmethod
+    def add_like_service(post_id):
+        post = db.posts.find_one({"_id": ObjectId(post_id)})
+        if post:
+            db.posts.update_one({"_id": ObjectId(post_id)}, {"$set": {"likes": post['likes'] + 1}})
+            return {"message": "Like adicionado com sucesso!"}, 200
+        return {"message": "Post não encontrado!"}, 404
+    
+    @staticmethod
+    def remove_like_service(post_id):
+        post = db.posts.find_one({"_id": ObjectId(post_id)})
+        if post:
+            db.posts.update_one({"_id": ObjectId(post_id)}, {"$set": {"likes": post['likes'] - 1}})
+            return {"message": "Like removido com sucesso!"}, 200
+        return {"message": "Post não encontrado!"}, 404
