@@ -3,8 +3,9 @@ from pymongo.errors import DuplicateKeyError
 from bson import ObjectId
 
 class User:
+    
     @staticmethod
-    def cadastro_usuario_service(name, birthdate, email, hashed64, gender):
+    def create_user_service(name, birthdate, email, hashed64, gender):
         new_user = {
             "name": name,
             "birthdate": birthdate,
