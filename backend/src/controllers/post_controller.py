@@ -9,3 +9,11 @@ def create_post(title, content):
 def get_all_posts():
     posts = Post.find_all_posts_service()
     return posts
+
+def add_like(post_id):
+    response, status_code = Post.add_like_service(post_id)
+    return response, status_code
+
+def remove_like(post_id):
+    response, status_code = Post.remove_like_service(post_id)
+    return response, status_code

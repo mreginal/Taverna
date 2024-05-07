@@ -1,6 +1,8 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required
-from controllers.post_controller import create_post, get_all_posts
+from controllers.post_controller import (
+    create_post, get_all_posts, add_like, remove_like
+)
 
 post_bp = Blueprint('post_bp', __name__)
 
@@ -21,3 +23,24 @@ def create_post_route():
     response, status_code = create_post(title, content)
     return jsonify(response), status_code
 
+@post_bp.route('/like', methods=['POST'])
+@jwt_required()
+def add_like_route():
+    data = request.json
+    if 'post_id' not in data:
+        return jsonify({'message': 'Campo obrigatório ausente'}), 400
+    
+    post_id = data.get('post_id')
+    response, status_code = add_like(post_id)
+    return jsonify(response), status_code
+
+@post_bp.route('/dislike', methods=['POST'])
+@jwt_required()
+def remove_like_route():
+    data = request.json
+    if 'post_id' not in data:
+        return jsonify({'message': 'Campo obrigatório ausente'}), 400
+    
+    post_id = data.get('post_id')
+    response, status_code = remove_like(post_id)
+    return jsonify(response), status_code
