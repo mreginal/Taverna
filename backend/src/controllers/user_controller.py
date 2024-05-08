@@ -8,6 +8,15 @@ def get_all_users():
     users = User.find_all_users_service()
     return users
 
+def get_user_by_id(user_id):
+    user = User.find_by_id_service(ObjectId(user_id))
+    if user:
+        user['_id'] = str(user['_id'])
+        user.pop('password', None)
+        return user
+    else:
+        return {'message': 'Usuário não encontrado'}, 404
+
 def create_user(name, birthdate, email, password, gender): 
     hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt(10))
     hashed64 = base64.b64encode(hashed).decode()

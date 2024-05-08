@@ -1,6 +1,8 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required
-from controllers.user_controller import get_all_users, create_user, get_user_profile, update_user_profile
+from controllers.user_controller import (
+    get_all_users, create_user, get_user_profile, update_user_profile, get_user_by_id
+)
 
 user_bp = Blueprint('user_bp', __name__)
 
@@ -8,6 +10,11 @@ user_bp = Blueprint('user_bp', __name__)
 def get_all_users_route():
     users = get_all_users()
     return jsonify(users)
+
+@user_bp.route('/<user_id>', methods=['GET'])
+def get_user_by_id_route(user_id):
+    user = get_user_by_id(user_id)
+    return jsonify(user)
 
 @user_bp.route('/cadastrar', methods=['POST'])
 def create_user_route():

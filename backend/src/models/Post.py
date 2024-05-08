@@ -13,10 +13,18 @@ class Post:
         }
         try:
             db.posts.insert_one(new_post)
-            return {"message": "Post criado com sucesso!"}, 201
+            
+            created_post = db.posts.find_one({"_id": new_post["_id"]})
+            
+            if created_post:
+                created_post['_id'] = str(created_post['_id'])
+                return created_post, 201
+            else:
+                return {"message": "Erro ao criar o post. Post não encontrado."}, 400
         except Exception as e:
             error_message = f"Erro ao criar o post: {str(e)}"
             return {"message": error_message}, 400
+
 
     
     @staticmethod
