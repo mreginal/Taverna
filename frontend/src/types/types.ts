@@ -22,3 +22,7 @@ export type PostType={
     liked: boolean
     likes: number
 }
+
+export type PostProps={
+    post: PostType
+}

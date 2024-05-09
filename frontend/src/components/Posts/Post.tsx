@@ -1,29 +1,19 @@
 import './Post.css'
 import { useState, useEffect } from 'react'
-import { PostType, User } from '../../types/types'
+import { PostType, User, PostProps } from '../../types/types'
 import { api } from '../../services/api'
 import { RiBookmarkLine, RiChat3Line, RiHeartFill, RiHeartLine } from 'react-icons/ri'
 
-const Post: React.FC = () => {
+
+const Post: React.FC<PostProps> = () => {
   const [posts, setPosts] = useState<PostType[]>([])
   const [users, setUsers] = useState<User[]>([])
 
+  
   useEffect(() => {
     fetchPosts()
     fetchUsers()
     
-  }, [])
-
-  useEffect(() => {
-    const storedLikes = JSON.parse(localStorage.getItem('postLikes') || '{}')
-    if (Object.keys(storedLikes).length > 0) {
-      setPosts(prevPosts =>
-        prevPosts.map(post => ({
-          ...post,
-          liked: storedLikes[post._id] || false
-        }))
-      )
-    }
   }, [])
 
   const fetchPosts = async () => {
@@ -57,22 +47,36 @@ const Post: React.FC = () => {
         return
       }
   
-      const endpoint = liked? '/post/dislike' : '/post/like'
-
-      await api.post(endpoint, { post_id: postId }, { headers: { Authorization: `Bearer ${token}` } })
-
+      if (!liked) {
+        const endpoint = '/post/like'
+  
+        await api.post(endpoint, { post_id: postId }, { headers: { Authorization: `Bearer ${token}` } })
+  
         setPosts(prevPosts =>
           prevPosts.map(post =>
-            post._id === postId ? { ...post, liked: !post.liked, likes: liked ? post.likes - 1 : post.likes + 1 } : post
+            post._id === postId ? { ...post, liked: true, likes: post.likes + 1 } : post
           )
         )
   
-      console.log('Estado atualizado das postagens:', posts)
+        console.log('Estado atualizado das postagens:', posts)
+      } else {
+        const endpoint = '/post/dislike'
+  
+        await api.post(endpoint, { post_id: postId }, { headers: { Authorization: `Bearer ${token}` } })
+  
+        setPosts(prevPosts =>
+          prevPosts.map(post =>
+            post._id === postId ? { ...post, liked: false, likes: post.likes - 1 } : post
+          )
+        )
+  
+        console.log('Estado atualizado das postagens:', posts)
+      }
   
     } catch (error) {
-      console.error('Erro ao curtir postagem:', error)
+      console.error('Erro ao reagir à postagem:', error)
     }
-  }
+  }  
 
   return (
     <div>
