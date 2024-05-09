@@ -11,6 +11,19 @@ const Post: React.FC = () => {
   useEffect(() => {
     fetchPosts()
     fetchUsers()
+    
+  }, [])
+
+  useEffect(() => {
+    const storedLikes = JSON.parse(localStorage.getItem('postLikes') || '{}')
+    if (Object.keys(storedLikes).length > 0) {
+      setPosts(prevPosts =>
+        prevPosts.map(post => ({
+          ...post,
+          liked: storedLikes[post._id] || false
+        }))
+      )
+    }
   }, [])
 
   const fetchPosts = async () => {
@@ -36,29 +49,30 @@ const Post: React.FC = () => {
     return user ? user.name : 'Usuário Desconhecido'
   }
 
-  const handleLike = async (postId: number) => {
+  const handleReact = async (postId: number, liked: boolean) => {
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('token')
       if (!token) {
-        console.error('Token não encontrado');
-        return;
+        console.error('Token não encontrado')
+        return
       }
   
-      await api.post(`/post/like`, { post_id: postId }, { headers: { Authorization: `Bearer ${token}` } });
-  
-      setPosts(prevPosts =>
-        prevPosts.map(post =>
-          post._id === postId ? { ...post, liked: !post.liked } : post
+      const endpoint = liked? '/post/dislike' : '/post/like'
+
+      await api.post(endpoint, { post_id: postId }, { headers: { Authorization: `Bearer ${token}` } })
+
+        setPosts(prevPosts =>
+          prevPosts.map(post =>
+            post._id === postId ? { ...post, liked: !post.liked, likes: liked ? post.likes - 1 : post.likes + 1 } : post
+          )
         )
-      );
   
-      console.log('Estado atualizado das postagens:', posts); // Verifique se o estado das postagens foi atualizado corretamente
+      console.log('Estado atualizado das postagens:', posts)
   
     } catch (error) {
-      console.error('Erro ao curtir postagem:', error);
+      console.error('Erro ao curtir postagem:', error)
     }
-  };
-  
+  }
 
   return (
     <div>
@@ -77,9 +91,12 @@ const Post: React.FC = () => {
 
             <div className="react-post">
               <div className="react">
-                <button onClick={()=>handleLike(post._id)}>
-                  {post.liked ? <RiHeartFill color='var(--cor05)'/> : <RiHeartLine/> }
-                </button>
+                <div className="like-post">
+                  <button onClick={()=>handleReact(post._id, post.liked)}>
+                    {post.liked ? <RiHeartFill color='var(--cor05)'/> : <RiHeartLine/> }
+                    <p>{post.likes}</p>
+                  </button>
+                </div>
                 <button><RiChat3Line /></button>
               </div>
               <div className="save">

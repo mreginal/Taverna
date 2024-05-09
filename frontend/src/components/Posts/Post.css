@@ -28,11 +28,21 @@
 }
 
 .react-post button{
+    display: flex;
+    align-items: center;
+    gap: 5px;
     border: none;
     font-size: 25px;
     background: none;
     color: var(--cor03);
     cursor: pointer;
+}
+
+.react-post p{
+    display: flex;
+    font-size: 15px;
+    align-items: center;
+    margin: 0;
 }
 
 .react{
