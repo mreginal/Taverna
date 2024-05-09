@@ -31,24 +31,12 @@
     grid-template-rows: 2fr;
 }
 
-.post-container input{
-    height: 60px;
-    border: none;
-}
-
-.post-container input::placeholder{
-    font-family: var(--main-font);
-    font-weight: bold;
-    padding: 15px;
-    color: var(--cor03);
-}
-
 .itens-post{
     border-radius: 0px 0px 8px 8px;
     height: 40px;
     background-color: var(--cor02);
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     padding: 5px;
 }
 
@@ -56,11 +44,7 @@
     display: flex;
     margin: 15px;
     color: var(--cor04);
-}
-
-.item-post img{
-    height: 30px;
-    border-radius: 20px;
+    cursor: pointer;
 }
 
 .item-post p{

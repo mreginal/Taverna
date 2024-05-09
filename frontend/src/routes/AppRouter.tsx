@@ -8,6 +8,7 @@ import Register from '../pages/Auth/Register';
 import Feed from '../pages/Feed/Feed';
 import Sidebar from '../components/Sidebar/Sidebar';
 import Profile from '../components/Profile/Profile'
+import Post from '../components/Posts/Post';
 
 const AppRouter: React.FC = () => {
   return (

@@ -60,7 +60,6 @@ const Register: React.FC = () => {
 
     try{
       await api.post("/user/cadastrar", {name, birthdate, email, password, gender})
-      console.log('Ok')
       setSuccessSnackbar(true);
       setTimeout(()=> navigate('/login'), 2000)
     }catch(error){
