@@ -8,17 +8,16 @@ import { RiBookmarkLine, RiChat3Line, RiHeartFill, RiHeartLine } from 'react-ico
 const Post: React.FC<PostProps> = () => {
   const [posts, setPosts] = useState<PostType[]>([])
   const [users, setUsers] = useState<User[]>([])
+  const [reacting, setReacting] = useState(false)
 
-  
   useEffect(() => {
     fetchPosts()
     fetchUsers()
-    
   }, [])
 
   const fetchPosts = async () => {
     try {
-      const response = await api.get('/post/');
+      const response = await api.get('/post/')
       setPosts(response.data)
     } catch (error) {
       console.error('Erro ao buscar postagens:', error)
@@ -41,42 +40,35 @@ const Post: React.FC<PostProps> = () => {
 
   const handleReact = async (postId: number, liked: boolean) => {
     try {
+      if (reacting) return
+      setReacting(true)
+
       const token = localStorage.getItem('token')
       if (!token) {
         console.error('Token não encontrado')
+        setReacting(false)
         return
       }
-  
-      if (!liked) {
-        const endpoint = '/post/like'
-  
-        await api.post(endpoint, { post_id: postId }, { headers: { Authorization: `Bearer ${token}` } })
-  
-        setPosts(prevPosts =>
-          prevPosts.map(post =>
-            post._id === postId ? { ...post, liked: true, likes: post.likes + 1 } : post
-          )
+
+      const endpoint = liked ? '/post/dislike' : '/post/like'
+      await api.post(
+        endpoint,
+        { post_id: postId },
+        { headers: { Authorization: `Bearer ${token}` } }
+      )
+
+      setPosts(prevPosts =>
+        prevPosts.map(post =>
+          post._id === postId ? { ...post, liked: !liked, likes: liked? post.likes -1 : post.likes +1 } : post
         )
-  
-        console.log('Estado atualizado das postagens:', posts)
-      } else {
-        const endpoint = '/post/dislike'
-  
-        await api.post(endpoint, { post_id: postId }, { headers: { Authorization: `Bearer ${token}` } })
-  
-        setPosts(prevPosts =>
-          prevPosts.map(post =>
-            post._id === postId ? { ...post, liked: false, likes: post.likes - 1 } : post
-          )
-        )
-  
-        console.log('Estado atualizado das postagens:', posts)
-      }
-  
+      )
+
+      setReacting(false)
     } catch (error) {
       console.error('Erro ao reagir à postagem:', error)
+      setReacting(false)
     }
-  }  
+  }
 
   return (
     <div>
@@ -96,7 +88,7 @@ const Post: React.FC<PostProps> = () => {
             <div className="react-post">
               <div className="react">
                 <div className="like-post">
-                  <button onClick={()=>handleReact(post._id, post.liked)}>
+                  <button disabled={reacting} onClick={() => handleReact(post._id, post.liked)}>
                     {post.liked ? <RiHeartFill color='var(--cor05)'/> : <RiHeartLine/> }
                     <p>{post.likes}</p>
                   </button>
@@ -111,7 +103,7 @@ const Post: React.FC<PostProps> = () => {
         ))}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Post;
+export default Post
