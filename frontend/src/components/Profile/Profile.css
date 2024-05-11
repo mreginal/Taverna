@@ -1,6 +1,7 @@
 .profile{
     display: grid;
     grid-template-columns: 1fr 2fr 1fr;
+    align-items: center;
 }
 
 .info-user{
@@ -39,14 +40,8 @@
 }
 
 .edit-profile{
-    background-color: var(--cor05);
-    border: none;
-    border-radius: 8px;
-    color: var(--cor00);
-    font-family: var(--main-font);
-    font-weight: 600;
-    padding: 10px;
-    cursor: pointer;
+    display: flex;
+    justify-content: center;
 }
 
 .posts-user{

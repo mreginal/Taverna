@@ -1,0 +1,51 @@
+.card-post{
+    margin: 30px 0px 30px 0px;
+    background-color: var(--cor01);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 1px 4px 5px 0px var(--cor02);
+}
+
+.user-post{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.user-post img{
+    height: 50px;
+    border-radius: 50%;
+}
+
+.content-post{
+    margin-bottom: 20px;
+}
+
+.react-post{
+    display: flex;
+    justify-content: space-between;
+}
+
+.react-post button{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    border: none;
+    font-size: 25px;
+    background: none;
+    color: var(--cor03);
+    cursor: pointer;
+}
+
+.react-post p{
+    display: flex;
+    font-size: 15px;
+    align-items: center;
+    margin: 0;
+}
+
+.react{
+    display: flex;
+    gap: 30px;
+}
