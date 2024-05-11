@@ -34,7 +34,7 @@
     flex-direction: column;
 }
 
-.post input{
+.post input, .post textarea{
     border: none;
     border-radius: 10px;
     margin: 5px;
@@ -47,7 +47,27 @@
 
 #content{
     justify-content: start;
-    padding: 50px 10px;
+    padding: 10px 10px 100px 10px;
+    top: 0;
+}
+
+textarea::-webkit-scrollbar {
+width: 10px; 
+}
+
+textarea::-webkit-scrollbar-track {
+background: var(--cor00);
+}
+
+
+textarea::-webkit-scrollbar-thumb {
+background: var(--cor02);
+border-radius: 5px; 
+}
+
+textarea::-webkit-scrollbar-thumb:hover {
+background: var(--cor03);
+cursor: pointer;
 }
 
 .btn-exit{

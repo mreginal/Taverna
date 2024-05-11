@@ -2,7 +2,7 @@ import './EditProfileModal.css'
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../../services/api';
-import { Alert, Snackbar, Modal } from '@mui/material';
+import { Modal } from '@mui/material';
 import { RiCloseCircleLine, RiBallPenFill } from 'react-icons/ri';
 import { useProfile } from '../../hooks/useProfile';
 import { AxiosRequestConfig } from 'axios';
@@ -17,8 +17,6 @@ const EditProfile: React.FC = () => {
 
   
   const [error, setError] = useState('')
-  const [successSnackbar, setSuccessSnackbar] = useState(false)
-  const [snackbarOpen, setSnackbarOpen] = useState(false)
 
   const [formData, setFormData] = useState({
     name: userProfile?.name || '',
@@ -67,8 +65,7 @@ const EditProfile: React.FC = () => {
 
     try {
       await api.post('/user/atualizar', formData, config)
-      setSuccessSnackbar(true)
-      setTimeout(() => navigate('/profile'), 3000)
+      navigate('/profile')
       window.location.reload()
     } catch (error) {
       console.log(error);
@@ -78,13 +75,6 @@ const EditProfile: React.FC = () => {
     handleClose()
   }
 
-  const handleCloseSnackbar = () => {
-    setSnackbarOpen(false)
-  };
-
-  const handleCloseSuccessSnackbar = () => {
-    setSuccessSnackbar(false)
-  };
 
   return (
     <div>
@@ -125,33 +115,6 @@ const EditProfile: React.FC = () => {
                           </label>
                           <div className="btn-edit"><input type="submit" id='button-edit' value="salvar"/></div>
                       </form>
-                      <div>
-                          <Snackbar
-                            open={successSnackbar}
-                            autoHideDuration={2000}
-                            onClose={handleCloseSuccessSnackbar}
-                            anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-                          >
-                            <Alert onClose={handleCloseSuccessSnackbar} variant="filled" severity="success">
-                              Perfil atualizado com sucesso!
-                            </Alert>
-                          </Snackbar>
-                        </div>
-
-                        <div>
-                          {error && (
-                            <Snackbar
-                              open={snackbarOpen}
-                              autoHideDuration={2000}
-                              onClose={handleCloseSnackbar}
-                              anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-                            >
-                              <Alert onClose={handleCloseSnackbar} variant="filled" severity="error">
-                                {error}
-                              </Alert>
-                            </Snackbar>
-                          )}
-                        </div>
                     </div>
                   </div>
                 </div>

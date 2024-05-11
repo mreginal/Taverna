@@ -3,12 +3,23 @@ import { useState, useEffect } from 'react'
 import { PostType, User, PostProps } from '../../types/types'
 import { api } from '../../services/api'
 import { RiBookmarkLine, RiChat3Line, RiHeartFill, RiHeartLine } from 'react-icons/ri'
+import { Alert, Snackbar } from '@mui/material'
+import { useNavigate } from 'react-router-dom'
 
 
 const Post: React.FC<PostProps> = () => {
   const [posts, setPosts] = useState<PostType[]>([])
   const [users, setUsers] = useState<User[]>([])
+  const [error, setError] = useState('')
   const [reacting, setReacting] = useState(false)
+  const navigate = useNavigate()
+  const [snackbarOpen, setSnackbarOpen] = useState(false)
+
+  useEffect(() => {
+    if (error) {
+      setSnackbarOpen(true)
+    }
+  }, [error])
 
   useEffect(() => {
     fetchPosts()
@@ -45,8 +56,11 @@ const Post: React.FC<PostProps> = () => {
 
       const token = localStorage.getItem('token')
       if (!token) {
-        console.error('Token não encontrado')
+        setError('Faça login para reagir as postagens.')
         setReacting(false)
+        setTimeout(() => {
+          navigate('/login')
+        }, 2000)
         return
       }
 
@@ -68,6 +82,10 @@ const Post: React.FC<PostProps> = () => {
       console.error('Erro ao reagir à postagem:', error)
       setReacting(false)
     }
+  }
+
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false)
   }
 
   return (
@@ -101,6 +119,15 @@ const Post: React.FC<PostProps> = () => {
             </div>
           </div>
         ))}
+
+          <div>{error && 
+              <Snackbar open={snackbarOpen} autoHideDuration={3000} onClose={handleCloseSnackbar} anchorOrigin={{vertical:'top', horizontal:'right'}} >
+                  <Alert onClose={handleCloseSnackbar} variant='filled' severity="error">
+                    {error}
+                  </Alert>
+              </Snackbar>}
+          </div>
+
       </div>
     </div>
   )

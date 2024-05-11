@@ -91,6 +91,7 @@
     padding: 15px;
     width: 350px;
     border-radius: 8px;
+    font-family: var(--main-font);
 }
 
 .edit-form ::placeholder{
@@ -105,6 +106,7 @@
     border-radius: 8px;
     width: 350px;
     color: var(--cor03);
+    font-family: var(--main-font);
 }
 
 .btn-edit{

@@ -1,6 +1,6 @@
 import './NewPosts.css'
-import { useState } from 'react'
-import { Modal } from '@mui/material'
+import { useEffect, useState } from 'react'
+import { Alert, Modal, Snackbar } from '@mui/material'
 import { RiCloseCircleLine } from 'react-icons/ri'
 import { api } from '../../services/api'
 import { useNavigate } from 'react-router-dom'
@@ -10,8 +10,24 @@ export default function NewPost(){
   const [open, setOpen] = useState(false)
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
+  const [error, setError] = useState('')
+  const token = localStorage.getItem('token') 
+  const [snackbarOpen, setSnackbarOpen] = useState(false)
+
+  useEffect(() => {
+    if (error) {
+      setSnackbarOpen(true)
+    }
+  }, [error])
 
   const handleOpen = () => {
+    if (!token) {
+      setError('Faça login para criar suas postagens.')
+      setTimeout(() => {
+        navigate('/login')
+      }, 2000)
+      return
+    }
     setOpen(true);
   }
 
@@ -20,8 +36,6 @@ export default function NewPost(){
   }
 
   const handleCreatePost = async () => {
-    const token = localStorage.getItem('token') 
-
     if (!token) {
       navigate('/login')
       return
@@ -41,6 +55,10 @@ export default function NewPost(){
     }
   }
 
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false)
+  }
+
   return (
     <div>
       <input type="button" value={'Qual é a receita de hoje? '} onClick={handleOpen}/>
@@ -52,12 +70,19 @@ export default function NewPost(){
                 <div className="post">
                     <h2>Criar Post</h2>
                     <input type="text" id='tittle' placeholder='Título' value={title} onChange={(e) => setTitle(e.target.value)}/>
-                    <input type="text" id='content' placeholder='Conteúdo' value={content} onChange={(e) => setContent(e.target.value)}/>
+                    <textarea id='content' placeholder='Conteúdo' value={content} onChange={(e) => setContent(e.target.value)}/>
                     <div className="btn-post"><input type="button" value={'Postar'} onClick={handleCreatePost} /></div>
                 </div>
               </div>
           </div>
       </Modal>
+      <div>{error && 
+                <Snackbar open={snackbarOpen} autoHideDuration={3000} onClose={handleCloseSnackbar} anchorOrigin={{vertical:'top', horizontal:'right'}} >
+                    <Alert onClose={handleCloseSnackbar} variant='filled' severity="error">
+                      {error}
+                    </Alert>
+                </Snackbar>}
+            </div>
     </div>
   )
 }
