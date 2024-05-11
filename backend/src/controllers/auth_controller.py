@@ -1,4 +1,4 @@
-from models.user_model import User
+from models.User import User
 from flask_jwt_extended import create_access_token
 import bcrypt
 import base64
