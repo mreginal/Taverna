@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react';
-import { User } from '../types/types';
-import { api } from '../services/api';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react'
+import { User } from '../types/types'
+import { api } from '../services/api'
+import { useNavigate } from 'react-router-dom'
 
 export const useProfile = () => {
-  const [userProfile, setUserProfile] = useState<User | null>(null);
+  const [userProfile, setUserProfile] = useState<User | null>(null)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -24,15 +24,19 @@ export const useProfile = () => {
           },
         })
 
-        setUserProfile(response.data);
+        setUserProfile(response.data)
+
+        const userId = response.data.id
+        localStorage.setItem('userId', userId)
+
       } catch (error) {
         console.error('Erro ao buscar perfil do usuário:', error)
       }
     };
 
-    fetchUserProfile();
-  }, [navigate]);
+    fetchUserProfile()
+  }, [navigate])
 
-  return userProfile;
-};
+  return userProfile
+}
 

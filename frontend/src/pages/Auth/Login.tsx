@@ -55,9 +55,6 @@ export default function Login(){
       const token = response.data
 
       localStorage.setItem('token',token)
-
-      console.log('Token:', token)
-
       handleLogin()
 
     } catch (error) {
