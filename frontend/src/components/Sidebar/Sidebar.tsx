@@ -1,6 +1,6 @@
 import React from 'react';
 import './Sidebar.css';
-import { RiHome2Fill, RiSwordFill, RiMessage2Fill, RiLogoutBoxFill, RiLoginBoxFill } from 'react-icons/ri';
+import { RiHome2Fill, RiSwordFill, RiMessage2Fill, RiLogoutBoxFill, RiLoginBoxFill, RiNotification3Fill } from 'react-icons/ri';
 import { useNavigate } from 'react-router-dom';
 import {useProfile} from '../../hooks/useProfile';
 
@@ -23,12 +23,14 @@ const Sidebar: React.FC = () => {
   return (
     <div className="sidebar">
       <div className="logo">
-        <div className="logo-img">
-          <img src="./logo-white.png" alt="logo" />
-        </div>
-        <div className="logo-name">
-          <h1>Taverna</h1>
-        </div>
+        <a href="/feed" id='logo'>
+          <div className="logo-img">
+            <img src="./logo-white.png" alt="logo" />
+          </div>
+          <div className="logo-name">
+            <h1>Taverna</h1>
+          </div>
+        </a>
       </div>
       <ul>
         <div className="sidebar-item" onClick={() => handleNavigate('/feed')}>
@@ -43,6 +45,14 @@ const Sidebar: React.FC = () => {
           <li><RiMessage2Fill /></li>
           <span>Chat</span>
         </div>
+        { userProfile? (
+          <div className="sidebar-item">
+          <li><RiNotification3Fill /></li>
+          <span>Notificações</span>
+          </div>
+          ) : ('')
+        }
+
       </ul>
       {userProfile? (
         <div className="user" onClick={()=> handleNavigate('/profile')}>

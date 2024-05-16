@@ -26,3 +26,8 @@ export type PostType={
 export type PostProps={
     post: PostType
 }
+
+export type ContentProps={
+    content: string
+    limit: number
+}

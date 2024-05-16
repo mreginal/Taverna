@@ -61,7 +61,7 @@ const Register: React.FC = () => {
     try{
       await api.post("/user/cadastrar", {name, birthdate, email, password, gender})
       setSuccessSnackbar(true);
-      setTimeout(()=> navigate('/login'), 2000)
+      setTimeout(()=> navigate('/feed'), 2000)
     }catch(error){
       console.log(error)
       setError('Erro ao cadastrar usuário, preencha todos os campos corretamente.')
@@ -100,6 +100,10 @@ const Register: React.FC = () => {
                 <label>
                   <span>Data de Nascimento:</span>
                   <input type="date" name='birthdate' onChange={handleBirthdate} value={birthdate}/>
+                </label>
+                <label>
+                  <span>Nome de usuário:</span>
+                  <input type="name" name='name' placeholder='username_'/>
                 </label>
                 <label>
                   <span>Email:</span>

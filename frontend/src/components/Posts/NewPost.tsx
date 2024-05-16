@@ -16,7 +16,7 @@ export default function NewPost(){
 
   useEffect(() => {
     if (error) {
-      setSnackbarOpen(true)
+      setSnackbarOpen(open)
     }
   }, [error])
 

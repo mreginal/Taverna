@@ -43,7 +43,7 @@
 }
 
 .form-register label{
-    margin-bottom: 10px;
+    margin-bottom: 0px;
 }
 
 .form-login label input, .form-register label input{

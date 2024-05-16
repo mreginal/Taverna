@@ -82,7 +82,7 @@ export default function Login(){
 
               <form onSubmit={handleSubmit}>
                 <label>
-                  <span>Email:</span>
+                  <span>Email ou nome de usuário:</span>
                   <input type="email" name='email' placeholder='exemplo@gmail.com' onChange={handleEmailChange} value={email}/>
                 </label>
                 <label>

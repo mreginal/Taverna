@@ -5,6 +5,7 @@ import { api } from '../../services/api'
 import { RiBookmarkLine, RiChat3Line, RiHeartFill, RiHeartLine } from 'react-icons/ri'
 import { Alert, Snackbar } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
+import Content from '../SeeMore/SeeMore'
 
 
 const Post: React.FC<PostProps> = () => {
@@ -100,7 +101,7 @@ const Post: React.FC<PostProps> = () => {
 
             <div className="content-post">
               <h3>{post.title}</h3>
-              <p>{post.content}</p>
+              <Content content={post.content} limit={400}/>
             </div>
 
             <div className="react-post">
