@@ -28,6 +28,6 @@ export type PostProps={
 }
 
 export type ContentProps={
-    content: string
-    limit: number
-}
+    content: string;
+    limit?: number;
+  }

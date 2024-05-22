@@ -21,14 +21,14 @@ export default function NewPost(){
   }, [error])
 
   const handleOpen = () => {
-    if (!token) {
+    if (token) {
       setError('Faça login para criar suas postagens.')
       setTimeout(() => {
         navigate('/login')
       }, 2000)
+      setOpen(false)
       return
     }
-    setOpen(true);
   }
 
   const handleClose = () => {
@@ -76,13 +76,14 @@ export default function NewPost(){
               </div>
           </div>
       </Modal>
-      <div>{error && 
+      <div>
+        {error && 
                 <Snackbar open={snackbarOpen} autoHideDuration={3000} onClose={handleCloseSnackbar} anchorOrigin={{vertical:'top', horizontal:'right'}} >
                     <Alert onClose={handleCloseSnackbar} variant='filled' severity="error">
                       {error}
                     </Alert>
                 </Snackbar>}
-            </div>
+      </div>
     </div>
   )
 }

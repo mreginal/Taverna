@@ -1,0 +1,14 @@
+.container-content{
+    display: flex;
+    flex-direction: column;
+}
+
+.btn-see{
+    border-radius: 8px;
+    border: none;
+    font-family: var(--main-font);
+    font-weight: bold;
+    color: var(--cor04);
+    margin: 5px 0px;
+    cursor: pointer;
+}
