@@ -19,15 +19,16 @@ def get_user_by_id_route(user_id):
 @user_bp.route('/cadastrar', methods=['POST'])
 def create_user_route():
     data = request.json
-    if not all(key in data for key in ('name', 'birthdate', 'email', 'password')):
+    if not all(key in data for key in ('username','name', 'birthdate', 'email', 'password')):
         return jsonify({'message': 'Campos obrigatórios ausentes'}), 400
     
+    username = data.get('username')
     name = data.get('name')
     birthdate = data.get('birthdate')
     email = data.get('email')
     password = data.get('password')
     gender = data.get('gender')
-    response, status_code = create_user(name, birthdate, email, password, gender)
+    response, status_code = create_user(username, name, birthdate, email, password, gender)
     return jsonify(response), status_code
 
 @user_bp.route('/perfil', methods=['GET'])
