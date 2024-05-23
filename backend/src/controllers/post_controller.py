@@ -1,5 +1,6 @@
 from models.Post import Post
 from flask_jwt_extended import get_jwt_identity
+from bson import ObjectId
 
 def create_post(title, content):
     user_id = get_jwt_identity()
@@ -8,6 +9,11 @@ def create_post(title, content):
 
 def get_all_posts():
     posts = Post.find_all_posts_service()
+    return posts
+
+def get_posts_by_user_id():
+    id = get_jwt_identity()
+    posts = Post.find_post_by_user_id_service(id)
     return posts
 
 def add_like(post_id):

@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required
 from controllers.post_controller import (
-    create_post, get_all_posts, add_like, remove_like
+    create_post, get_all_posts, add_like, remove_like, get_posts_by_user_id
 )
 
 post_bp = Blueprint('post_bp', __name__)
@@ -9,6 +9,12 @@ post_bp = Blueprint('post_bp', __name__)
 @post_bp.route('/', methods=['GET'])
 def get_all_posts_route():
     posts = get_all_posts()
+    return jsonify(posts)
+
+@post_bp.route('/perfil', methods=['GET'])
+@jwt_required()
+def get_posts_by_user_id_route():
+    posts = get_posts_by_user_id()
     return jsonify(posts)
 
 @post_bp.route('/criar', methods=['POST'])

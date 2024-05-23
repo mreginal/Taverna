@@ -34,6 +34,14 @@ class Post:
         for post in posts_list:
             post['_id'] = str(post['_id'])
         return posts_list
+    
+    @staticmethod
+    def find_post_by_user_id_service(user_id):
+        posts = db.posts.find({"user_id": user_id})
+        posts_list = [post for post in posts]
+        for post in posts_list:
+            post['_id'] = str(post['_id'])
+        return posts_list
 
     @staticmethod
     def add_like_service(post_id):
