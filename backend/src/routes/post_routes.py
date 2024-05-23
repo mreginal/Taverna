@@ -1,7 +1,8 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required
 from controllers.post_controller import (
-    create_post, get_all_posts, add_like, remove_like, get_posts_by_user_id
+    create_post, get_all_posts, add_like, remove_like, get_posts_by_user_id,
+    update_post
 )
 
 post_bp = Blueprint('post_bp', __name__)
@@ -49,4 +50,14 @@ def remove_like_route():
     
     post_id = data.get('post_id')
     response, status_code = remove_like(post_id)
+    return jsonify(response), status_code
+
+@post_bp.route('/atualizar', methods=['POST'])
+@jwt_required()
+def update_post_route():
+    data = request.json
+    post_id = data.get('_id')
+    title = data.get('title')
+    content = data.get('content')
+    response, status_code = update_post(post_id, title, content)
     return jsonify(response), status_code
