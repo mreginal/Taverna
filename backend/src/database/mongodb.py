@@ -13,9 +13,6 @@ try:
     print("Conexão bem sucedida com o MongoDB!")
 
     db = client.taverna
-
-    index_model = pymongo.IndexModel([('email', pymongo.ASCENDING)], unique=True)
-    db.usuarios.create_indexes([index_model])
 except Exception as e:
     print("Erro ao conectar ao MongoDB:", e)
     raise e
