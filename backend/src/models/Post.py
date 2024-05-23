@@ -24,8 +24,6 @@ class Post:
         except Exception as e:
             error_message = f"Erro ao criar o post: {str(e)}"
             return {"message": error_message}, 400
-
-
     
     @staticmethod
     def find_all_posts_service():
@@ -34,6 +32,14 @@ class Post:
         for post in posts_list:
             post['_id'] = str(post['_id'])
         return posts_list
+    
+    @staticmethod
+    def find_post_by_id_service(post_id):
+        post = db.posts.find_one({"_id": ObjectId(post_id)})
+        if post:
+            post['_id'] = str(post['_id'])
+            return post
+        return None
     
     @staticmethod
     def find_post_by_user_id_service(user_id):
@@ -58,3 +64,11 @@ class Post:
             db.posts.update_one({"_id": ObjectId(post_id)}, {"$set": {"likes": post['likes'] - 1}})
             return {"message": "Like removido com sucesso!"}, 200
         return {"message": "Post não encontrado!"}, 404
+    
+    @staticmethod
+    def update_post_service(post_id, update_data):
+        response = db.posts.update_one(
+            {"_id": ObjectId(post_id)},
+            {"$set": update_data}
+        )
+        return response
