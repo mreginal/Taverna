@@ -10,6 +10,7 @@ class Post:
             "content": content,
             "user_id": user_id,
             "likes": 0,
+            "comments": []
         }
         try:
             db.posts.insert_one(new_post)
@@ -27,7 +28,7 @@ class Post:
     
     @staticmethod
     def find_all_posts_service():
-        posts = db.posts.find().sort('_id', -1)
+        posts = db.posts.find({}, {"comments": 0}).sort('_id', -1)
         posts_list = [post for post in posts]
         for post in posts_list:
             post['_id'] = str(post['_id'])
@@ -72,3 +73,49 @@ class Post:
             {"$set": update_data}
         )
         return response
+    
+    @staticmethod
+    def add_comment_service(post_id, user_id, content):
+        comment = {
+            "comment_id": ObjectId(),
+            "user_id": user_id,
+            "content": content
+        }
+        response = db.posts.update_one(
+            {"_id": ObjectId(post_id)},
+            {"$push": {"comments": comment}}
+        )
+        if response.modified_count == 1:
+            return {"message": "Comentário adicionado com sucesso!"}, 200
+        return {"message": "Post não encontrado!"}, 404
+    
+    @staticmethod
+    def find_comments_by_post_id_service(post_id):
+        post = db.posts.find_one({"_id": ObjectId(post_id)}, {"comments": 1, "_id": 0})
+        if post and "comments" in post:
+            # Ordenar os comentários pelo `comment_id` em ordem decrescente
+            comments = sorted(post["comments"], key=lambda x: x["comment_id"], reverse=True)
+            for comment in comments:
+                comment["comment_id"] = str(comment["comment_id"])
+            return comments
+        return []
+    
+    @staticmethod
+    def update_comment_service(post_id, comment_id, content):
+        response = db.posts.update_one(
+            {"_id": ObjectId(post_id), "comments.comment_id": ObjectId(comment_id)},
+            {"$set": {"comments.$.content": content}}
+        )
+        if response.modified_count == 1:
+            return {"message": "Comentário atualizado com sucesso!"}, 200
+        return {"message": "Comentário não encontrado!"}, 404
+    
+    @staticmethod
+    def delete_comment_service(post_id, comment_id):
+        response = db.posts.update_one(
+            {"_id": ObjectId(post_id)},
+            {"$pull": {"comments": {"comment_id": ObjectId(comment_id)}}}
+        )
+        if response.modified_count == 1:
+            return {"message": "Comentário removido com sucesso!"}, 200
+        return {"message": "Comentário não encontrado!"}, 404
