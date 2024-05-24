@@ -79,10 +79,9 @@ export default function Login(){
               <p>Faça login ou cadastre-se para acessar o site.</p>
             </div>
             <div className="form-login">
-
               <form onSubmit={handleSubmit}>
                 <label>
-                  <span>Email ou nome de usuário:</span>
+                  <span>Email:</span>
                   <input type="email" name='email' placeholder='exemplo@gmail.com' onChange={handleEmailChange} value={email}/>
                 </label>
                 <label>

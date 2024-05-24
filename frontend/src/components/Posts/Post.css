@@ -1,3 +1,5 @@
+/*Post CSS*/
+
 .card-post{
     margin: 30px 0px 30px 0px;
     background-color: var(--cor01);
@@ -48,4 +50,140 @@
 .react{
     display: flex;
     gap: 30px;
+}
+
+.post-container input{
+    display: flex;
+    height: 60px;
+    padding-left: 20px;
+    border: none;
+    font-family: var(--main-font);
+    font-weight: bold;
+    color: var(--cor03);
+    cursor: pointer;
+}
+
+.post-container input:hover{
+    color: var(--cor04);
+}
+
+/*NewPost CSS*/
+
+.newpost-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.newpost{
+    background-color: var(--cor01);
+    padding: 30px;
+    border-radius: 12px;
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+}
+
+.post{
+    display: flex;
+    flex-direction: column;
+}
+
+.post input, .post textarea{
+    border: none;
+    border-radius: 10px;
+    margin: 5px;
+    font-family: var(--main-font);
+}
+
+#tittle{
+    padding: 20px 10px;
+}
+
+#content{
+    justify-content: start;
+    padding: 10px 10px 100px 10px;
+    top: 0;
+}
+
+textarea::-webkit-scrollbar {
+width: 10px; 
+}
+
+textarea::-webkit-scrollbar-track {
+background: var(--cor00);
+}
+
+
+textarea::-webkit-scrollbar-thumb {
+background: var(--cor02);
+border-radius: 5px; 
+}
+
+textarea::-webkit-scrollbar-thumb:hover {
+background: var(--cor03);
+cursor: pointer;
+}
+
+.btn-exit{
+    display: flex;
+    background-color: var(--cor01);
+    width: 20px;
+    font-size: 22px;
+    color: var(--cor03);
+    border: none;
+    cursor: pointer;
+    align-self: flex-end;
+}
+
+.btn-post{
+    justify-content: end;
+}
+
+/*Content CSS*/
+
+.container-content{
+    display: flex;
+    flex-direction: column;
+}
+
+.btn-see{
+    border-radius: 8px;
+    border: none;
+    font-family: var(--main-font);
+    font-weight: bold;
+    color: var(--cor04);
+    margin: 5px 0px;
+    cursor: pointer;
+}
+
+/*PostProfile CSS*/
+
+.post-cont{
+    max-height: 400px;
+    overflow: auto;
+    margin-left: 20px;
+    margin-top: 10px;
+    width: 40vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.post-cont::-webkit-scrollbar {
+    width: 0px;
+}
+
+.post-wrapper{
+    height: 60vh;
+    width: 100%;
+}
+
+.not-post p{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--cor05);
+    font-family: var(--main-font);
 }

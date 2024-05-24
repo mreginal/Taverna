@@ -1,4 +1,4 @@
-import './NewPosts.css'
+import './Post.css'
 import { useEffect, useState } from 'react'
 import { Alert, Modal, Snackbar } from '@mui/material'
 import { RiCloseCircleLine } from 'react-icons/ri'
@@ -11,36 +11,34 @@ export default function NewPost(){
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const [error, setError] = useState('')
-  const token = localStorage.getItem('token') 
   const [snackbarOpen, setSnackbarOpen] = useState(false)
+
+  const token = localStorage.getItem('token') 
 
   useEffect(() => {
     if (error) {
-      setSnackbarOpen(open)
+      setSnackbarOpen(true)
     }
   }, [error])
 
   const handleOpen = () => {
-    if (token) {
+    if (!token) {
       setError('Faça login para criar suas postagens.')
       setTimeout(() => {
         navigate('/login')
       }, 2000)
       setOpen(false)
       return
+    } else {
+      setOpen(true)
     }
   }
 
   const handleClose = () => {
-    setOpen(false);
+    setOpen(false)
   }
 
   const handleCreatePost = async () => {
-    if (!token) {
-      navigate('/login')
-      return
-    }
-    
     try {
       const response = await api.post('/post/criar', { title, content }, {
         headers:{
@@ -51,7 +49,7 @@ export default function NewPost(){
       setOpen(false)
       window.location.reload()
     } catch (error) {
-      console.error('Erro ao criar postagem:', error);
+      console.error('Erro ao criar postagem:', error)
     }
   }
 
@@ -76,14 +74,15 @@ export default function NewPost(){
               </div>
           </div>
       </Modal>
-      <div>
-        {error && 
-                <Snackbar open={snackbarOpen} autoHideDuration={3000} onClose={handleCloseSnackbar} anchorOrigin={{vertical:'top', horizontal:'right'}} >
-                    <Alert onClose={handleCloseSnackbar} variant='filled' severity="error">
-                      {error}
-                    </Alert>
-                </Snackbar>}
+
+      <div>{error && 
+          <Snackbar open={snackbarOpen} autoHideDuration={3000} onClose={handleCloseSnackbar} anchorOrigin={{vertical:'top', horizontal:'right'}} >
+              <Alert onClose={handleCloseSnackbar} variant='filled' severity="error">
+                {error}
+              </Alert>
+          </Snackbar>}
       </div>
+
     </div>
   )
 }

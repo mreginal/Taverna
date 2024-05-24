@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { ContentProps } from '../../types/types'
-import './Content.css'
+import './Post.css'
 
 const Content: React.FC<ContentProps> = ({ content, limit }) => {
   const [isExpanded, setIsExpanded] = useState(false)

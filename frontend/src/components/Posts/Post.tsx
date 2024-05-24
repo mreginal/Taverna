@@ -1,6 +1,6 @@
 import './Post.css'
 import { useState, useEffect } from 'react'
-import { PostType, User, PostProps } from '../../types/types'
+import { PostType, User } from '../../types/types'
 import { api } from '../../services/api'
 import { RiBookmarkLine, RiChat3Line, RiHeartFill, RiHeartLine } from 'react-icons/ri'
 import { Alert, Snackbar } from '@mui/material'
@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom'
 import Content from './Content'
 
 
-const Post: React.FC<PostProps> = () => {
+const Post: React.FC<PostType> = () => {
   const [posts, setPosts] = useState<PostType[]>([])
   const [users, setUsers] = useState<User[]>([])
   const [error, setError] = useState('')
@@ -74,7 +74,7 @@ const Post: React.FC<PostProps> = () => {
 
       setPosts(prevPosts =>
         prevPosts.map(post =>
-          post._id === postId ? { ...post, liked: !liked, likes: liked? post.likes -1 : post.likes +1 } : post
+          post.post_id === postId ? { ...post, liked: !liked, likes: liked? post.likes -1 : post.likes +1 } : post
         )
       )
 
@@ -93,7 +93,7 @@ const Post: React.FC<PostProps> = () => {
     <div>
       <div>
         {posts.map(post => (
-          <div key={post._id} className='card-post'>
+          <div key={post.post_id} className='card-post'>
             <div className="user-post">
               <img src="pessoa-teste.png" alt="logo" />
               <h2>{getUsername(post.user_id)}</h2>
@@ -107,7 +107,7 @@ const Post: React.FC<PostProps> = () => {
             <div className="react-post">
               <div className="react">
                 <div className="like-post">
-                  <button disabled={reacting} onClick={() => handleReact(post._id, post.liked)}>
+                  <button disabled={reacting} onClick={() => handleReact(post.post_id, post.liked)}>
                     {post.liked ? <RiHeartFill color='var(--cor05)'/> : <RiHeartLine/> }
                     <p>{post.likes}</p>
                   </button>

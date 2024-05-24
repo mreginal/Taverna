@@ -11,8 +11,8 @@
     border-radius: 8px;
     width: 80%;
     height: 35%;
-    margin: 15px;
     padding: 20px;
+    margin: 20px 20px 0px ;
 }
 
 .itens-profile{
@@ -42,13 +42,6 @@
 .edit-profile{
     display: flex;
     justify-content: center;
-}
-
-.posts-user{
-    display: flex;
-    box-sizing: border-box;
-    margin: 15px 0px 20px 15px;
-    justify-content: start;
 }
 
 .left-profile{
