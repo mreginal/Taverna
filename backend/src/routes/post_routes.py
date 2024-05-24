@@ -97,3 +97,16 @@ def remove_comment_route():
     comment_id = data.get('comment_id')
     response, status_code = remove_comment(post_id, comment_id)
     return jsonify(response), status_code
+
+@post_bp.route('/comentarios/atualizar', methods=['POST'])
+@jwt_required()
+def update_comment_route():
+    data = request.json
+    if not all(key in data for key in ('post_id', 'comment_id', 'content')):
+        return jsonify({'message': 'Campos obrigatórios ausentes'}), 400
+    
+    post_id = data.get('post_id')
+    comment_id = data.get('comment_id')
+    content = data.get('content')
+    response, status_code = update_comment(post_id, comment_id, content)
+    return jsonify(response), status_code

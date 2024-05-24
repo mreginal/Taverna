@@ -44,7 +44,7 @@ class Post:
     
     @staticmethod
     def find_post_by_user_id_service(user_id):
-        posts = db.posts.find({"user_id": user_id})
+        posts = db.posts.find({"user_id": user_id}, {"comments": 0}).sort('_id', -1)
         posts_list = [post for post in posts]
         for post in posts_list:
             post['_id'] = str(post['_id'])
@@ -93,7 +93,6 @@ class Post:
     def find_comments_by_post_id_service(post_id):
         post = db.posts.find_one({"_id": ObjectId(post_id)}, {"comments": 1, "_id": 0})
         if post and "comments" in post:
-            # Ordenar os comentários pelo `comment_id` em ordem decrescente
             comments = sorted(post["comments"], key=lambda x: x["comment_id"], reverse=True)
             for comment in comments:
                 comment["comment_id"] = str(comment["comment_id"])
