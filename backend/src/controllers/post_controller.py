@@ -11,6 +11,13 @@ def get_all_posts():
     posts = Post.find_all_posts_service()
     return posts
 
+def get_post_by_id(post_id):
+    post = Post.find_post_by_id_service(post_id)
+    if post:
+        return post, 200
+    else:
+        return {'message': 'Post não encontrado'}, 404
+
 def get_posts_by_user_id():
     id = get_jwt_identity()
     posts = Post.find_post_by_user_id_service(id)

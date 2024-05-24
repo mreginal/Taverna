@@ -27,7 +27,7 @@ class Post:
     
     @staticmethod
     def find_all_posts_service():
-        posts = db.posts.find()
+        posts = db.posts.find().sort('_id', -1)
         posts_list = [post for post in posts]
         for post in posts_list:
             post['_id'] = str(post['_id'])

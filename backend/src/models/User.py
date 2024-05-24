@@ -18,7 +18,8 @@ class User:
                 "birthdate": birthdate,
                 "email": email,
                 "password": hashed64,
-                "gender": gender
+                "gender": gender,
+                "favorites": []
             }
             db.usuarios.insert_one(new_user)
             return {"message": "Usuário cadastrado com sucesso!"}, 201
@@ -26,7 +27,7 @@ class User:
 
     @staticmethod
     def find_all_users_service():
-        users = db.usuarios.find()
+        users = db.usuarios.find({}, {"password": 0})
         users_list = [user for user in users]
         for user in users_list:
             user['_id'] = str(user['_id'])
@@ -47,6 +48,22 @@ class User:
         response = db.usuarios.update_one(
             {"_id": ObjectId(id)},
             {"$set": update_data}
+        )
+        return response
+    
+    @staticmethod
+    def add_favorite_service(user_id, post_id):
+        response = db.usuarios.update_one(
+            {"_id": ObjectId(user_id)},
+            {"$addToSet": {"favorites": post_id}}
+        )
+        return response
+    
+    @staticmethod
+    def remove_favorite_service(user_id, post_id):
+        response = db.usuarios.update_one(
+            {"_id": ObjectId(user_id)},
+            {"$pull": {"favorites": post_id}}
         )
         return response
 
