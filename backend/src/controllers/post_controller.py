@@ -80,5 +80,3 @@ def remove_comment(post_id, comment_id):
     
     response, status_code = Post.delete_comment_service(post_id, comment_id)
     return response, status_code
-
-    
