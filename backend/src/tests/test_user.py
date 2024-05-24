@@ -107,3 +107,41 @@ def test_update_user_service(user_model, mock_db):
     assert response.modified_count == 1
     updated_user = mock_db.usuarios.find_one({"_id": ObjectId(user_id)})
     assert updated_user["name"] == "Updated User"
+
+def test_add_favorite_service(user_model, mock_db):
+    user_id = mock_db.usuarios.insert_one({
+        "username": "test_user",
+        "name": "Test User",
+        "birthdate": "1990-01-01",
+        "email": "test@example.com",
+        "password": "hashed_password",
+        "gender": "M"
+    }).inserted_id
+    
+    post_id = "post_123"
+    response = user_model.add_favorite_service(user_id, post_id)
+    
+    assert response.modified_count == 1
+    user = mock_db.usuarios.find_one({"_id": ObjectId(user_id)})
+    assert "favorites" in user
+    assert post_id in user["favorites"]
+
+def test_remove_favorite_service(user_model, mock_db):
+    user_id = mock_db.usuarios.insert_one({
+        "username": "test_user",
+        "name": "Test User",
+        "birthdate": "1990-01-01",
+        "email": "test@example.com",
+        "password": "hashed_password",
+        "gender": "M",
+        "favorites": ["post_123", "post_456"]
+    }).inserted_id
+    
+    post_id = "post_123"
+    response = user_model.remove_favorite_service(user_id, post_id)
+    
+    assert response.modified_count == 1
+    user = mock_db.usuarios.find_one({"_id": ObjectId(user_id)})
+    assert "favorites" in user
+    assert post_id not in user["favorites"]
+    assert "post_456" in user["favorites"]

@@ -29,8 +29,8 @@ def test_find_all_posts_service(post_model, mock_db):
     ])
     posts = post_model.find_all_posts_service()
     assert len(posts) == 2
-    assert posts[0]["title"] == "Post 1"
-    assert posts[1]["title"] == "Post 2"
+    assert posts[0]["title"] == "Post 2"
+    assert posts[1]["title"] == "Post 1"
 
 def test_add_like_service(post_model, mock_db):
     post_id = mock_db.posts.insert_one({
@@ -54,3 +54,99 @@ def test_remove_like_service(post_model, mock_db):
     assert status_code == 200
     assert response["message"] == "Like removido com sucesso!"
 
+def test_find_post_by_id_service(mock_db):
+    post_id = mock_db.posts.insert_one({
+        "title": "Test Post",
+        "content": "This is a test post.",
+        "user_id": "test_user"
+    }).inserted_id
+
+    post_id_str = str(post_id)
+
+    post = Post.find_post_by_id_service(post_id_str)
+
+    assert post is not None
+    assert post["_id"] == post_id_str
+    assert post["title"] == "Test Post"
+    assert post["content"] == "This is a test post."
+    assert post["user_id"] == "test_user"
+
+def test_add_comment_service(mock_db):
+    post_id = mock_db.posts.insert_one({
+        "title": "Test Post",
+        "content": "This is a test post.",
+        "user_id": "test_user"
+    }).inserted_id
+    
+    response, status_code = Post.add_comment_service(post_id, "test_user", "This is a test comment.")
+    assert status_code == 200
+    assert response["message"] == "Comentário adicionado com sucesso!"
+    
+    post = mock_db.posts.find_one({"_id": ObjectId(post_id)})
+    assert len(post["comments"]) == 1
+    assert post["comments"][0]["content"] == "This is a test comment."
+    assert post["comments"][0]["user_id"] == "test_user"
+
+def test_find_comments_by_post_id_service(mock_db):
+    post_id = mock_db.posts.insert_one({
+        "title": "Test Post",
+        "content": "This is a test post.",
+        "user_id": "test_user",
+        "comments": [
+            {
+                "comment_id": ObjectId(),
+                "user_id": "test_user",
+                "content": "This is a test comment."
+            }
+        ]
+    }).inserted_id
+    
+    comments = Post.find_comments_by_post_id_service(post_id)
+    assert len(comments) == 1
+    assert comments[0]["content"] == "This is a test comment."
+    assert comments[0]["user_id"] == "test_user"
+
+def test_update_comment_service(mock_db):
+    comment_id = ObjectId()
+    post_id = mock_db.posts.insert_one({
+        "title": "Test Post",
+        "content": "This is a test post.",
+        "user_id": "test_user",
+        "comments": [
+            {
+                "comment_id": comment_id,
+                "user_id": "test_user",
+                "content": "This is a test comment."
+            }
+        ]
+    }).inserted_id
+    
+    response, status_code = Post.update_comment_service(post_id, comment_id, "Updated comment content.")
+    assert status_code == 200
+    assert response["message"] == "Comentário atualizado com sucesso!"
+    
+    post = mock_db.posts.find_one({"_id": ObjectId(post_id)})
+    assert len(post["comments"]) == 1
+    assert post["comments"][0]["content"] == "Updated comment content."
+
+def test_delete_comment_service(mock_db):
+    comment_id = ObjectId()
+    post_id = mock_db.posts.insert_one({
+        "title": "Test Post",
+        "content": "This is a test post.",
+        "user_id": "test_user",
+        "comments": [
+            {
+                "comment_id": comment_id,
+                "user_id": "test_user",
+                "content": "This is a test comment."
+            }
+        ]
+    }).inserted_id
+    
+    response, status_code = Post.delete_comment_service(post_id, comment_id)
+    assert status_code == 200
+    assert response["message"] == "Comentário removido com sucesso!"
+    
+    post = mock_db.posts.find_one({"_id": ObjectId(post_id)})
+    assert len(post["comments"]) == 0
