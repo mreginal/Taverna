@@ -1,7 +1,8 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required
 from controllers.user_controller import (
-    get_all_users, create_user, get_user_profile, update_user_profile, get_user_by_id
+    get_all_users, create_user, get_user_profile, update_user_profile, get_user_by_id,
+    add_favorite, remove_favorite
 )
 
 user_bp = Blueprint('user_bp', __name__)
@@ -45,4 +46,20 @@ def update_user_route():
     birthdate = data.get('birthdate')
     gender = data.get('gender')
     response, status_code = update_user_profile(name, birthdate, gender)
+    return jsonify(response), status_code
+
+@user_bp.route('/favoritar', methods=['POST'])
+@jwt_required()
+def add_favorite_route():
+    data = request.json
+    post_id = data.get('post_id')
+    response, status_code = add_favorite(post_id)
+    return jsonify(response), status_code
+
+@user_bp.route('/desfavoritar', methods=['POST'])
+@jwt_required()
+def remove_favorite_route():
+    data = request.json
+    post_id = data.get('post_id')
+    response, status_code = remove_favorite(post_id)
     return jsonify(response), status_code
