@@ -69,14 +69,16 @@ def update_comment(post_id, comment_id, content):
 
 def remove_comment(post_id, comment_id):
     user_id = get_jwt_identity()
-    current_post = Post.find_post_by_id_service(post_id)
-    comment = next((c for c in current_post.get("comments", []) if c.get("comment_id") == comment_id), None)
+    comments = Post.find_comments_by_post_id_service(post_id)
+    comment = next((c for c in comments if str(c.get("comment_id")) == str(comment_id)), None)
 
     if not comment:
         return {'message': 'Comentário não encontrado'}, 404
+
     if comment.get("user_id") != user_id:
         return {'message': 'Você não tem permissão para remover este comentário'}, 403
-
-    response, status_code = Post.remove_comment_service(post_id, comment_id)
+    
+    response, status_code = Post.delete_comment_service(post_id, comment_id)
     return response, status_code
+
     
