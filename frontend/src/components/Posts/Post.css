@@ -8,11 +8,12 @@
     box-shadow: 1px 4px 5px 0px var(--cor02);
 }
 
-.user-post{
+.user-post, .user-info-post{
     display: flex;
+    justify-content: space-between;
     align-items: center;
     gap: 15px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .user-post img{
@@ -180,10 +181,13 @@ cursor: pointer;
     width: 100%;
 }
 
-.not-post p{
+.not-post{
     display: flex;
     justify-content: center;
-    align-items: center;
-    color: var(--cor05);
+}
+
+.not-post p{
+    font-weight: 600;
     font-family: var(--main-font);
+    color: var(--cor05);
 }

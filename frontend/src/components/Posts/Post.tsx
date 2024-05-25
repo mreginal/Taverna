@@ -6,6 +6,8 @@ import { RiBookmarkLine, RiChat3Line, RiHeartFill, RiHeartLine } from 'react-ico
 import { Alert, Snackbar } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import Content from './Content'
+import { useProfile } from '../../hooks/useProfile'
+import EditPostModal from '../EditPostModal/EditPostModal'
 
 
 const Post: React.FC<PostType> = () => {
@@ -15,6 +17,8 @@ const Post: React.FC<PostType> = () => {
   const [reacting, setReacting] = useState(false)
   const navigate = useNavigate()
   const [snackbarOpen, setSnackbarOpen] = useState(false)
+
+  const userProfile = useProfile()
 
   useEffect(() => {
     if (error) {
@@ -95,10 +99,20 @@ const Post: React.FC<PostType> = () => {
         {posts.map(post => (
           <div key={post.post_id} className='card-post'>
             <div className="user-post">
-              <img src="pessoa-teste.png" alt="logo" />
-              <h2>{getUsername(post.user_id)}</h2>
+              <div className='user-info-post'>
+                <div><img src="pessoa-teste.png" alt="logo" /></div>
+                <div>
+                  <h2>{getUsername(post.user_id)}</h2>
+                </div>
+              </div>
+              <div>
+                {userProfile && userProfile._id === post.user_id &&(
+                  <div>
+                      <EditPostModal/>
+                  </div>
+                )}
+              </div>
             </div>
-
             <div className="content-post">
               <h3>{post.title}</h3>
               <Content content={post.content} limit={350}/>

@@ -49,6 +49,7 @@ const Register: React.FC = () => {
     const user: User ={
       name, 
       birthdate,
+      username,
       email,
       password,
       gender,
@@ -60,7 +61,7 @@ const Register: React.FC = () => {
     }
 
     try{
-      await api.post("/user/cadastrar", {name, birthdate, email, password, gender})
+      await api.post("/user/cadastrar", {name, birthdate, username, email, password, gender})
       setSuccessSnackbar(true);
       setTimeout(()=> navigate('/feed'), 2000)
     }catch(error){

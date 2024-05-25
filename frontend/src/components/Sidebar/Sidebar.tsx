@@ -1,6 +1,6 @@
 import React from 'react';
 import './Sidebar.css';
-import { RiHome2Fill, RiSwordFill, RiMessage2Fill, RiLogoutBoxFill, RiLoginBoxFill, RiNotification3Fill } from 'react-icons/ri';
+import { RiHome2Fill, RiSwordFill, RiMessage2Fill, RiLogoutBoxFill, RiLoginBoxFill, RiNotification3Fill, RiBookmarkFill } from 'react-icons/ri';
 import { useNavigate } from 'react-router-dom';
 import {useProfile} from '../../hooks/useProfile';
 
@@ -46,9 +46,15 @@ const Sidebar: React.FC = () => {
           <span>Chat</span>
         </div>
         { userProfile? (
-          <div className="sidebar-item">
-          <li><RiNotification3Fill /></li>
-          <span>Notificações</span>
+          <div>
+            <div className="sidebar-item">
+            <li><RiNotification3Fill /></li>
+            <span>Notificações</span>
+            </div>
+            <div className="sidebar-item">
+              <li><RiBookmarkFill /></li>
+              <span>Favoritos</span>
+            </div>
           </div>
           ) : ('')
         }
@@ -76,7 +82,7 @@ const Sidebar: React.FC = () => {
       {userProfile && (
         <ul>
           <div className="logout" onClick={handleLogout}>
-            <div className="sidebar-item">
+            <div>
               <button>
                 <RiLogoutBoxFill />
                 <span>Logout</span>

@@ -14,7 +14,7 @@ export default function Login(){
   const [password, setPassword] = useState<string>('')
   const [error, setError] = useState<string | null>(null)
 
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false)
 
   useEffect(() => {
     if (error) {
@@ -50,21 +50,22 @@ export default function Login(){
       const response = await api.post('/auth/user', {
         email,
         password,
-      });
+      })
 
       const token = response.data
 
-      localStorage.setItem('token',token)
+      localStorage.setItem('token', token)
+
       handleLogin()
 
     } catch (error) {
       setError('Ocorreu um erro ao fazer login, por favor, tente novamente.');
     }
-  };
+  }
 
     const handleCloseSnackbar = () => {
       setSnackbarOpen(false);
-    };
+    }
   
   return (
     <div className="login">

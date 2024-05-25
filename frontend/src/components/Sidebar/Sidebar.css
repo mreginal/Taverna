@@ -143,9 +143,15 @@ ul{
 }
 
 .logout button{
+    height: 10px;
     background: none;
     border: none;
     font-family: var(--main-font);
     color:var(--cor00);
     cursor: pointer;
+    display: none;
+}
+
+.sidebar:hover .logout button{
+    display: block;
 }

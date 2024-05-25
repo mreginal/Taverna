@@ -75,7 +75,6 @@ const EditProfile: React.FC = () => {
     handleClose()
   }
 
-
   return (
     <div>
       <button className='edit-btn' onClick={handleOpen}>Editar Perfil</button>

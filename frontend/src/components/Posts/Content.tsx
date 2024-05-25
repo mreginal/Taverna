@@ -21,7 +21,7 @@ const Content: React.FC<ContentProps> = ({ content, limit }) => {
         <div className='container-content'>
             <div className='content'>
             {paragraphs.map((paragraph, index) => (
-            <p key={index}>{paragraph}</p> // Renderiza cada parágrafo
+            <p key={index}>{paragraph}</p>
           ))}
           {limit && content.length > limit && (
             !isExpanded ? (

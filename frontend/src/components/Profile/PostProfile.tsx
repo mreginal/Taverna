@@ -5,12 +5,15 @@ import { api } from '../../services/api'
 import Content from '../Posts/Content'
 import { PostType, User } from '../../types/types'
 import { RiBookmarkLine, RiChat3Line, RiHeartFill, RiHeartLine } from 'react-icons/ri'
+import { useProfile } from '../../hooks/useProfile'
+import EditPostModal from '../EditPostModal/EditPostModal'
 
 const ProfilePosts: React.FC = () => {
   const [posts, setPosts] = useState<PostType[]>([])
   const [users, setUsers] = useState<User[]>([])
   const [reacting, setReacting] = useState(false)
-  const [error, setError] = useState('')
+
+  const userProfile = useProfile()
 
   useEffect(() => {
     const fetchPostProfile = async () => {
@@ -33,7 +36,7 @@ const ProfilePosts: React.FC = () => {
       } catch (error) {
         console.error('Erro ao buscar postagens do usuário:', error)
       }
-    };
+    }
 
     const fetchUsers = async () => {
       try {
@@ -84,11 +87,22 @@ const ProfilePosts: React.FC = () => {
       <div className='post-wrapper'>
         {posts.length > 0 ? (
           posts.map(post => (
-            <div>
-              <div key={post.post_id} className='card-post'>
-                <div className="user-post">
-                  <img src="pessoa-teste.png" alt="logo" />
-                  <h2>{getUsername(post.user_id)}</h2>
+                <div>
+                  <div key={post.post_id} className='card-post'>
+                  <div className="user-post">
+                  <div className='user-info-post'>
+                    <div><img src="pessoa-teste.png" alt="logo" /></div>
+                    <div>
+                      <h2>{getUsername(post.user_id)}</h2>
+                    </div>
+                  </div>
+                  <div>
+                    {userProfile && userProfile._id === post.user_id &&(
+                      <div>
+                          <EditPostModal/>
+                      </div>
+                    )}
+                  </div>
                 </div>
                 <div className="content-post">
                   <h3>{post.title}</h3>
@@ -107,12 +121,14 @@ const ProfilePosts: React.FC = () => {
               <div className="save">
                 <button><RiBookmarkLine /></button>
               </div>
-                        </div>
             </div>
-          </div>   
+          </div>
+        </div>   
           ))
         ) : (
-          <p>Nenhuma postagem encontrada</p>
+          <div className="not-post">
+            <p> Nenhuma postagem encontrada</p>
+          </div>
         )}
       </div>
     </div>
