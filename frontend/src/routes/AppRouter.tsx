@@ -1,12 +1,12 @@
-import React from 'react';
-import { Route , Routes} from 'react-router-dom';
+import React from 'react'
+import { Route , Routes} from 'react-router-dom'
 
 //Pages
-import Inicial from '../pages/Inicial/Inicial';
-import Login from '../pages/Auth/Login';
-import Register from '../pages/Auth/Register';
-import Feed from '../pages/Feed/Feed';
-import Sidebar from '../components/Sidebar/Sidebar';
+import Inicial from '../pages/Inicial/Inicial'
+import Login from '../pages/Auth/Login'
+import Register from '../pages/Auth/Register'
+import Feed from '../pages/Feed/Feed'
+import Sidebar from '../components/Sidebar/Sidebar'
 import Profile from '../components/Profile/Profile'
 
 const AppRouter: React.FC = () => {
@@ -21,7 +21,7 @@ const AppRouter: React.FC = () => {
               <Route path='/profile' element={<Profile/>}/>
         </Routes>
       </div>
-  );
-};
+  )
+}
 
 export default AppRouter

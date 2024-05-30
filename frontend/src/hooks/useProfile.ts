@@ -26,8 +26,7 @@ export const useProfile = () => {
 
         setUserProfile(response.data)
 
-        const userId = response.data._id
-        console.log(userId)
+        const userId = response.data.id
         localStorage.setItem('userId', userId)
 
       } catch (error) {

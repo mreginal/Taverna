@@ -20,7 +20,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    cursor: pointer;
 }
 
 .logo-img img{
@@ -31,11 +30,6 @@
 .logo-name h1{
     font-family: var(--style-font);
     display: none;
-}
-
-a{
-    text-decoration: none;
-    color: var(--cor00);
 }
 
 .user{
@@ -143,15 +137,9 @@ ul{
 }
 
 .logout button{
-    height: 10px;
     background: none;
     border: none;
     font-family: var(--main-font);
     color:var(--cor00);
     cursor: pointer;
-    display: none;
-}
-
-.sidebar:hover .logout button{
-    display: block;
 }

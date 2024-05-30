@@ -23,14 +23,12 @@ const Sidebar: React.FC = () => {
   return (
     <div className="sidebar">
       <div className="logo">
-        <a href="/feed" id='logo'>
-          <div className="logo-img">
-            <img src="./logo-white.png" alt="logo" />
-          </div>
-          <div className="logo-name">
-            <h1>Taverna</h1>
-          </div>
-        </a>
+        <div className="logo-img">
+          <img src="./logo-white.png" alt="logo" />
+        </div>
+        <div className="logo-name">
+          <h1>Taverna</h1>
+        </div>
       </div>
       <ul>
         <div className="sidebar-item" onClick={() => handleNavigate('/feed')}>
@@ -51,24 +49,24 @@ const Sidebar: React.FC = () => {
             <li><RiNotification3Fill /></li>
             <span>Notificações</span>
             </div>
-            <div className="sidebar-item">
-              <li><RiBookmarkFill /></li>
+            <div className="sidebar-item" onClick={() => handleNavigate('/favorites')}>
+              <li><RiBookmarkFill /> </li>
               <span>Favoritos</span>
             </div>
           </div>
           ) : ('')
         }
-
       </ul>
       {userProfile? (
-        <div className="user" onClick={()=> handleNavigate('/profile')}>
+        <>
+          <div className="user" onClick={()=> handleNavigate('/profile')}>
             <img src="./pessoa-teste.png" alt="user-img" />
             <div>
               <h2>{userProfile.name}</h2>
               <p>{userProfile.email}</p>
             </div>
-        </div>
-        
+          </div>
+        </>
       ) : (
         <div className="user" onClick={()=> handleNavigate('/login')}>
           <img src="./pessoa-teste.png" alt="user-img" />
@@ -82,10 +80,9 @@ const Sidebar: React.FC = () => {
       {userProfile && (
         <ul>
           <div className="logout" onClick={handleLogout}>
-            <div>
+            <div className="logout">
               <button>
                 <RiLogoutBoxFill />
-                <span>Logout</span>
               </button>
             </div>
           </div>

@@ -4,8 +4,7 @@ import './Profile.css'
 import Sidebar from '../../components/Sidebar/Sidebar'
 import EditProfileModal from '../../components/EditProfileModal/EditProfileModal'
 import { useProfile } from '../../hooks/useProfile'
-import { RiMailFill, RiSwordFill, RiVerifiedBadgeFill, RiVipCrownFill, RiAccountPinCircleFill } from 'react-icons/ri'
-import ProfilePosts from './PostProfile'
+import { RiMailFill, RiSwordFill, RiVerifiedBadgeFill, RiVipCrownFill,  } from 'react-icons/ri'
 
 const Profile = () => {
   const userProfile = useProfile()
@@ -25,9 +24,6 @@ const Profile = () => {
                 <h1>{userProfile.name} <RiVerifiedBadgeFill color='var(--cor05)'/></h1>
               </div>
               <div className="itens-profile">
-              <div className="item-profile">
-                  <p> <RiAccountPinCircleFill color='var(--cor05)'/> {userProfile.username}</p>
-                </div>
                 <div className="item-profile">
                   <p> <RiMailFill color='var(--cor05)'/> {userProfile.email}</p>
                 </div>
@@ -43,7 +39,7 @@ const Profile = () => {
               </div>
             </div>
             <div className="posts-user">
-                  <ProfilePosts/>
+
             </div>
         </div>
         <div className="left-profile">

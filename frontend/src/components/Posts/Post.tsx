@@ -1,22 +1,21 @@
 import './Post.css'
 import { useState, useEffect } from 'react'
-import { PostType, User } from '../../types/types'
+import { PostProps, PostType, User } from '../../types/types'
 import { api } from '../../services/api'
 import { RiBookmarkLine, RiChat3Line, RiHeartFill, RiHeartLine } from 'react-icons/ri'
 import { Alert, Snackbar } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
-import Content from './Content'
 import { useProfile } from '../../hooks/useProfile'
-import EditPostModal from '../EditPostModal/EditPostModal'
+import EditPost from './EditPost'
 
-
-const Post: React.FC<PostType> = () => {
+const Post: React.FC = () => {
   const [posts, setPosts] = useState<PostType[]>([])
   const [users, setUsers] = useState<User[]>([])
   const [error, setError] = useState('')
   const [reacting, setReacting] = useState(false)
-  const navigate = useNavigate()
   const [snackbarOpen, setSnackbarOpen] = useState(false)
+
+  const navigate = useNavigate()
 
   const userProfile = useProfile()
 
@@ -78,7 +77,7 @@ const Post: React.FC<PostType> = () => {
 
       setPosts(prevPosts =>
         prevPosts.map(post =>
-          post.post_id === postId ? { ...post, liked: !liked, likes: liked? post.likes -1 : post.likes +1 } : post
+          post._id === postId ? { ...post, liked: !liked, likes: liked? post.likes -1 : post.likes +1 } : post
         )
       )
 
@@ -97,31 +96,24 @@ const Post: React.FC<PostType> = () => {
     <div>
       <div>
         {posts.map(post => (
-          <div key={post.post_id} className='card-post'>
-            <div className="user-post">
-              <div className='user-info-post'>
-                <div><img src="pessoa-teste.png" alt="logo" /></div>
-                <div>
-                  <h2>{getUsername(post.user_id)}</h2>
-                </div>
+          <div key={post._id} className='card-post'>
+              <div className="user-post">
+                <img src="pessoa-teste.png" alt="logo" />
+                <h2>{getUsername(post.user_id)}</h2>
+                {userProfile?._id === post.user_id && 
+                  <EditPost postId={post._id}/>
+                }
               </div>
-              <div>
-                {userProfile && userProfile._id === post.user_id &&(
-                  <div>
-                      <EditPostModal/>
-                  </div>
-                )}
-              </div>
-            </div>
+
             <div className="content-post">
               <h3>{post.title}</h3>
-              <Content content={post.content} limit={350}/>
+              <p>{post.content}</p>
             </div>
 
             <div className="react-post">
               <div className="react">
                 <div className="like-post">
-                  <button disabled={reacting} onClick={() => handleReact(post.post_id, post.liked)}>
+                  <button disabled={reacting} onClick={() => handleReact(post._id, post.liked)}>
                     {post.liked ? <RiHeartFill color='var(--cor05)'/> : <RiHeartLine/> }
                     <p>{post.likes}</p>
                   </button>

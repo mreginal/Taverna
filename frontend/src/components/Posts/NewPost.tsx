@@ -11,9 +11,8 @@ export default function NewPost(){
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const [error, setError] = useState('')
-  const [snackbarOpen, setSnackbarOpen] = useState(false)
-
   const token = localStorage.getItem('token') 
+  const [snackbarOpen, setSnackbarOpen] = useState(false)
 
   useEffect(() => {
     if (error) {
@@ -27,18 +26,21 @@ export default function NewPost(){
       setTimeout(() => {
         navigate('/login')
       }, 2000)
-      setOpen(false)
       return
-    } else {
-      setOpen(true)
     }
+    setOpen(true);
   }
 
   const handleClose = () => {
-    setOpen(false)
+    setOpen(false);
   }
 
   const handleCreatePost = async () => {
+    if (!token) {
+      navigate('/login')
+      return
+    }
+    
     try {
       const response = await api.post('/post/criar', { title, content }, {
         headers:{
@@ -49,7 +51,7 @@ export default function NewPost(){
       setOpen(false)
       window.location.reload()
     } catch (error) {
-      console.error('Erro ao criar postagem:', error)
+      console.error('Erro ao criar postagem:', error);
     }
   }
 
@@ -74,15 +76,13 @@ export default function NewPost(){
               </div>
           </div>
       </Modal>
-
       <div>{error && 
-          <Snackbar open={snackbarOpen} autoHideDuration={3000} onClose={handleCloseSnackbar} anchorOrigin={{vertical:'top', horizontal:'right'}} >
-              <Alert onClose={handleCloseSnackbar} variant='filled' severity="error">
-                {error}
-              </Alert>
-          </Snackbar>}
-      </div>
-
+                <Snackbar open={snackbarOpen} autoHideDuration={3000} onClose={handleCloseSnackbar} anchorOrigin={{vertical:'top', horizontal:'right'}} >
+                    <Alert onClose={handleCloseSnackbar} variant='filled' severity="error">
+                      {error}
+                    </Alert>
+                </Snackbar>}
+            </div>
     </div>
   )
 }

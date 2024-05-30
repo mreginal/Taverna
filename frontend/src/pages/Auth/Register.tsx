@@ -11,7 +11,6 @@ import { Alert, Snackbar } from '@mui/material'
 const Register: React.FC = () => {
   const navigate = useNavigate()
 
-  const [username, setUsername] = useState<string>("")
   const [name, setName] = useState<string>("")
   const [birthdate, setBirthdate] = useState<string>("")
   const [email, setEmail] = useState<string>("")
@@ -49,7 +48,6 @@ const Register: React.FC = () => {
     const user: User ={
       name, 
       birthdate,
-      username,
       email,
       password,
       gender,
@@ -61,9 +59,9 @@ const Register: React.FC = () => {
     }
 
     try{
-      await api.post("/user/cadastrar", {name, birthdate, username, email, password, gender})
+      await api.post("/user/cadastrar", {name, birthdate, email, password, gender})
       setSuccessSnackbar(true);
-      setTimeout(()=> navigate('/feed'), 2000)
+      setTimeout(()=> navigate('/login'), 2000)
     }catch(error){
       console.log(error)
       setError('Erro ao cadastrar usuário, preencha todos os campos corretamente.')
@@ -97,15 +95,11 @@ const Register: React.FC = () => {
               <form onSubmit={handleSubmit}>
                 <label>
                   <span>Nome completo:</span>
-                  <input type="name" name='name' placeholder='Nome Sobrenome' id='name' onChange={(e)=>setName(e.target.value)} value={name}/>
+                  <input type="name" name='name' placeholder='Nome Sobrenome' onChange={(e)=>setName(e.target.value)} value={name}/>
                 </label>
                 <label>
                   <span>Data de Nascimento:</span>
-                  <input type="date" name='birthdate' id='birthdate' onChange={handleBirthdate} value={birthdate}/>
-                </label>
-                <label>
-                  <span>Nome de usuário:</span>
-                  <input type="username" name='username' placeholder='username_' id='username' onChange={(e)=>setUsername(e.target.value)} value={username}/>
+                  <input type="date" name='birthdate' onChange={handleBirthdate} value={birthdate}/>
                 </label>
                 <label>
                   <span>Email:</span>
@@ -123,7 +117,7 @@ const Register: React.FC = () => {
                 </label>
                 <label>
                   <span>Gênero:</span>
-                  <select name="gender" id='gender' value={gender} onChange={handleSelectGender}>
+                  <select name="gender" value={gender} onChange={handleSelectGender}>
                     <option value="">Selecione uma opção</option>
                     <option value="nid">Não identificar</option>
                     <option value="masc">Masculino</option>
