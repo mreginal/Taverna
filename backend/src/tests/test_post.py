@@ -71,6 +71,61 @@ def test_find_post_by_id_service(mock_db):
     assert post["content"] == "This is a test post."
     assert post["user_id"] == "test_user"
 
+def test_find_post_by_user_id_service(mock_db):
+    mock_db.posts.insert_many([
+        {"title": "Post 1", "content": "Content 1", "user_id": "user_id_1"},
+        {"title": "Post 2", "content": "Content 2", "user_id": "user_id_2"}
+    ])
+    
+    posts = Post.find_post_by_user_id_service("user_id_1")
+    assert len(posts) == 1
+    assert posts[0]["title"] == "Post 1"
+    assert posts[0]["content"] == "Content 1"
+    assert posts[0]["user_id"] == "user_id_1"
+
+def test_update_post_service(mock_db):
+    post_id = mock_db.posts.insert_one({
+        "title": "Test Post",
+        "content": "This is a test post.",
+        "user_id": "test_user"
+    }).inserted_id
+    
+    response = Post.update_post_service(str(post_id), {"title": "Updated Post"})
+    assert response.modified_count == 1
+    
+    post = mock_db.posts.find_one({"_id": ObjectId(post_id)})
+    assert post["title"] == "Updated Post"
+
+def test_add_like_service(mock_db):
+    post_id = mock_db.posts.insert_one({
+        "title": "Test Post",
+        "content": "This is a test post.",
+        "user_id": "test_user",
+        "likes": 0
+    }).inserted_id
+    
+    response, status_code = Post.add_like_service(str(post_id))
+    assert status_code == 200
+    assert response["message"] == "Like adicionado com sucesso!"
+    
+    post = mock_db.posts.find_one({"_id": ObjectId(post_id)})
+    assert post["likes"] == 1
+
+def test_remove_like_service(mock_db):
+    post_id = mock_db.posts.insert_one({
+        "title": "Test Post",
+        "content": "This is a test post.",
+        "user_id": "test_user",
+        "likes": 1
+    }).inserted_id
+    
+    response, status_code = Post.remove_like_service(str(post_id))
+    assert status_code == 200
+    assert response["message"] == "Like removido com sucesso!"
+    
+    post = mock_db.posts.find_one({"_id": ObjectId(post_id)})
+    assert post["likes"] == 0
+
 def test_add_comment_service(mock_db):
     post_id = mock_db.posts.insert_one({
         "title": "Test Post",
