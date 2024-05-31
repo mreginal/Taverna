@@ -1,6 +1,5 @@
 from models.Post import Post
 from flask_jwt_extended import get_jwt_identity
-from bson import ObjectId
 
 def create_post(title, content):
     user_id = get_jwt_identity()

@@ -20,7 +20,7 @@ def get_user_by_id(user_id):
 def create_user(username, name, birthdate, email, password, gender): 
     hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt(10))
     hashed64 = base64.b64encode(hashed).decode()
-    response, status_code = User.create_user_service(username, name,birthdate,email,hashed64,gender)
+    response, status_code = User.create_user_service(username, name, birthdate, email, hashed64, gender)
     return response, status_code
 
 def get_user_profile():
