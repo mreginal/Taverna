@@ -8,6 +8,7 @@ import Register from '../pages/Auth/Register'
 import Feed from '../pages/Feed/Feed'
 import Sidebar from '../components/Sidebar/Sidebar'
 import Profile from '../components/Profile/Profile'
+import Favorites from '../pages/Favorites/Favorites'
 
 const AppRouter: React.FC = () => {
   return (
@@ -19,6 +20,7 @@ const AppRouter: React.FC = () => {
               <Route path="/register" element={<Register/>}/>
               <Route path="/feed" element={<Feed/>}/>
               <Route path='/profile' element={<Profile/>}/>
+              <Route path='/favorites' element={<Favorites/>}/>
         </Routes>
       </div>
   )

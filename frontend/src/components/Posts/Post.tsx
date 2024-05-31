@@ -1,8 +1,8 @@
 import './Post.css'
 import { useState, useEffect } from 'react'
-import { PostProps, PostType, User } from '../../types/types'
+import { PostType, User } from '../../types/types'
 import { api } from '../../services/api'
-import { RiBookmarkLine, RiChat3Line, RiHeartFill, RiHeartLine } from 'react-icons/ri'
+import { RiBookmarkFill, RiBookmarkLine, RiChat3Line, RiHeartFill, RiHeartLine } from 'react-icons/ri'
 import { Alert, Snackbar } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { useProfile } from '../../hooks/useProfile'
@@ -121,7 +121,9 @@ const Post: React.FC = () => {
                 <button><RiChat3Line /></button>
               </div>
               <div className="save">
-                <button><RiBookmarkLine /></button>
+              <button>
+                  <RiBookmarkLine />
+                </button>
               </div>
             </div>
           </div>

@@ -21,6 +21,7 @@ export type PostType={
     content: string
     liked: boolean
     likes: number
+    saved : boolean
 }
 
 export type EditPostType={
@@ -35,4 +36,8 @@ export type EditPostProps={
 export type ContentProps={
     content: string
     limit: number
+}
+
+export type UserPostProps={
+    posts: PostType
 }

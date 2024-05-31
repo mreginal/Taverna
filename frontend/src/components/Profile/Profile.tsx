@@ -5,6 +5,7 @@ import Sidebar from '../../components/Sidebar/Sidebar'
 import EditProfileModal from '../../components/EditProfileModal/EditProfileModal'
 import { useProfile } from '../../hooks/useProfile'
 import { RiMailFill, RiSwordFill, RiVerifiedBadgeFill, RiVipCrownFill,  } from 'react-icons/ri'
+import UserPosts from './UserPosts'
 
 const Profile = () => {
   const userProfile = useProfile()
@@ -39,7 +40,7 @@ const Profile = () => {
               </div>
             </div>
             <div className="posts-user">
-
+                <UserPosts/>
             </div>
         </div>
         <div className="left-profile">
