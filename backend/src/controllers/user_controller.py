@@ -56,6 +56,8 @@ def update_user_profile(name, birthdate, gender):
     
 def add_favorite(post_id):
     id = get_jwt_identity()
+    if not post_id:
+        return {'message': 'ID do post deve ser enviado'}, 400
     response = User.add_favorite_service(id, post_id)
     if response.modified_count > 0:
         return {'message': 'Post adicionado aos favoritos com sucesso'}, 200
@@ -69,5 +71,13 @@ def remove_favorite(post_id):
         return {'message': 'Post removido dos favoritos com sucesso'}, 200
     else:
         return {'message': 'Post não estava nos favoritos ou usuário não encontrado'}, 404
+    
+def get_favorites():
+    id = get_jwt_identity()
+    favorites = User.find_favorites_service(id)
+    if favorites:
+        return favorites, 200
+    else:
+        return {'message': 'Usuário não encontrado'}, 404
 
 
