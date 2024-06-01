@@ -66,5 +66,12 @@ class User:
             {"$pull": {"favorites": post_id}}
         )
         return response
+    
+    @staticmethod
+    def find_favorites_service(user_id):
+        user = db.usuarios.find_one({"_id": ObjectId(user_id)})
+        if user:
+            return user.get("favorites", [])
+        return []
 
     

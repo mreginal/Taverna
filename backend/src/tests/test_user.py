@@ -145,3 +145,19 @@ def test_remove_favorite_service(user_model, mock_db):
     assert "favorites" in user
     assert post_id not in user["favorites"]
     assert "post_456" in user["favorites"]
+
+def test_get_favorites_service(user_model, mock_db):
+    user_id = mock_db.usuarios.insert_one({
+        "username": "test_user",
+        "name": "Test User",
+        "birthdate": "1990-01-01",
+        "email": "test@example.com",
+        "password": "hashed_password",
+        "gender": "M",
+        "favorites": ["post_123", "post_456"]
+    }).inserted_id
+
+    favorites = user_model.find_favorites_service(user_id)
+    assert len(favorites) == 2
+    assert "post_123" in favorites
+    assert "post_456" in favorites
