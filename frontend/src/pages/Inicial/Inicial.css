@@ -17,3 +17,25 @@
     font-family: var(--style-font);
     font-size: 60px;
 }
+
+@media (max-width: 767px){
+    .inicial{
+        background-color: var(--cor04);
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .logo-in img{
+        height: 250px;
+        width: 250px;
+    }
+    
+    .app-in h1{
+        color: var(--cor00);
+        font-family: var(--style-font);
+        font-size: 60px;
+    }
+}

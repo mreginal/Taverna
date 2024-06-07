@@ -9,6 +9,7 @@ import Feed from '../pages/Feed/Feed'
 import Sidebar from '../components/Sidebar/Sidebar'
 import Profile from '../components/Profile/Profile'
 import Favorites from '../pages/Favorites/Favorites'
+import NotificationsList from '../pages/Notifications/Notification'
 
 const AppRouter: React.FC = () => {
   return (
@@ -21,6 +22,7 @@ const AppRouter: React.FC = () => {
               <Route path="/feed" element={<Feed/>}/>
               <Route path='/profile' element={<Profile/>}/>
               <Route path='/favorites' element={<Favorites/>}/>
+              <Route path='/notification' element={<NotificationsList/>}/>
         </Routes>
       </div>
   )

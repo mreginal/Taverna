@@ -21,10 +21,11 @@ export type PostType={
     content: string
     liked: boolean
     likes: number
-    saved : boolean
+    favorited : boolean
 }
 
 export type EditPostType={
+    post_id: number
     title: string
     content: string
 }
@@ -40,4 +41,15 @@ export type ContentProps={
 
 export type UserPostProps={
     posts: PostType
+}
+
+
+export type Notification={
+    id: string;
+    user_id: number;
+    type: string;
+    title: string;
+    message: string;
+    post_id?: string;
+    sender_id: number;
 }

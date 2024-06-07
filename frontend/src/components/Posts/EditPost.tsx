@@ -13,6 +13,7 @@ const EditPost:React.FC<EditPostProps> = ({postId}) => {
     const {post_id} = useParams<{post_id: string}>()
 
     const [postData, setPostData] = useState<EditPostType>({
+        post_id: postId,
         title: '',
         content: ''
     })

@@ -45,7 +45,7 @@ const Sidebar: React.FC = () => {
         </div>
         { userProfile? (
           <div>
-            <div className="sidebar-item">
+            <div className="sidebar-item" onClick={() => handleNavigate('/notification')}>
             <li><RiNotification3Fill /></li>
             <span>Notificações</span>
             </div>
