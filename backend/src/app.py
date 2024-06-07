@@ -8,6 +8,7 @@ import os
 from routes.user_routes import user_bp
 from routes.auth_routes import auth_bp
 from routes.post_routes import post_bp
+from routes.notification_routes import notification_bp
 
 load_dotenv()
 
@@ -22,6 +23,7 @@ cors = CORS(app, resources={r"/*": {"origins": "*"}})
 app.register_blueprint(user_bp, url_prefix='/user')
 app.register_blueprint(auth_bp, url_prefix='/auth')
 app.register_blueprint(post_bp, url_prefix='/post')
+app.register_blueprint(notification_bp, url_prefix='/notification')
 
 if __name__ == "__main__":
     if FLASK_ENV == "production":
