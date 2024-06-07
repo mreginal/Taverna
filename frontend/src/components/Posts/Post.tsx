@@ -1,19 +1,23 @@
 import './Post.css'
 import { useState, useEffect } from 'react'
-import { PostType, User, PostProps } from '../../types/types'
+import { PostType, User } from '../../types/types'
 import { api } from '../../services/api'
-import { RiBookmarkLine, RiChat3Line, RiHeartFill, RiHeartLine } from 'react-icons/ri'
+import { RiBookmarkFill, RiBookmarkLine, RiHeartFill, RiHeartLine } from 'react-icons/ri'
 import { Alert, Snackbar } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
+import { useProfile } from '../../hooks/useProfile'
+import EditPost from './EditPost'
+import CommentsList from '../Comments/CommentsList'
 
-
-const Post: React.FC<PostProps> = () => {
+const Post: React.FC = () => {
   const [posts, setPosts] = useState<PostType[]>([])
   const [users, setUsers] = useState<User[]>([])
   const [error, setError] = useState('')
   const [reacting, setReacting] = useState(false)
-  const navigate = useNavigate()
   const [snackbarOpen, setSnackbarOpen] = useState(false)
+
+  const navigate = useNavigate()
+  const userProfile = useProfile()
 
   useEffect(() => {
     if (error) {
@@ -49,54 +53,100 @@ const Post: React.FC<PostProps> = () => {
     return user ? user.name : 'Usuário Desconhecido'
   }
 
-  const handleReact = async (postId: number, liked: boolean) => {
+  const handleReact = async (postId: number, liked: boolean, postUserId: number, postTitle: string) => {
     try {
-      if (reacting) return
-      setReacting(true)
+      if (reacting) return;
+      setReacting(true);
+  
+      const token = localStorage.getItem('token');
+      if (!token) {
+        setError('Faça login para reagir às postagens.');
+        setReacting(false);
+        setTimeout(() => {
+          navigate('/login');
+        }, 2000);
+        return;
+      }
+  
+      const endpoint = liked ? '/post/dislike' : '/post/like';
+      await api.post(
+        endpoint,
+        { post_id: postId },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+  
+      if (!liked) {
+        await api.post(
+          '/notification/criar',
+          {
+            user_id: postUserId,
+            type: 'like',
+            title: postTitle,
+            message: `curtiu seu post`,
+            post_id: postId,
+          },
+          { headers: { Authorization: `Bearer ${token}` } }
+        )
+      }
+  
+      setPosts(prevPosts =>
+        prevPosts.map(post =>
+          post._id === postId ? { ...post, liked: !liked, likes: liked ? post.likes - 1 : post.likes + 1 } : post
+        )
+      );
+  
+      setReacting(false);
+    } catch (error) {
+      console.error('Erro ao reagir à postagem:', error);
+      setReacting(false);
+    }
+  }
+  
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false)
+  }
 
+  const handleFavorite = async (postId: number, favorited: boolean) => {
+    try {
       const token = localStorage.getItem('token')
       if (!token) {
-        setError('Faça login para reagir as postagens.')
-        setReacting(false)
+        setError('Faça login para favoritar postagens.')
         setTimeout(() => {
           navigate('/login')
         }, 2000)
         return
       }
-
-      const endpoint = liked ? '/post/dislike' : '/post/like'
+  
+      const endpoint = favorited ? '/user/desfavoritar' : '/user/favoritar'
       await api.post(
         endpoint,
         { post_id: postId },
         { headers: { Authorization: `Bearer ${token}` } }
       )
-
+  
       setPosts(prevPosts =>
         prevPosts.map(post =>
-          post._id === postId ? { ...post, liked: !liked, likes: liked? post.likes -1 : post.likes +1 } : post
+          post._id === postId ? { ...post, favorited: !favorited } : post
         )
       )
-
-      setReacting(false)
+      console.log(posts)
     } catch (error) {
-      console.error('Erro ao reagir à postagem:', error)
-      setReacting(false)
+      console.error('Erro ao favoritar/desfavoritar a postagem:', error)
     }
   }
-
-  const handleCloseSnackbar = () => {
-    setSnackbarOpen(false)
-  }
-
+  
   return (
     <div>
       <div>
         {posts.map(post => (
           <div key={post._id} className='card-post'>
-            <div className="user-post">
-              <img src="pessoa-teste.png" alt="logo" />
-              <h2>{getUsername(post.user_id)}</h2>
-            </div>
+              <div className="user-post">
+                <img src="pessoa-teste.png" alt="logo" />
+                <h2>{getUsername(post.user_id)}</h2>
+                {userProfile?._id === post.user_id && 
+                  <EditPost postId={post._id}/>
+                }
+              </div>
 
             <div className="content-post">
               <h3>{post.title}</h3>
@@ -106,15 +156,17 @@ const Post: React.FC<PostProps> = () => {
             <div className="react-post">
               <div className="react">
                 <div className="like-post">
-                  <button disabled={reacting} onClick={() => handleReact(post._id, post.liked)}>
+                  <button disabled={reacting} onClick={() => handleReact(post._id, post.liked, post.user_id, post.title)}>
                     {post.liked ? <RiHeartFill color='var(--cor05)'/> : <RiHeartLine/> }
                     <p>{post.likes}</p>
                   </button>
                 </div>
-                <button><RiChat3Line /></button>
+                <CommentsList postId={post._id}/>
               </div>
               <div className="save">
-                <button><RiBookmarkLine /></button>
+              <button onClick={() => handleFavorite(post._id, post.favorited)}>
+                  {post.favorited ? <RiBookmarkFill color='var(--cor05)' /> : <RiBookmarkLine />}
+                </button>
               </div>
             </div>
           </div>

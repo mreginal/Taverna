@@ -1,4 +1,4 @@
-import './NewPosts.css'
+import './Post.css'
 import { useEffect, useState } from 'react'
 import { Alert, Modal, Snackbar } from '@mui/material'
 import { RiCloseCircleLine } from 'react-icons/ri'
