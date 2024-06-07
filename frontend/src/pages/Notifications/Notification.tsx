@@ -1,14 +1,13 @@
 import './Notification.css'
-import React, { useState, useEffect } from 'react';
-import { api } from '../../services/api';
-import { Notification, User } from '../../types/types';
-import Sidebar from '../../components/Sidebar/Sidebar';
-import { useProfile } from '../../hooks/useProfile';
-import { RiDeleteBin5Fill } from 'react-icons/ri';
+import React, { useState, useEffect } from 'react'
+import { api } from '../../services/api'
+import { Notification, User } from '../../types/types'
+import Sidebar from '../../components/Sidebar/Sidebar'
+import { useProfile } from '../../hooks/useProfile'
 
 const NotificationsList: React.FC = () => {
-  const [notifications, setNotifications] = useState<Notification[]>([]);
-  const [users, setUsers] = useState<User[]>([]);
+  const [notifications, setNotifications] = useState<Notification[]>([])
+  const [users, setUsers] = useState<User[]>([])
 
   const userProfile = useProfile()
 
@@ -59,17 +58,13 @@ const NotificationsList: React.FC = () => {
 
   const handleRemove = async (id: string) => {
     try {
-      if (id !== undefined) {
-        const response = await api.delete(`/api/notification/remover/${id}`, {
+        const response = await api.delete(`/remover/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`
           }
-        });
+        })
         console.log(response.data)
-        setNotifications(notifications.filter((n) => n.id !== id));
-      } else {
-        console.error('ID da notificação é undefined');
-      }
+        setNotifications(notifications.filter((n) => n.id !== id))
     } catch (error) {
       console.error(error);
     }
@@ -92,11 +87,10 @@ const NotificationsList: React.FC = () => {
           </div>
           <button className='btn-notification' onClick={handleRemoveAll}>Limpar tudo</button>
           <ul>
-            {notifications.map((notification) => (
-              <li key={notification.id}>
+            {notifications.map((notification, index) => (
+              <li key={index}>
                 <div className="notification">
-                  <div className='content-not'><span>{getUsernameById(notification.sender_id)}</span> {notification.message}</div>
-                  <button onClick={() => handleRemove(notification.id)}><RiDeleteBin5Fill/></button>
+                  <div className='content-not'><span>{getUsernameById(notification.sender_id)}</span> {notification.message}: {notification.title}</div>
                 </div>
               </li>
             ))}

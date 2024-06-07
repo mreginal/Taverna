@@ -72,8 +72,8 @@ const CommentsList: React.FC<{ postId: number }> = ({ postId }) => {
                     <div>Nenhum comentário encontrado.</div>
                   ) : (
                         <ul className='comments'>
-                          {comments.map((comment) => (
-                            <li key={comment.id}>
+                          {comments.map((comment, index) => (
+                            <li key={index}>
                                 <div className="comment">
                                     <div className="photo-user-comment">
                                         <img src="../../pessoa-teste.png" alt="photo" />
