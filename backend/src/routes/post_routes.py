@@ -33,7 +33,6 @@ def create_post_route():
     
     title = data.get('title')
     content = data.get('content')
-    username = data.get('username')
     response, status_code = create_post(title, content)
     return jsonify(response), status_code
 
