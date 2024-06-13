@@ -1,3 +1,4 @@
+/*Post CSS*/
 .card-post{
     margin: 30px 0px 30px 0px;
     background-color: var(--cor01);
@@ -7,10 +8,23 @@
 }
 
 .user-post{
+    position: relative;
     display: flex;
     align-items: center;
     gap: 15px;
     margin-bottom: 20px;
+}
+
+.user-post button{
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 12px 0px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: var(--cor03);
+    font-size: 25px;
 }
 
 .user-post img{
@@ -48,4 +62,116 @@
 .react{
     display: flex;
     gap: 30px;
+}
+
+
+/*New Post CSS*/
+
+.post-container input{
+    display: flex;
+    height: 60px;
+    padding-left: 20px;
+    border: none;
+    font-family: var(--main-font);
+    font-weight: bold;
+    color: var(--cor03);
+    cursor: pointer;
+}
+
+.post-container input:hover{
+    color: var(--cor04);
+}
+
+.newpost-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.newpost{
+    background-color: var(--cor01);
+    padding: 30px;
+    border-radius: 12px;
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+}
+
+.post{
+    display: flex;
+    flex-direction: column;
+}
+
+.post input, .post textarea{
+    border: none;
+    border-radius: 10px;
+    margin: 5px;
+    font-family: var(--main-font);
+}
+
+#tittle{
+    padding: 20px 10px;
+}
+
+#content{
+    justify-content: start;
+    padding: 10px 10px 100px 10px;
+    top: 0;
+}
+
+textarea::-webkit-scrollbar {
+width: 10px; 
+}
+
+textarea::-webkit-scrollbar-track {
+background: var(--cor00);
+}
+
+
+textarea::-webkit-scrollbar-thumb {
+background: var(--cor02);
+border-radius: 5px; 
+}
+
+textarea::-webkit-scrollbar-thumb:hover {
+background: var(--cor03);
+cursor: pointer;
+}
+
+.btn-exit{
+    display: flex;
+    background-color: var(--cor01);
+    width: 20px;
+    font-size: 22px;
+    color: var(--cor03);
+    border: none;
+    cursor: pointer;
+    align-self: flex-end;
+}
+
+.btn-post{
+    justify-content: end;
+}
+
+/*User Posts CSS*/
+
+.user-post-container{
+    display: flex;
+    flex-direction: column;
+    max-height: 370px;
+    overflow-y: auto;
+}
+
+.user-post-container::-webkit-scrollbar{
+    width: 0px;
+}
+
+.card-post-profile{
+    width: 35vw;
+    margin: 30px 0px 20px 30px;
+    background-color: var(--cor01);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 1px 4px 5px 0px var(--cor02);
 }
