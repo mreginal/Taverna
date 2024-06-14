@@ -1,0 +1,81 @@
+.post form{
+    display: flex;
+    flex-direction: column;
+}
+
+.post form textarea{
+    padding: 10px;
+    min-height: 100px;
+    width: 400px;
+}
+
+.post form button{
+    background-color: var(--cor05);
+    border: none;
+    padding: 10px;
+    border-radius: 10px;
+    align-self: flex-end;
+    margin-top: 10px ;
+    color: var(--cor00);
+    font-family: var(--main-font);
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.commenting-btn button{
+    padding: 10px;
+    border: none;
+    background-color: var(--cor02);
+    border-radius: 10px;
+    font-family: var(--main-font);
+    font-weight: 600;
+    margin: 20px 0px;
+    width: 32vw;
+    cursor: pointer;
+    justify-self: center;
+}
+.comments{
+    display: flex;
+    flex-direction: column;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.comments::-webkit-scrollbar{
+    width: 0px;
+}
+
+.comment{
+    background-color: var(--cor02);
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 10px;
+    display: grid;
+    grid-template-columns: 1fr 8fr 1fr;
+}
+
+.user-comment{
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.photo-user-comment img{
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 20px;
+}
+
+.edit-comment-btn{
+    background:none;
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.comments-count{
+    display: flex;
+    gap: 5px;
+    color: var(--cor03);
+    align-items: center;
+}
