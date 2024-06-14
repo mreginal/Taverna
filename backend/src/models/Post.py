@@ -36,7 +36,7 @@ class Post:
     
     @staticmethod
     def find_post_by_id_service(post_id):
-        post = db.posts.find_one({"_id": ObjectId(post_id)})
+        post = db.posts.find_one({"_id": ObjectId(post_id)}, {"comments": 0})
         if post:
             post['_id'] = str(post['_id'])
             return post

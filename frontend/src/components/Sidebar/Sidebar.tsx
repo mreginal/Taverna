@@ -1,17 +1,17 @@
 import React from 'react';
 import './Sidebar.css';
-import { RiHome2Fill, RiSwordFill, RiMessage2Fill, RiLogoutBoxFill, RiLoginBoxFill, RiNotification3Fill, RiBookmarkFill } from 'react-icons/ri';
+import { RiHome2Fill, RiSwordFill, RiMessage2Fill, RiLogoutBoxFill, RiLoginBoxFill, RiNotification3Fill, RiBookmarkFill, RiNotificationBadgeFill } from 'react-icons/ri';
 import { useNavigate } from 'react-router-dom';
 import {useProfile} from '../../hooks/useProfile';
 
 const Sidebar: React.FC = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
+  const userProfile = useProfile();
+
 
   const handleNavigate = (path: string) => {
-    navigate(path);
-  };
-
-  const userProfile = useProfile();
+    navigate(path)
+  }
 
   if (!userProfile) {}
 
@@ -46,9 +46,9 @@ const Sidebar: React.FC = () => {
         { userProfile? (
           <div>
             <div className="sidebar-item" onClick={() => handleNavigate('/notification')}>
-            <li><RiNotification3Fill /></li>
+            <li><RiNotification3Fill/></li>
             <span>Notificações</span>
-            </div>
+          </div>
             <div className="sidebar-item" onClick={() => handleNavigate('/favorites')}>
               <li><RiBookmarkFill /> </li>
               <span>Favoritos</span>

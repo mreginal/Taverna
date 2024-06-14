@@ -48,10 +48,10 @@ const AddComment: React.FC<{ postId: number }> = ({ postId }) => {
         setOpen(false)
         window.location.reload()
       } else {
-        setError('Erro ao adicionar comentário')
+        console.error(error)
       }
     } catch (error) {
-      setError('Erro ao adicionar comentário. Por favor, tente novamente.')
+      console.error(error)
     }
   }
 

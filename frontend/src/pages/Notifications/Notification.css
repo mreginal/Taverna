@@ -24,6 +24,7 @@
 .notification{
     display: flex;
     gap: 40px;
+    align-items: center;
     justify-content: space-between;
     background-color: var(--cor01);
     margin: 20px;

@@ -126,7 +126,7 @@ const Post: React.FC = () => {
   
       setPosts(prevPosts =>
         prevPosts.map(post =>
-          post._id === postId ? { ...post, favorited: !favorited } : post
+          post._id === postId ? { ...post, favorited: !favorited} : post
         )
       )
       console.log(posts)
