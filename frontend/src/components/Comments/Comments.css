@@ -72,3 +72,10 @@
     font-size: 22px;
     cursor: pointer;
 }
+
+.comments-count{
+    display: flex;
+    gap: 5px;
+    color: var(--cor03);
+    align-items: center;
+}

@@ -1,6 +1,6 @@
 import '../Posts/Post.css'
 import { useState, useEffect } from 'react'
-import { PostType, User } from '../../types/types'
+import { PostType } from '../../types/types'
 import { api } from '../../services/api'
 import { RiBookmarkLine, RiChat3Line, RiHeartFill, RiHeartLine } from 'react-icons/ri'
 import { Alert, Snackbar } from '@mui/material'
