@@ -6,7 +6,6 @@ import { RiChat3Line, RiCloseCircleLine } from 'react-icons/ri'
 import AddComment from './AddComment'
 import { User } from '../../types/types'
 import { useProfile } from '../../hooks/useProfile'
-import EditComment from './EditComment'
 
 interface Comment {
   id: number
@@ -17,7 +16,7 @@ interface Comment {
 const CommentsList: React.FC<{ postId: number }> = ({ postId }) => {
   const [comments, setComments] = useState<Comment[]>([])
   const [users, setUsers] = useState<User[]>([])
-  const [error, setError] = useState<string | null>(null)
+  const [error] = useState<string | null>(null)
   const [open, setOpen] = useState(false)
 
   const userProfile = useProfile()
@@ -57,7 +56,12 @@ const CommentsList: React.FC<{ postId: number }> = ({ postId }) => {
 
   return (
     <div>
-      <button className='comment-btn' onClick={handleOpen}><RiChat3Line /></button>
+      <div className='comments-count'>
+        <button className='comment-btn' onClick={handleOpen}><RiChat3Line /></button>
+        {comments.length >= 0 && (
+            <span className="comment-count">{comments.length}</span>
+        )}
+      </div>
       <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
         <div className='newpost-container'>
           <div className="newpost">
@@ -84,7 +88,9 @@ const CommentsList: React.FC<{ postId: number }> = ({ postId }) => {
                                     </div>
                                     {userProfile?._id === comment.user_id && 
                                     <>
-                                        <div className='edit-comment'></div>
+                                        <div className='edit-comment'>
+                                          
+                                        </div>
                                     </>
                                     }
                                 </div>

@@ -1,16 +1,13 @@
 import { Modal } from "@mui/material"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { RiCloseCircleLine, RiPencilFill } from "react-icons/ri"
 import { EditPostProps, EditPostType } from "../../types/types"
 import { api } from "../../services/api"
-import { useParams } from "react-router-dom"
 
 const EditPost:React.FC<EditPostProps> = ({postId}) => {
     const [open, setOpen] = useState(false)
     
-    const token = localStorage.getItem('token')
-
-    const {post_id} = useParams<{post_id: string}>()
+    const [token] = useState(localStorage.getItem('token'))
 
     const [postData, setPostData] = useState<EditPostType>({
         post_id: postId,
@@ -18,28 +15,29 @@ const EditPost:React.FC<EditPostProps> = ({postId}) => {
         content: ''
     })
 
-    useEffect(()=>{
-        const fetchPostData = async () =>{
-            try {
-                const response = await api.get(`/post/${postId}`,{
-                    headers:{
-                        Authorization: `Bearer ${token}`
-                    }
-                })
-                setPostData(response.data)
-            } catch (error) {
-                console.error('Erro: ', error)
-            }
+    const handleOpen = async() => {
+        setOpen(true)
+        try {
+            const response = await api.get(`/post/${postId}`,{
+                headers:{
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            setPostData(response.data)
+        } catch (error) {
+            console.error('Erro:', error)
         }
-        fetchPostData()
-    }, [post_id])
-
-    const handleOpen = () => setOpen(true)
-    const handleClose = () => setOpen(false)
+    }
+    const handleClose = () => {
+        setOpen(false)
+        setPostData({
+            post_id: postId,
+            title: '',
+            content:''
+        })
+    }
 
     const handleUpdatePost = async() => {
-        if (!postData) return
-
         try{
             const response = await api.post('/post/atualizar', postData,{
                 headers:{

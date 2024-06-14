@@ -4,6 +4,7 @@ import { api } from '../../services/api'
 import { Notification, User } from '../../types/types'
 import Sidebar from '../../components/Sidebar/Sidebar'
 import { useProfile } from '../../hooks/useProfile'
+import { RiDeleteBinFill } from 'react-icons/ri'
 
 const NotificationsList: React.FC = () => {
   const [notifications, setNotifications] = useState<Notification[]>([])
@@ -48,7 +49,7 @@ const NotificationsList: React.FC = () => {
         headers: {
           Authorization: `Bearer ${token}`
         }
-      });
+      })
       console.log(response.data)
       setNotifications([])
     } catch (error) {
@@ -56,20 +57,21 @@ const NotificationsList: React.FC = () => {
     }
   }
 
-  const handleRemove = async (id: string) => {
+  const handleRemove = async (notificationId: number) => {
+    console.log(notificationId)
     try {
-        const response = await api.delete(`/remover/${id}`, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        })
-        console.log(response.data)
-        setNotifications(notifications.filter((n) => n.id !== id))
+      const response = await api.delete(`/notification/remover/${notificationId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      console.log('Notificação removida:', response.data);
+      setNotifications(notifications.filter((n) => n._id !== notificationId))
     } catch (error) {
-      console.error(error);
+      console.error('Erro ao remover notificação:', error)
     }
-  };
-
+  }
+  
   const getUsernameById = (userId: number): string => {
     const user = users.find(user => user._id === userId);
     return user ? user.name : 'Usuário Desconhecido';
@@ -91,6 +93,9 @@ const NotificationsList: React.FC = () => {
               <li key={index}>
                 <div className="notification">
                   <div className='content-not'><span>{getUsernameById(notification.sender_id)}</span> {notification.message}: {notification.title}</div>
+                  <div className="delete-not">
+                      <button onClick={()=>handleRemove(notification._id)}><RiDeleteBinFill/></button>
+                  </div>
                 </div>
               </li>
             ))}
