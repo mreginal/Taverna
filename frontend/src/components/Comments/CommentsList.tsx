@@ -6,7 +6,6 @@ import { RiChat3Line, RiCloseCircleLine } from 'react-icons/ri'
 import AddComment from './AddComment'
 import { User } from '../../types/types'
 import { useProfile } from '../../hooks/useProfile'
-import EditComment from './EditComment'
 
 interface Comment {
   id: number
