@@ -161,3 +161,19 @@ def test_get_favorites_service(user_model, mock_db):
     assert len(favorites) == 2
     assert "post_123" in favorites
     assert "post_456" in favorites
+
+def test_upload_profile_picture_service(user_model, mock_db):
+        user_id = mock_db.usuarios.insert_one({
+            "username": "test_user",
+            "name": "Test User",
+            "birthdate": "1990-01-01",
+            "email": "test@example.com",
+            "password": "hashed_password"
+        }).inserted_id
+
+        file = "profile_picture.jpg"
+        response = user_model.upload_profile_picture_service(user_id, file)
+        assert response.modified_count == 1
+        user = mock_db.usuarios.find_one({"_id": ObjectId(user_id)})
+        assert "profile_picture" in user
+        assert user["profile_picture"] == file

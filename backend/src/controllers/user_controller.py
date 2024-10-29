@@ -1,6 +1,8 @@
 from models.User import User
 from flask_jwt_extended import get_jwt_identity
 from bson import ObjectId
+from werkzeug.utils import secure_filename
+from firebase_admin import storage
 import bcrypt
 import base64
 
@@ -79,5 +81,26 @@ def get_favorites():
         return favorites, 200
     else:
         return {'message': 'Usuário não encontrado'}, 404
+    
+def upload_profile_picture(file):
+    id = get_jwt_identity()
+
+    if not file:
+        return {"message": "Nenhum arquivo foi enviado"}, 400
+
+    filename = secure_filename(file.filename)
+    bucket = storage.bucket()
+    blob = bucket.blob(filename)
+
+    blob.upload_from_file(file)
+
+    blob.make_public()
+    file_url = blob.public_url
+
+    response = User.upload_profile_picture_service(id, file_url)
+    if response.modified_count > 0:
+        return {"message": "Imagem de perfil atualizada com sucesso", "profile_picture_url": file_url}, 200
+    else:
+        return {"message": "Usuário não encontrado ou atualização falhou"}, 404
 
 
