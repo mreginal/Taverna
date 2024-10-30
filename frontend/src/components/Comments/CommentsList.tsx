@@ -54,6 +54,11 @@ const CommentsList: React.FC<{ postId: number }> = ({ postId }) => {
     return user ? user.name : 'Usuário Desconhecido'
   }
 
+  const getUserProfilePicture = (userId: number): string => {
+    const user = users.find(user => user._id === userId)
+    return user?.profile_picture || 'pessoa-teste.png'
+  }
+
   return (
     <div>
       <div className='comments-count'>
@@ -80,7 +85,7 @@ const CommentsList: React.FC<{ postId: number }> = ({ postId }) => {
                             <li key={index}>
                                 <div className="comment">
                                     <div className="photo-user-comment">
-                                        <img src="../../pessoa-teste.png" alt="photo" />
+                                        <img src={getUserProfilePicture(comment.user_id)} alt="photo" />
                                     </div>
                                     <div>
                                         <div className="user-comment">{getUsername(comment.user_id)}</div>

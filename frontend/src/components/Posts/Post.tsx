@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom'
 import { useProfile } from '../../hooks/useProfile'
 import EditPost from './EditPost'
 import CommentsList from '../Comments/CommentsList'
+import { useProfilePicture } from '../../hooks/useProfilePicture'
 
 const Post: React.FC = () => {
   const [posts, setPosts] = useState<PostType[]>([])
@@ -17,6 +18,7 @@ const Post: React.FC = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false)
 
   const navigate = useNavigate()
+  const { profilePicture } = useProfilePicture();
   const userProfile = useProfile()
 
   useEffect(() => {
@@ -51,6 +53,11 @@ const Post: React.FC = () => {
   const getUsername = (userId: number): string => {
     const user = users.find(user => user._id === userId)
     return user ? user.name : 'Usuário Desconhecido'
+  }
+  
+  const getUserProfilePicture = (userId: number): string => {
+    const user = users.find(user => user._id === userId)
+    return user?.profile_picture || 'pessoa-teste.png'
   }
 
   const handleReact = async (postId: number, liked: boolean, postUserId: number, postTitle: string) => {
@@ -141,7 +148,7 @@ const Post: React.FC = () => {
         {posts.map(post => (
           <div key={post._id} className='card-post'>
               <div className="user-post">
-                <img src="pessoa-teste.png" alt="logo" />
+              <img src={getUserProfilePicture(post.user_id)} alt="Foto de perfil" />
                 <h2>{getUsername(post.user_id)}</h2>
                 {userProfile?._id === post.user_id && 
                   <EditPost postId={post._id}/>

@@ -55,3 +55,9 @@
     background-color: var(--cor02);
     height: 100vh;
 }
+
+.user-profile-image img {
+    width: 150px; 
+    height: 150px;
+    object-fit: cover;
+}

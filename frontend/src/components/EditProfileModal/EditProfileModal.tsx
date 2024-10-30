@@ -24,6 +24,8 @@ const EditProfile: React.FC = () => {
     gender: userProfile?.gender || '',
   });
 
+  const [profilePicture, setProfilePicture] = useState<string | null>(null);
+
   useEffect(() => {
     if (userProfile) {
       setFormData({
@@ -39,42 +41,62 @@ const EditProfile: React.FC = () => {
     setFormData({ ...formData, [name]: value })
   }
 
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        setProfilePicture(reader.result as string);
+      };
+
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-
-    setError('')
-
-    setFormData({
-      name: '',
-      birthdate: '',
-      gender:'',
-    })
-
-    const token = localStorage.getItem('token') 
-
+    e.preventDefault();
+  
+    setError('');
+  
+    const token = localStorage.getItem('token');
+  
     if (!token) {
-      console.error('Token não encontrado')
-      return
+      console.error('Token não encontrado');
+      return;
     }
-
+  
     const config: AxiosRequestConfig = {
-      headers:{
+      headers: {
         Authorization: `Bearer ${token}`
-      }
-    } 
-
+      },
+    };
+  
     try {
-      await api.post('/user/atualizar', formData, config)
-      navigate('/profile')
-      window.location.reload()
+      await api.post('/user/atualizar', formData, config);
+  
+      if (profilePicture) {
+        const uploadData = new FormData();
+        const imageBlob = await fetch(profilePicture).then((res) => res.blob());
+        uploadData.append('file', imageBlob, 'profile-picture.png');
+  
+        await api.post('/user/upload-profile-picture', uploadData, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+      }
+  
+      navigate('/profile');
+      window.location.reload();
     } catch (error) {
-      console.log(error);
-      setError('Erro ao editar o perfil do usuário. Por favor, preencha todos os campos corretamente.')
+      console.error(error);
+      setError('Erro ao editar o perfil do usuário. Por favor, preencha todos os campos corretamente.');
     }
-
-    handleClose()
-  }
-
+  
+    handleClose();
+  };
+  
 
   return (
     <div>
@@ -93,8 +115,13 @@ const EditProfile: React.FC = () => {
                             </p>
                           </div>
                           <div className="edit-photo">
-                            <img src="pessoa-teste.png" alt="logo"/>
-                            <RiBallPenFill/>
+                            {profilePicture ? (
+                              <img src={profilePicture} alt="Foto de perfil" />
+                            ) : (
+                              <img src="pessoa-teste.png" alt="logo" />
+                            )}
+                            <input type="file" accept="image/*" onChange={handleImageChange} style={{ display: 'none' }} id="file-input" />
+                            <label htmlFor="file-input"><RiBallPenFill /></label>
                           </div>
                           <label>
                             <span>Nome completo:</span>

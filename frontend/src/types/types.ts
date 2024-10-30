@@ -5,6 +5,7 @@ export type User={
     email: string
     password: string
     gender: string
+    profile_picture: string
 }
 
 export type UserEdit={

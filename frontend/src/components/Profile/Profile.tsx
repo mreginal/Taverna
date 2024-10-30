@@ -6,8 +6,10 @@ import EditProfileModal from '../../components/EditProfileModal/EditProfileModal
 import { useProfile } from '../../hooks/useProfile'
 import { RiMailFill, RiSwordFill, RiVerifiedBadgeFill, RiVipCrownFill,  } from 'react-icons/ri'
 import UserPosts from './UserPosts'
+import { useProfilePicture } from '../../hooks/useProfilePicture'
 
 const Profile = () => {
+  const { profilePicture } = useProfilePicture();
   const userProfile = useProfile()
   if(!userProfile){
     return
@@ -21,7 +23,9 @@ const Profile = () => {
         <div className="center-profile">
             <div className="info-user">
               <div className="user-profile">
-                <img src="pessoa-teste.png" alt="logo"/>
+                <div className="user-profile-image">
+                  <img src={profilePicture || 'pessoa-teste.png'} alt="Foto de perfil"/>
+                </div>
                 <h1>{userProfile.name} <RiVerifiedBadgeFill color='var(--cor05)'/></h1>
               </div>
               <div className="itens-profile">
