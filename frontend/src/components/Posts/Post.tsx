@@ -130,7 +130,24 @@ const Post: React.FC = () => {
         { post_id: postId },
         { headers: { Authorization: `Bearer ${token}` } }
       )
-  
+      
+      if (!favorited) {
+        const postUserId = posts.find(post=> post._id === postId)?.user_id
+        const postTitle = posts.find(post=> post._id === postId)?.title
+
+        await api.post(
+          '/notification/criar',
+          {
+            user_id: postUserId,
+            type: 'favorite',
+            title: postTitle,
+            message: `favoritou seu post`,
+            post_id: postId,
+          },
+          { headers: { Authorization: `Bearer ${token}` } }
+        )
+      }
+
       setPosts(prevPosts =>
         prevPosts.map(post =>
           post._id === postId ? { ...post, favorited: !favorited} : post
@@ -141,6 +158,34 @@ const Post: React.FC = () => {
       console.error('Erro ao favoritar/desfavoritar a postagem:', error)
     }
   }
+
+  const handleNotifyComment = async (postId: number, postUserId: number, postTitle: string) => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        setError('Faça login para comentar nas postagens.');
+        setTimeout(() => {
+          navigate('/login');
+        }, 2000);
+        return;
+      }
+  
+      await api.post(
+        '/notification/criar',
+        {
+          user_id: postUserId,
+          type: 'comment',
+          title: postTitle,
+          message: `comentou em seu post`,
+          post_id: postId,
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+    } catch (error) {
+      console.error('Erro ao enviar notificação de comentário:', error);
+    }
+  };
+  
   
   return (
     <div>
@@ -168,7 +213,7 @@ const Post: React.FC = () => {
                     <p>{post.likes}</p>
                   </button>
                 </div>
-                <CommentsList postId={post._id}/>
+                <CommentsList postId={post._id} postUserId={post.user_id} postTitle={post.title}/>
               </div>
               <div className="save">
               <button onClick={() => handleFavorite(post._id, post.favorited)}>

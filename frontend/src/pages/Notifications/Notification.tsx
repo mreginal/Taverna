@@ -76,7 +76,7 @@ const NotificationsList: React.FC = () => {
     const user = users.find(user => user._id === userId);
     return user ? user.name : 'Usuário Desconhecido';
   };
-
+  
   return (
     <div className="feed">
       <div className="right-feed">
@@ -92,7 +92,9 @@ const NotificationsList: React.FC = () => {
             {notifications.map((notification, index) => (
               <li key={index}>
                 <div className="notification">
-                  <div className='content-not'><span>{getUsernameById(notification.sender_id)}</span> {notification.message}: {notification.title}</div>
+                  <div className='content-not'>
+                    <span>{getUsernameById(notification.sender_id)}</span> {notification.message}: {notification.title}
+                  </div>
                   <div className="delete-not">
                       <button onClick={()=>handleRemove(notification._id)}><RiDeleteBinFill/></button>
                   </div>

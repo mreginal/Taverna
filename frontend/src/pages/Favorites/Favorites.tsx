@@ -74,6 +74,11 @@ const Favorites: React.FC = () => {
     return user ? user.name : 'Usuário Desconhecido'
   }
 
+  const getUserProfilePicture = (userId: number): string => {
+    const user = users.find(user => user._id === userId)
+    return user ? user.profile_picture : 'pessoa-teste.png'
+  }
+
   const handleReact = async (postId: number, liked: boolean) => {
     try {
       if (reacting) return
@@ -156,7 +161,7 @@ const Favorites: React.FC = () => {
                         <li key={post._id}>
                           <div className='card-post-favorites'>
                               <div className="user-post">
-                                <img src="pessoa-teste.png" alt="logo" />
+                                <img src={getUserProfilePicture(post.user_id)} alt="logo" />
                                 <h2>{getUsername(post.user_id)}</h2>
                                 {userProfile?._id === post.user_id && 
                                   <EditPost postId={post._id}/>

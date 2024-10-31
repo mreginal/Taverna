@@ -68,11 +68,15 @@ const EditProfile: React.FC = () => {
   
     const config: AxiosRequestConfig = {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
       },
     };
   
     try {
+
+      console.log('Dados enviados: ', formData)
+
       await api.post('/user/atualizar', formData, config);
   
       if (profilePicture) {

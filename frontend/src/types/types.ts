@@ -52,6 +52,6 @@ export type Notification={
     type: string;
     title: string;
     message: string;
-    post_id?: string;
+    post_id?: string | number;
     sender_id: number;
 }

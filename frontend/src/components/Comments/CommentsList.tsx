@@ -13,7 +13,7 @@ interface Comment {
   user_id: number
 }
 
-const CommentsList: React.FC<{ postId: number }> = ({ postId }) => {
+const CommentsList: React.FC<{ postId: number; postUserId: number; postTitle: string; }> = ({ postId, postUserId, postTitle }) => {
   const [comments, setComments] = useState<Comment[]>([])
   const [users, setUsers] = useState<User[]>([])
   const [error] = useState<string | null>(null)
@@ -106,7 +106,7 @@ const CommentsList: React.FC<{ postId: number }> = ({ postId }) => {
                 </>
               )}
                 <div className='commenting-btn'>
-                    <AddComment postId={postId} />
+                    <AddComment postId={postId} postUserId={postUserId} postTitle={postTitle}/>
                 </div>
             </div>
           </div>
