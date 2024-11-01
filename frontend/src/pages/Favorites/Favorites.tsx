@@ -35,7 +35,7 @@ const Favorites: React.FC = () => {
         setFavorites(response.data)
       } catch (error) {
         console.error('Erro ao buscar favoritos:', error)
-        setError('Erro ao buscar favoritos.')
+        setError('Nenhum favorito.')
       }
     }
 
@@ -72,6 +72,11 @@ const Favorites: React.FC = () => {
   const getUsername = (userId: number): string => {
     const user = users.find(user => user._id === userId)
     return user ? user.name : 'Usuário Desconhecido'
+  }
+
+  const getUserProfilePicture = (userId: number): string => {
+    const user = users.find(user => user._id === userId)
+    return user?.profile_picture || 'pessoa-teste.png'
   }
 
   const handleReact = async (postId: number, liked: boolean) => {
@@ -156,7 +161,7 @@ const Favorites: React.FC = () => {
                         <li key={post._id}>
                           <div className='card-post-favorites'>
                               <div className="user-post">
-                                <img src="pessoa-teste.png" alt="logo" />
+                                <img src={getUserProfilePicture(post.user_id)} alt="logo" />
                                 <h2>{getUsername(post.user_id)}</h2>
                                 {userProfile?._id === post.user_id && 
                                   <EditPost postId={post._id}/>
@@ -175,7 +180,7 @@ const Favorites: React.FC = () => {
                                   <p>{post.likes}</p>
                                 </button>
                               </div>
-                              <CommentsList postId={post._id}/>
+                              <CommentsList postId={post._id} postTitle={post.title} postUserId={post.user_id}/>
                             </div>
                             <div className="save">
                             <button onClick={() => handleFavorite(post._id, post.favorited)}>

@@ -6,7 +6,13 @@ import { RiCloseCircleLine } from 'react-icons/ri'
 import { useNavigate } from 'react-router-dom'
 import { useProfile } from '../../hooks/useProfile'
 
-const AddComment: React.FC<{ postId: number }> = ({ postId }) => {
+interface AddCommentProps {
+  postId: number;
+  postUserId: number;
+  postTitle: string;
+}
+
+const AddComment: React.FC<AddCommentProps> = ({ postId, postUserId, postTitle }) => {
   const [content, setContent] = useState('')
   const [error, setError] = useState('')
   const [open, setOpen] = useState(false)
@@ -44,6 +50,7 @@ const AddComment: React.FC<{ postId: number }> = ({ postId }) => {
       })
 
       if (response.status === 200) {
+        await notifyComment(postId, postUserId, postTitle)
         setContent('')
         setOpen(false)
         window.location.reload()
@@ -52,6 +59,29 @@ const AddComment: React.FC<{ postId: number }> = ({ postId }) => {
       }
     } catch (error) {
       console.error(error)
+    }
+  }
+
+  const notifyComment = async (postId: number, postUserId: number, postTitle: string) => {
+    try {
+      const token = localStorage.getItem('token')
+      if (!token) return
+
+      await api.post(
+        '/notification/criar',
+        {
+          user_id: postUserId,
+          type: 'comment',
+          title: postTitle,
+          message: `comentou em seu post`,
+          post_id: postId,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
+    } catch (error) {
+      console.error('Erro ao enviar notificação de comentário:', error)
     }
   }
 
