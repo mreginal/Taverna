@@ -79,3 +79,4 @@ def upload_profile_picture_route():
     file = request.files['file']
     response, status_code = upload_profile_picture(file)
     return jsonify(response), status_code
+

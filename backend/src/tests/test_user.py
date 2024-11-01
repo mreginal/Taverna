@@ -177,3 +177,4 @@ def test_upload_profile_picture_service(user_model, mock_db):
         user = mock_db.usuarios.find_one({"_id": ObjectId(user_id)})
         assert "profile_picture" in user
         assert user["profile_picture"] == file
+
