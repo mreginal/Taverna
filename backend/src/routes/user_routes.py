@@ -2,7 +2,7 @@ from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required
 from controllers.user_controller import (
     get_all_users, create_user, get_user_profile, update_user_profile, get_user_by_id,
-    add_favorite, remove_favorite, get_favorites
+    add_favorite, remove_favorite, get_favorites, upload_profile_picture
 )
 
 user_bp = Blueprint('user_bp', __name__)
@@ -69,3 +69,14 @@ def remove_favorite_route():
 def get_favorites_route():
     favorites, status_code = get_favorites()
     return jsonify(favorites), status_code
+
+@user_bp.route('/upload-profile-picture', methods=['POST'])
+@jwt_required()
+def upload_profile_picture_route():
+    if 'file' not in request.files:
+        return jsonify({"message": "Nenhum arquivo foi enviado"}), 400
+    
+    file = request.files['file']
+    response, status_code = upload_profile_picture(file)
+    return jsonify(response), status_code
+

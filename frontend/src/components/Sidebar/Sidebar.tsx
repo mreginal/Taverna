@@ -1,19 +1,18 @@
 import React from 'react';
 import './Sidebar.css';
-import { RiHome2Fill, RiSwordFill, RiMessage2Fill, RiLogoutBoxFill, RiLoginBoxFill, RiNotification3Fill, RiBookmarkFill, RiNotificationBadgeFill } from 'react-icons/ri';
+import { RiHome2Fill, RiSwordFill, RiMessage2Fill, RiLogoutBoxFill, RiLoginBoxFill, RiNotification3Fill, RiBookmarkFill } from 'react-icons/ri';
 import { useNavigate } from 'react-router-dom';
-import {useProfile} from '../../hooks/useProfile';
+import { useProfile } from '../../hooks/useProfile';
+import { useProfilePicture } from '../../hooks/useProfilePicture';
 
 const Sidebar: React.FC = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const userProfile = useProfile();
-
+  const { profilePicture } = useProfilePicture();
 
   const handleNavigate = (path: string) => {
-    navigate(path)
-  }
-
-  if (!userProfile) {}
+    navigate(path);
+  };
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -35,7 +34,7 @@ const Sidebar: React.FC = () => {
           <li><RiHome2Fill /></li>
           <span>Taverna</span>
         </div>
-        <div className="sidebar-item" onClick={() => handleNavigate('/register')}>
+        <div className="sidebar-item">
           <li><RiSwordFill /></li>
           <span>Guilda</span>
         </div>
@@ -43,53 +42,43 @@ const Sidebar: React.FC = () => {
           <li><RiMessage2Fill /></li>
           <span>Chat</span>
         </div>
-        { userProfile? (
-          <div>
+        {userProfile && (
+          <>
             <div className="sidebar-item" onClick={() => handleNavigate('/notification')}>
-            <li><RiNotification3Fill/></li>
-            <span>Notificações</span>
-          </div>
+              <li><RiNotification3Fill /></li>
+              <span>Notificações</span>
+            </div>
             <div className="sidebar-item" onClick={() => handleNavigate('/favorites')}>
-              <li><RiBookmarkFill /> </li>
+              <li><RiBookmarkFill /></li>
               <span>Favoritos</span>
             </div>
-          </div>
-          ) : ('')
-        }
+          </>
+        )}
       </ul>
-      {userProfile? (
-        <>
-          <div className="user" onClick={()=> handleNavigate('/profile')}>
-            <img src="./pessoa-teste.png" alt="user-img" />
-            <div>
-              <h2>{userProfile.name}</h2>
-              <p>{userProfile.email}</p>
-            </div>
+      <div className="user" onClick={() => handleNavigate(userProfile ? '/profile' : '/login')}>
+        <img src={profilePicture ?? 'pessoa-teste.png'} alt="Foto de perfil" />
+        {userProfile ? (
+          <div>
+            <h2>{userProfile.name}</h2>
+            <p>{userProfile.email}</p>
           </div>
-        </>
-      ) : (
-        <div className="user" onClick={()=> handleNavigate('/login')}>
-          <img src="./pessoa-teste.png" alt="user-img" />
-          <div className='user-login' onClick={()=> handleNavigate('/login')}>
+        ) : (
+          <div className="user-login">
             <button>
-              Login <RiLoginBoxFill/>
-              </button>
+              Login <RiLoginBoxFill />
+            </button>
           </div>
+        )}
+      </div>
+      {userProfile && (
+        <div className="logout" onClick={handleLogout}>
+          <button>
+            <RiLogoutBoxFill />
+          </button>
         </div>
       )}
-      {userProfile && (
-        <ul>
-          <div className="logout" onClick={handleLogout}>
-            <div className="logout">
-              <button>
-                <RiLogoutBoxFill />
-              </button>
-            </div>
-          </div>
-        </ul>
-      )}
     </div>
-  )
-}
+  );
+};
 
-export default Sidebar
+export default Sidebar;

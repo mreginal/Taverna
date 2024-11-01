@@ -3,6 +3,8 @@ from dotenv import load_dotenv
 from waitress import serve 
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
+from firebase_admin import credentials, storage
+import firebase_admin
 import os
 
 from routes.user_routes import user_bp
@@ -19,6 +21,11 @@ app = Flask(__name__)
 app.config['JWT_SECRET_KEY'] = JWT_SECRET_KEY
 jwt = JWTManager(app)
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
+cred = credentials.Certificate("taverna-firebase.json")
+
+firebase_admin.initialize_app(cred, {
+    'storageBucket': 'taverna-c88f7.appspot.com'
+})
 
 app.register_blueprint(user_bp, url_prefix='/user')
 app.register_blueprint(auth_bp, url_prefix='/auth')

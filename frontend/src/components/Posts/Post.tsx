@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom'
 import { useProfile } from '../../hooks/useProfile'
 import EditPost from './EditPost'
 import CommentsList from '../Comments/CommentsList'
+import { useProfilePicture } from '../../hooks/useProfilePicture'
 
 const Post: React.FC = () => {
   const [posts, setPosts] = useState<PostType[]>([])
@@ -17,6 +18,7 @@ const Post: React.FC = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false)
 
   const navigate = useNavigate()
+  const profilePicture = useProfilePicture();
   const userProfile = useProfile()
 
   useEffect(() => {
@@ -51,6 +53,11 @@ const Post: React.FC = () => {
   const getUsername = (userId: number): string => {
     const user = users.find(user => user._id === userId)
     return user ? user.name : 'Usuário Desconhecido'
+  }
+  
+  const getUserProfilePicture = (userId: number): string => {
+    const user = users.find(user => user._id === userId)
+    return user?.profile_picture || 'pessoa-teste.png'
   }
 
   const handleReact = async (postId: number, liked: boolean, postUserId: number, postTitle: string) => {
@@ -123,7 +130,24 @@ const Post: React.FC = () => {
         { post_id: postId },
         { headers: { Authorization: `Bearer ${token}` } }
       )
-  
+      
+      if (!favorited) {
+        const postUserId = posts.find(post=> post._id === postId)?.user_id
+        const postTitle = posts.find(post=> post._id === postId)?.title
+
+        await api.post(
+          '/notification/criar',
+          {
+            user_id: postUserId,
+            type: 'favorite',
+            title: postTitle,
+            message: `favoritou seu post`,
+            post_id: postId,
+          },
+          { headers: { Authorization: `Bearer ${token}` } }
+        )
+      }
+
       setPosts(prevPosts =>
         prevPosts.map(post =>
           post._id === postId ? { ...post, favorited: !favorited} : post
@@ -141,7 +165,7 @@ const Post: React.FC = () => {
         {posts.map(post => (
           <div key={post._id} className='card-post'>
               <div className="user-post">
-                <img src="pessoa-teste.png" alt="logo" />
+              <img src={getUserProfilePicture(post.user_id)} alt="Foto de perfil" />
                 <h2>{getUsername(post.user_id)}</h2>
                 {userProfile?._id === post.user_id && 
                   <EditPost postId={post._id}/>
@@ -161,7 +185,7 @@ const Post: React.FC = () => {
                     <p>{post.likes}</p>
                   </button>
                 </div>
-                <CommentsList postId={post._id}/>
+                <CommentsList postId={post._id} postUserId={post.user_id} postTitle={post.title}/>
               </div>
               <div className="save">
               <button onClick={() => handleFavorite(post._id, post.favorited)}>

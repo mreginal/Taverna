@@ -89,7 +89,7 @@
     margin-bottom: 30px;
 }
 
-#button, #login{
+#button, #login, #buttonAcess, #buttonCad{
     padding: 10px;
     width: 150px;
     border: none;
@@ -101,12 +101,26 @@
     font-size: 12px;
     cursor: pointer;
 }
-#button:hover, #login:hover{
+#button:hover, #login:hover, #buttonAcess:hover, #buttonCad:hover{
     background-color: var(--cor07);
 }
 
 .error{
     color: #F74A49;
+}
+
+.scrollable {
+    width: 30vw;       
+    height: 50vh;      
+    border: 1px solid #ccc; 
+    overflow: auto;      
+    box-sizing: border-box;
+    border: none;
+    margin-bottom: 20px;
+}
+
+::-webkit-scrollbar {
+    display: none;
 }
 
 @media (max-width:1035px) {

@@ -19,6 +19,7 @@ class User:
                 "email": email,
                 "password": hashed64,
                 "gender": gender,
+                "profile_picture": None,
                 "favorites": []
             }
             db.usuarios.insert_one(new_user)
@@ -74,4 +75,10 @@ class User:
             return user.get("favorites", [])
         return []
 
-    
+    @staticmethod
+    def upload_profile_picture_service(user_id, profile_picture_url):
+        response = db.usuarios.update_one(
+            {"_id": ObjectId(user_id)},
+            {"$set": {"profile_picture": profile_picture_url}}
+        )
+        return response

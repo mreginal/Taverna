@@ -7,6 +7,7 @@ import { Alert, Snackbar } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { useProfile } from '../../hooks/useProfile'
 import EditPost from '../Posts/EditPost'
+import { useProfilePicture } from '../../hooks/useProfilePicture'
 
 const UserPosts: React.FC = () => {
   const [posts, setPosts] = useState<PostType[]>([])
@@ -15,6 +16,7 @@ const UserPosts: React.FC = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false)
 
   const navigate = useNavigate()
+  const { profilePicture } = useProfilePicture();
   const userProfile = useProfile()
 
   useEffect(() => {
@@ -83,7 +85,7 @@ const UserPosts: React.FC = () => {
                   userProfile?._id === post.user_id && (
                     <div key={post._id} className='card-post-profile'>
                       <div className="user-post">
-                        <img src="pessoa-teste.png" alt="logo" />
+                        <img src={profilePicture || 'pessoa-teste.png'} alt="Foto de perfil"/>
                         <h2>{userProfile.name}</h2>
                         <EditPost postId={post._id} />
                       </div>
