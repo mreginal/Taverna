@@ -1,19 +1,28 @@
 import './Profile.css'
-
-//imports
 import Sidebar from '../../components/Sidebar/Sidebar'
 import EditProfileModal from '../../components/EditProfileModal/EditProfileModal'
 import { useProfile } from '../../hooks/useProfile'
 import { RiMailFill, RiSwordFill, RiVerifiedBadgeFill, RiVipCrownFill,  } from 'react-icons/ri'
 import UserPosts from './UserPosts'
 import { useProfilePicture } from '../../hooks/useProfilePicture'
+import { useState } from 'react'
+import EditPictureModal from './EditPictureModal'
 
 const Profile = () => {
+  const [isPictureModalOpen, setIsPictureModalOpen] = useState(false);
   const { profilePicture } = useProfilePicture();
   const userProfile = useProfile()
   if(!userProfile){
     return
   }
+
+  const handleImageClick = () => {
+    setIsPictureModalOpen(true);
+  };
+
+  const handleClosePictureModal = () => {
+    setIsPictureModalOpen(false);
+  };
 
   return (
     <div className="profile">
@@ -23,7 +32,7 @@ const Profile = () => {
         <div className="center-profile">
             <div className="info-user">
               <div className="user-profile">
-                <div className="user-profile-image">
+                <div className="user-profile-image" onClick={handleImageClick}>
                   <img src={profilePicture || 'pessoa-teste.png'} alt="Foto de perfil"/>
                 </div>
                 <h1>{userProfile.name} <RiVerifiedBadgeFill color='var(--cor05)'/></h1>
@@ -47,9 +56,9 @@ const Profile = () => {
                 <UserPosts/>
             </div>
         </div>
-        <div className="left-profile">
+        <div className="left-profile"></div>
 
-        </div>
+        <EditPictureModal open={isPictureModalOpen} onClose={handleClosePictureModal} currentProfilePicture={userProfile.profile_picture} />
     </div>
   )
 }

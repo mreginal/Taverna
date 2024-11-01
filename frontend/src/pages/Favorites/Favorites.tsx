@@ -35,7 +35,7 @@ const Favorites: React.FC = () => {
         setFavorites(response.data)
       } catch (error) {
         console.error('Erro ao buscar favoritos:', error)
-        setError('Erro ao buscar favoritos.')
+        setError('Nenhum favorito.')
       }
     }
 
@@ -76,7 +76,7 @@ const Favorites: React.FC = () => {
 
   const getUserProfilePicture = (userId: number): string => {
     const user = users.find(user => user._id === userId)
-    return user ? user.profile_picture : 'pessoa-teste.png'
+    return user?.profile_picture || 'pessoa-teste.png'
   }
 
   const handleReact = async (postId: number, liked: boolean) => {
@@ -180,7 +180,7 @@ const Favorites: React.FC = () => {
                                   <p>{post.likes}</p>
                                 </button>
                               </div>
-                              <CommentsList postId={post._id}/>
+                              <CommentsList postId={post._id} postTitle={post.title} postUserId={post.user_id}/>
                             </div>
                             <div className="save">
                             <button onClick={() => handleFavorite(post._id, post.favorited)}>

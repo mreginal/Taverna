@@ -11,6 +11,7 @@ import { Alert, Snackbar } from '@mui/material'
 const Register: React.FC = () => {
   const navigate = useNavigate()
 
+  const [username, setUsername] = useState<string>("")
   const [name, setName] = useState<string>("")
   const [birthdate, setBirthdate] = useState<string>("")
   const [email, setEmail] = useState<string>("")
@@ -45,21 +46,22 @@ const Register: React.FC = () => {
 
     setError("")
 
-    const user: User ={
-      name, 
-      birthdate,
-      email,
-      password,
-      gender,
-    }
-
     if (password !== confirmPassword) {
       setMinError("❗As senhas não correspondem❗")
       return
     }
 
+  const user: User ={
+    username,
+    name, 
+    birthdate,
+    email,
+    password,
+    gender,
+  }
+
     try{
-      await api.post("/user/cadastrar", {name, birthdate, email, password, gender})
+      await api.post("/user/cadastrar", user)
       setSuccessSnackbar(true);
       setTimeout(()=> navigate('/login'), 2000)
     }catch(error){
@@ -68,7 +70,8 @@ const Register: React.FC = () => {
     }
 
     console.log(user)
-    setName(''), setEmail(''), setBirthdate(''), setPassword(''), setConfirmPassword(''), setGender('')
+
+    setUsername(''), setName(''), setEmail(''), setBirthdate(''), setPassword(''), setConfirmPassword(''), setGender('')
   }
 
   const handleCloseSnackbar = () => {
@@ -93,41 +96,46 @@ const Register: React.FC = () => {
             </div>
             <div className="form-register">
               <form onSubmit={handleSubmit}>
-                <label>
-                  <span>Nome completo:</span>
-                  <input type="name" name='name' placeholder='Nome Sobrenome' onChange={(e)=>setName(e.target.value)} value={name}/>
-                </label>
-                <label>
-                  <span>Data de Nascimento:</span>
-                  <input type="date" name='birthdate' onChange={handleBirthdate} value={birthdate}/>
-                </label>
-                <label>
-                  <span>Email:</span>
-                  <input type="email" name='email' placeholder='exemplo@gmail.com' id='email' onChange={(e)=>setEmail(e.target.value)} value={email}/>
-                </label>
-                <label>
-                  <span>Senha:</span>
-                  <input type="password" name='password' placeholder='*********' id='password' onChange={(e)=>setPassword(e.target.value)} value={password}/>
-                </label>
-                <label>
-                  <span>Confirmação de senha:</span>
-                  <input type="password" name='password' placeholder='*********' id='confirmPassword' onChange={(e)=>setConfirmPassword(e.target.value)} value={confirmPassword}/>
-                  {minError && <p className='error'>{minError}</p>}
-
-                </label>
-                <label>
-                  <span>Gênero:</span>
-                  <select name="gender" value={gender} onChange={handleSelectGender}>
-                    <option value="">Selecione uma opção</option>
-                    <option value="nid">Não identificar</option>
-                    <option value="masc">Masculino</option>
-                    <option value="fem">Feminino</option>
-                </select>
-                </label>
+                <div className='scrollable'>
+                  <label>
+                      <span>Nome de usuário:</span>
+                      <input type="text" name='username' placeholder='exemplo_nome' onChange={(e)=>setUsername(e.target.value)} value={username}/>
+                  </label>
+                  <label>
+                    <span>Nome completo:</span>
+                    <input type="name" name='name' placeholder='Nome Sobrenome' onChange={(e)=>setName(e.target.value)} value={name}/>
+                  </label>
+                  <label>
+                    <span>Data de Nascimento:</span>
+                    <input type="date" name='birthdate' onChange={handleBirthdate} value={birthdate}/>
+                  </label>
+                  <label>
+                    <span>Email:</span>
+                    <input type="email" name='email' placeholder='exemplo@gmail.com' id='email' onChange={(e)=>setEmail(e.target.value)} value={email}/>
+                  </label>
+                  <label>
+                    <span>Senha:</span>
+                    <input type="password" name='password' placeholder='*********' id='password' onChange={(e)=>setPassword(e.target.value) } value={password}/>
+                  </label>
+                  <label>
+                    <span>Confirmação de senha:</span>
+                    <input type="password" name='password' placeholder='*********' id='confirmPassword' onChange={(e)=>setConfirmPassword(e.target.value)} value={confirmPassword} />
+                    {minError && <p className='error'>{minError}</p>}
+                  </label>
+                  <label>
+                    <span>Gênero:</span>
+                    <select name="gender" value={gender} onChange={handleSelectGender}>
+                      <option value="">Selecione uma opção</option>
+                      <option value="nid">Não identificar</option>
+                      <option value="masc">Masculino</option>
+                      <option value="fem">Feminino</option>
+                  </select>
+                  </label>
+                </div>
 
                 <div className='btn' id='btn-register'>
-                  <input type="button" id='button' value="Acesso sem login" onClick={() => handleNavigate('/feed')}/>
-                  <input type="submit" id='button' value="Cadastrar-se"/>
+                  <input type="button" id='buttonAcess' value="Acesso sem login" onClick={() => handleNavigate('/feed')}/>
+                  <input type="submit" id='buttonCad' value="Cadastrar-se"/>
                 </div>
               </form>
 

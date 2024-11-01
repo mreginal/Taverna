@@ -18,7 +18,7 @@ const Post: React.FC = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false)
 
   const navigate = useNavigate()
-  const { profilePicture } = useProfilePicture();
+  const profilePicture = useProfilePicture();
   const userProfile = useProfile()
 
   useEffect(() => {
@@ -158,34 +158,6 @@ const Post: React.FC = () => {
       console.error('Erro ao favoritar/desfavoritar a postagem:', error)
     }
   }
-
-  const handleNotifyComment = async (postId: number, postUserId: number, postTitle: string) => {
-    try {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        setError('Faça login para comentar nas postagens.');
-        setTimeout(() => {
-          navigate('/login');
-        }, 2000);
-        return;
-      }
-  
-      await api.post(
-        '/notification/criar',
-        {
-          user_id: postUserId,
-          type: 'comment',
-          title: postTitle,
-          message: `comentou em seu post`,
-          post_id: postId,
-        },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-    } catch (error) {
-      console.error('Erro ao enviar notificação de comentário:', error);
-    }
-  };
-  
   
   return (
     <div>

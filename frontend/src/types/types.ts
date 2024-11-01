@@ -1,11 +1,12 @@
 export type User={
     _id?: number
+    username: string
     name: string
     birthdate: string
     email: string
     password: string
     gender: string
-    profile_picture: string
+    profile_picture?: string
 }
 
 export type UserEdit={
@@ -55,3 +56,10 @@ export type Notification={
     post_id?: string | number;
     sender_id: number;
 }
+
+
+export type EditProfilePictureModalProps={
+    open: boolean;
+    onClose: () => void;
+    currentProfilePicture?: string | null
+  }
