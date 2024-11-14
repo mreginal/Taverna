@@ -28,3 +28,8 @@ Você pode visualizar uma demonstração de 5 minutos do funcionamento do nosso 
 Você também pode visualizar o nosso site clicando no link abaixo:
 
 https://github.com/mreginal/Taverna
+
+# Equipe 
+* Maria Regina Lucena da Silva 
+* Luan Nycholas Lemos Vieira 
+* Davi Miguel Franklim de Almeida
