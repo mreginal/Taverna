@@ -1,5 +1,5 @@
 # Taverna
-Taverna é um projeto idealizado na disciplina de Gerenciamento de Projetos (Computação-7ºP), que refere-se a uma rede social voltada para cozinheiros e amantes da culinária em geral. 
+Taverna é um projeto idealizado na disciplina de Gerenciamento de Projetos (Computação-7ºP) e reestruturado na disciplina de Programação Web (Computação - 8°P), que refere-se a uma rede social voltada para cozinheiros e amantes da culinária em geral. 
 O site conta com um sistema de postagens, likes, comentários, perfil, página de favoritos e notificações até o momento. O evoluiremos criando os sistemas de Guilda, Chat e Níveis (de Cozinheiro iniciante à Mago dos Sabores).
 
 Caso queira testar o nosso site, você pode criar o seu usuário ou utilizar:
