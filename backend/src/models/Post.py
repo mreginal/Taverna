@@ -27,6 +27,16 @@ class Post:
             return {"message": error_message}, 400
     
     @staticmethod
+    def remove_post_service(post_id):
+        response = db.posts.delete_one({"_id": ObjectId(post_id)})
+        return response
+    
+    @staticmethod
+    def remove_all_posts_by_user_service(user_id):
+        response = db.posts.delete_many({"user_id": user_id})
+        return response
+
+    @staticmethod
     def find_all_posts_service():
         posts = db.posts.find({}, {"comments": 0}).sort('_id', -1)
         posts_list = [post for post in posts]

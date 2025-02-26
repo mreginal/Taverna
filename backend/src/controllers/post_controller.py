@@ -6,6 +6,28 @@ def create_post(title, content):
     response, status_code = Post.create_post_service(title, content, user_id)
     return response, status_code
 
+def remove_post(post_id):
+    user_id = get_jwt_identity()
+    current_post = Post.find_post_by_id_service(post_id)
+
+    if current_post.get("user_id") != user_id:
+        return {'message': 'Você não tem permissão para remover este post'}, 403
+    
+    response = Post.remove_post_service(post_id)
+    
+    if response.deleted_count > 0:
+        return {'message': 'Post removido com sucesso'}, 200
+    else:
+        return {'message': 'Post não encontrado'}, 404
+    
+def remove_all_posts_by_user(user_id):
+    response = Post.remove_all_posts_by_user_service(user_id)
+
+    if response.deleted_count > 0:
+        return {'message': 'Posts removidos com sucesso'}, 200
+    else:
+        return {'message': 'Nenhum post encontrado'}, 404
+
 def get_all_posts():
     posts = Post.find_all_posts_service()
     return posts

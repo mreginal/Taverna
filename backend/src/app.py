@@ -4,6 +4,7 @@ from waitress import serve
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from firebase_admin import credentials, storage
+from socketio_instance import init_socketio, socketio
 import firebase_admin
 import os
 
@@ -27,14 +28,21 @@ firebase_admin.initialize_app(cred, {
     'storageBucket': 'taverna-c88f7.appspot.com'
 })
 
+init_socketio(app)
+
 app.register_blueprint(user_bp, url_prefix='/user')
 app.register_blueprint(auth_bp, url_prefix='/auth')
 app.register_blueprint(post_bp, url_prefix='/post')
 app.register_blueprint(notification_bp, url_prefix='/notification')
+
+@socketio.on('join_room')
+def handle_join_room(data):
+    user_id = data['user_id']
+    socketio.join_room(user_id)
 
 if __name__ == "__main__":
     if FLASK_ENV == "production":
         print("Rodando server em produção!")
         serve(app, host='0.0.0.0', port=5000)
     else:
-        app.run(debug=True)
+        socketio.run(app, debug=True)

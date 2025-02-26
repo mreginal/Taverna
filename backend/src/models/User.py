@@ -20,7 +20,9 @@ class User:
                 "password": hashed64,
                 "gender": gender,
                 "profile_picture": None,
-                "favorites": []
+                "friends": [],
+                "favorites": [],
+                "is_online": False
             }
             db.usuarios.insert_one(new_user)
             return {"message": "Usuário cadastrado com sucesso!"}, 201
@@ -51,7 +53,45 @@ class User:
             {"$set": update_data}
         )
         return response
+
+    @staticmethod
+    def update_to_online_service(id):
+        response = db.usuarios.update_one(
+            {"_id": ObjectId(id)},
+            {"$set": {"is_online": True}}
+        )
+        return response
+
+    @staticmethod
+    def update_to_offline_service(id):
+        response = db.usuarios.update_one(
+            {"_id": ObjectId(id)},
+            {"$set": {"is_online": False}}
+        )
+        return response
     
+    @staticmethod
+    def add_friend_service(user_id, friend_id):
+        response = db.usuarios.update_one(
+            {"_id": ObjectId(user_id)},
+            {"$addToSet": {"friends": friend_id}}
+        )
+        return response
+    
+    @staticmethod
+    def remove_friend_service(user_id, friend_id):
+        response = db.usuarios.update_one(
+            {"_id": ObjectId(user_id)},
+            {"$pull": {"friends": friend_id}}
+        )
+        return response
+    
+    def find_friends_service(user_id):
+        user = db.usuarios.find_one({"_id": ObjectId(user_id)})
+        if user:
+            return user.get("friends", [])
+        return []
+
     @staticmethod
     def add_favorite_service(user_id, post_id):
         response = db.usuarios.update_one(
