@@ -213,9 +213,8 @@ def test_remove_post_service(mock_db):
         "user_id": "test_user"
     }).inserted_id
     
-    response, status_code = Post.remove_post_service(str(post_id))
-    assert status_code == 200
-    assert response["message"] == "Post removido com sucesso!"
+    response = Post.remove_post_service(str(post_id))
+    assert response.deleted_count == 1
     
     post = mock_db.posts.find_one({"_id": ObjectId(post_id)})
     assert post is None
@@ -226,11 +225,11 @@ def test_remove_all_posts_by_user_service(mock_db):
         {"title": "Post 2", "content": "Content 2", "user_id": "user_id_2"}
     ])
     
-    response, status_code = Post.remove_all_posts_by_user_service("user_id_1")
-    assert status_code == 200
-    assert response["message"] == "Posts removidos com sucesso!"
+    response = Post.remove_all_posts_by_user_service("user_id_1")
+    assert response.deleted_count == 1
     
-    posts = mock_db.posts.find({"user_id": "user_id_1"})
-    assert posts.count() == 0
-    posts = mock_db.posts.find({"user_id": "user_id_2"})
-    assert posts.count() == 1
+    posts_count_user_1 = mock_db.posts.count_documents({"user_id": "user_id_1"})
+    posts_count_user_2 = mock_db.posts.count_documents({"user_id": "user_id_2"})
+    
+    assert posts_count_user_1 == 0
+    assert posts_count_user_2 == 1

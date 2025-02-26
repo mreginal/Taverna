@@ -86,6 +86,7 @@ class User:
         )
         return response
     
+    @staticmethod
     def find_friends_service(user_id):
         user = db.usuarios.find_one({"_id": ObjectId(user_id)})
         if user:
