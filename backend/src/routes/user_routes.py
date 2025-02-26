@@ -2,7 +2,8 @@ from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required
 from controllers.user_controller import (
     get_all_users, create_user, get_user_profile, update_user_profile, get_user_by_id,
-    add_favorite, remove_favorite, get_favorites, upload_profile_picture
+    add_favorite, remove_favorite, get_favorites, upload_profile_picture, add_friend, 
+    remove_friend, get_friends
 )
 
 user_bp = Blueprint('user_bp', __name__)
@@ -47,6 +48,28 @@ def update_user_route():
     gender = data.get('gender')
     response, status_code = update_user_profile(name, birthdate, gender)
     return jsonify(response), status_code
+
+@user_bp.route('/add-amigo', methods=['POST'])
+@jwt_required()
+def add_friend_route():
+    data = request.json
+    friend_id = data.get('friend_id')
+    response, status_code = add_friend(friend_id)
+    return jsonify(response), status_code
+
+@user_bp.route('/remover-amigo', methods=['POST'])
+@jwt_required()
+def remove_friend_route():
+    data = request.json
+    friend_id = data.get('friend_id')
+    response, status_code = remove_friend(friend_id)
+    return jsonify(response), status_code
+
+@user_bp.route('/amigos', methods=['GET'])
+@jwt_required()
+def get_friends_route():
+    friends, status_code = get_friends()
+    return jsonify(friends), status_code
 
 @user_bp.route('/favoritar', methods=['POST'])
 @jwt_required()

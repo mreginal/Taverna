@@ -30,6 +30,8 @@ def get_user_profile():
     user = User.find_by_id_service(ObjectId(id))
     if user:
         user.pop('password', None)
+        user.pop('favorites', None)
+        user.pop('friends', None)
         user['_id'] = str(user['_id'])
         return user, 200
     else:
@@ -55,7 +57,31 @@ def update_user_profile(name, birthdate, gender):
         return {'message': 'Usuário atualizado com sucesso'}, 200
     else:
         return {'message': 'Nenhum campo foi modificado ou usuário não encontrado'}, 404
+
+def add_friend(friend_id):
+    id = get_jwt_identity()
+    response = User.add_friend_service(id, friend_id)
+    if response.modified_count > 0:
+        return {'message': 'Amigo adicionado com sucesso'}, 200
+    else:
+        return {'message': 'Usuário não encontrado ou amigo já estava na lista'}, 404
     
+def remove_friend(friend_id):
+    id = get_jwt_identity()
+    response = User.remove_friend_service(id, friend_id)
+    if response.modified_count > 0:
+        return {'message': 'Amigo removido com sucesso'}, 200
+    else:
+        return {'message': 'Usuário não encontrado ou amigo não estava na lista'}, 404
+
+def get_friends():
+    id = get_jwt_identity()
+    friends = User.find_friends_service(id)
+    if friends:
+        return friends, 200
+    else:
+        return {'message': 'Nenhum amigo encontrado!'}, 404
+
 def add_favorite(post_id):
     id = get_jwt_identity()
     if not post_id:

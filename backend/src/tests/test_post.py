@@ -205,3 +205,31 @@ def test_delete_comment_service(mock_db):
     
     post = mock_db.posts.find_one({"_id": ObjectId(post_id)})
     assert len(post["comments"]) == 0
+
+def test_remove_post_service(mock_db):
+    post_id = mock_db.posts.insert_one({
+        "title": "Test Post",
+        "content": "This is a test post.",
+        "user_id": "test_user"
+    }).inserted_id
+    
+    response = Post.remove_post_service(str(post_id))
+    assert response.deleted_count == 1
+    
+    post = mock_db.posts.find_one({"_id": ObjectId(post_id)})
+    assert post is None
+
+def test_remove_all_posts_by_user_service(mock_db):
+    mock_db.posts.insert_many([
+        {"title": "Post 1", "content": "Content 1", "user_id": "user_id_1"},
+        {"title": "Post 2", "content": "Content 2", "user_id": "user_id_2"}
+    ])
+    
+    response = Post.remove_all_posts_by_user_service("user_id_1")
+    assert response.deleted_count == 1
+    
+    posts_count_user_1 = mock_db.posts.count_documents({"user_id": "user_id_1"})
+    posts_count_user_2 = mock_db.posts.count_documents({"user_id": "user_id_2"})
+    
+    assert posts_count_user_1 == 0
+    assert posts_count_user_2 == 1

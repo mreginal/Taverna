@@ -178,3 +178,53 @@ def test_upload_profile_picture_service(user_model, mock_db):
         assert "profile_picture" in user
         assert user["profile_picture"] == file
 
+def test_add_friend_service(user_model, mock_db):
+    user_id = mock_db.usuarios.insert_one({
+        "username": "test_user",
+        "name": "Test User",
+        "birthdate": "1990-01-01",
+        "email": "test@example.com",
+        "password": "hashed_password",
+        "friends": []
+    }).inserted_id
+
+    friend_id = "friend_123"
+    response = user_model.add_friend_service(user_id, friend_id)
+    assert response.modified_count == 1
+    user = mock_db.usuarios.find_one({"_id": ObjectId(user_id)})
+    assert "friends" in user
+    assert friend_id in user["friends"]
+
+def test_remove_friend_service(user_model, mock_db):
+    user_id = mock_db.usuarios.insert_one({
+        "username": "test_user",
+        "name": "Test User",
+        "birthdate": "1990-01-01",
+        "email": "test@example.com",
+        "password": "hashed_password",
+        "friends": ["friend_123", "friend_456"]
+    }).inserted_id
+
+    friend_id = "friend_123"
+    response = user_model.remove_friend_service(user_id, friend_id)
+    assert response.modified_count == 1
+    user = mock_db.usuarios.find_one({"_id": ObjectId(user_id)})
+    assert "friends" in user
+    assert friend_id not in user["friends"]
+    assert "friend_456" in user["friends"]
+
+def test_get_friends_service(user_model, mock_db):
+    user_id = mock_db.usuarios.insert_one({
+        "username": "test_user",
+        "name": "Test User",
+        "birthdate": "1990-01-01",
+        "email": "test@example.com",
+        "password": "hashed_password",
+        "friends": ["friend_123", "friend_456"]
+    }).inserted_id
+
+    friends = user_model.find_friends_service(user_id)
+    assert len(friends) == 2
+    assert "friend_123" in friends
+    assert "friend_456" in friends
+

@@ -3,7 +3,7 @@ from flask_jwt_extended import jwt_required
 from controllers.post_controller import (
     create_post, get_all_posts, add_like, remove_like, get_posts_by_user_id,
     update_post, get_post_by_id, add_comment, get_comments_by_post_id, remove_comment,
-    update_comment
+    update_comment, remove_post, remove_all_posts_by_user
 )
 
 post_bp = Blueprint('post_bp', __name__)
@@ -34,6 +34,27 @@ def create_post_route():
     title = data.get('title')
     content = data.get('content')
     response, status_code = create_post(title, content)
+    return jsonify(response), status_code
+
+@post_bp.route('/remover', methods=['POST'])
+@jwt_required()
+def remove_post_route():
+    data = request.json
+    if 'post_id' not in data:
+        return jsonify({'message': 'Campo obrigatório ausente'}), 400
+    
+    post_id = data.get('post_id')
+    response, status_code = remove_post(post_id)
+    return jsonify(response), status_code
+
+@post_bp.route('/limpar', methods=['POST'])
+def remove_all_posts_by_user_route():
+    data = request.json
+    if 'user_id' not in data:
+        return jsonify({'message': 'Campo obrigatório ausente'}), 400
+    
+    user_id = data.get('user_id')
+    response, status_code = remove_all_posts_by_user(user_id)
     return jsonify(response), status_code
 
 @post_bp.route('/like', methods=['POST'])
