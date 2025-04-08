@@ -1,3 +1,6 @@
+import eventlet
+eventlet.monkey_patch()
+
 from flask import Flask 
 from dotenv import load_dotenv 
 from waitress import serve 
@@ -42,8 +45,8 @@ def handle_join_room(data):
 
 if __name__ == "__main__":
     if FLASK_ENV == "production":
-        print("Rodando server em produção com Gunicorn e Eventlet!")
-        # Use o Gunicorn com o worker do Eventlet
-        # Comando para rodar ou deployar: gunicorn --worker-class eventlet -w 1 app:app
+        print("Simulando produção localmente...")
+        socketio.run(app, host="0.0.0.0", port=5000)
     else:
+        print("Rodando em Desenvolvimento!")
         socketio.run(app, debug=True)
