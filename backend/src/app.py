@@ -1,10 +1,15 @@
-from flask import Flask 
-from dotenv import load_dotenv 
+import eventlet
+eventlet.monkey_patch()
+
+from flask import Flask
+from dotenv import load_dotenv
 from waitress import serve 
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from firebase_admin import credentials
 from socketio_instance import init_socketio, socketio
+import base64
+import json
 import firebase_admin
 import os
 
@@ -17,12 +22,15 @@ load_dotenv()
 
 FLASK_ENV = os.getenv("FLASK_ENV")
 JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY")
+FIREBASE_CREDENTIALS = os.getenv("FIREBASE_CREDENTIALS")
 
 app = Flask(__name__)
 app.config['JWT_SECRET_KEY'] = JWT_SECRET_KEY
 jwt = JWTManager(app)
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
-cred = credentials.Certificate("taverna-firebase.json")
+firebase_json = base64.b64decode(FIREBASE_CREDENTIALS).decode()
+cred_dict = json.loads(firebase_json)
+cred = credentials.Certificate(cred_dict)
 
 firebase_admin.initialize_app(cred, {
     'storageBucket': 'taverna-c88f7.appspot.com'
@@ -42,8 +50,8 @@ def handle_join_room(data):
 
 if __name__ == "__main__":
     if FLASK_ENV == "production":
-        print("Rodando server em produção com Gunicorn e Eventlet!")
-        # Use o Gunicorn com o worker do Eventlet
-        # Comando para rodar ou deployar: gunicorn --worker-class eventlet -w 1 app:app
+        print("Simulando produção localmente...")
+        socketio.run(app, host="0.0.0.0", port=5000)
     else:
+        print("Rodando em Desenvolvimento!")
         socketio.run(app, debug=True)
